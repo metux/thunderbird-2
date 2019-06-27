@@ -1,0 +1,92 @@
+%if 0
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+%endif
+
+%include ../../../components/im/themes/chat.css
+
+#chatTabPanel {
+  --imbox-selected-text-color: -moz-FieldText;
+  --imbox-selected-background-color: -moz-Field;
+  --imbox-selected-border-color: var(--splitter-color);
+  --imgroup-selected-background-color: ThreeDLightShadow;
+}
+
+.convUnreadCount,
+.contactDisplayName,
+.convDisplayName,
+.contactStatusText,
+.convStatusText {
+  margin-top: 2px;
+}
+
+#listSplitter,
+#contextSplitter,
+.splitter[orient="vertical"],
+ #logsSplitter {
+  -moz-appearance: none;
+}
+
+/* Adaptation from #folderTree */
+:root:not([lwt-tree]) #listPaneBox {
+  background-color: -moz-OddTreeRow;
+}
+
+#listPaneBox > * {
+  background: transparent !important;
+  -moz-appearance: none !important;
+  border: none;
+}
+
+.conv-textbox {
+  margin: 0;
+  -moz-appearance: none;
+}
+
+:root:not([lwt-tree]) #conv-top-info {
+  -moz-appearance: none;
+  background-color: -moz-Dialog;
+  color: -moz-DialogText;
+}
+
+.conv-nicklist-header,
+.conv-logs-header-label {
+  color: -moz-DialogText;
+  background-color: -moz-Dialog;
+  padding-inline-start: 3px;
+}
+
+.startChatBubble > .button-box > .button-icon,
+.closeConversationButton > .button-box > .button-icon {
+  margin-inline-end: 0;
+}
+
+.conv-hbox {
+  -moz-box-align: center;
+}
+
+.statusMessageInput[editing] {
+  color: -moz-dialogtext;
+  margin: 29px 0 -3px -4px;
+}
+
+#displayNameAndstatusMessageStack #statusMessage {
+  margin: 32px 0 0;
+}
+
+#displayNameAndstatusMessageStack #statusMessage[editing] {
+  margin: 30px -2px -2px -4px;
+}
+
+#displayNameAndstatusMessageStack #displayName[editing] {
+  margin-left: -4px;
+  margin-right: -2px;
+  margin-bottom: 18px;
+}
+
+#setStatusTypeMenupopup .menu-iconic-icon,
+#imAccountsStatus .menu-iconic-icon,
+#appmenu_imAccountsStatus .menu-iconic-icon {
+  visibility: visible;
+}

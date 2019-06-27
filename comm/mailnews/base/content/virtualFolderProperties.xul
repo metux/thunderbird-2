@@ -1,0 +1,92 @@
+<?xml version="1.0"?>
+<!-- This Source Code Form is subject to the terms of the Mozilla Public
+   - License, v. 2.0. If a copy of the MPL was not distributed with this
+   - file, You can obtain one at http://mozilla.org/MPL/2.0/.
+   -->
+
+<?xml-stylesheet href="chrome://messenger/skin/dialogs.css" type="text/css"?>
+<?xml-stylesheet href="chrome://messenger/skin/searchDialog.css" type="text/css"?>
+<?xml-stylesheet href="chrome://messenger/skin/messenger.css" type="text/css"?>
+<?xml-stylesheet href="chrome://messenger/skin/folderMenus.css" type="text/css"?>
+
+<!DOCTYPE dialog [
+  <!ENTITY % folderDTD SYSTEM "chrome://messenger/locale/virtualFolderProperties.dtd">
+  %folderDTD;
+  <!ENTITY % searchTermDTD SYSTEM "chrome://messenger/locale/searchTermOverlay.dtd">
+  %searchTermDTD;
+]>
+
+<dialog xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" xmlns:html="http://www.w3.org/1999/xhtml"
+        id="virtualFolderPropertiesDialog"
+        title="&virtualFolderProperties.title;"
+        onload="onLoad();"
+        buttons="accept,cancel"
+        newFolderAcceptButtonLabel="&newFolderButton.label;"
+        newFolderAcceptButtonAccessKey="&newFolderButton.accesskey;"
+        editFolderAcceptButtonLabel="&editFolderButton.label;"
+        editFolderAcceptButtonAccessKey="&editFolderButton.accesskey;"
+        style="width: 50em; height: 28em;"
+        windowtype="mailnews:virtualFolderProperties">
+
+  <stringbundleset id="stringbundleset">
+    <stringbundle id="bundle_search"    src="chrome://messenger/locale/search.properties"/>
+    <stringbundle id="bundle_messenger" src="chrome://messenger/locale/messenger.properties"/>
+    <stringbundle id="bundle_folder"    src="chrome://messenger/locale/folderWidgets.properties"/>
+  </stringbundleset>
+
+  <script src="chrome://messenger/content/searchWidgets.js"/>
+  <script src="chrome://messenger/content/mailCommands.js"/>
+  <script src="chrome://messenger/content/commandglue.js"/>
+  <script src="chrome://messenger/content/virtualFolderProperties.js"/>
+  <script src="chrome://messenger/content/searchTerm.js"/>
+  <script src="chrome://messenger/content/dateFormat.js"/>
+  <script src="chrome://messenger/content/customElements.js"/>
+
+  <hbox>
+    <vbox>
+      <hbox flex="1" align="center">
+        <label value="&name.label;" accesskey="&name.accesskey;" control="name"/>
+      </hbox>
+      <hbox id="chooseFolderLocationLabel" flex="1" align="center">
+        <label value="&description.label;" accesskey="&description.accesskey;"
+               control="msgNewFolderPicker"/>
+      </hbox>
+      <hbox flex="1" align="center">
+        <label value="&folderSelectionCaption.label;"/>
+      </hbox>
+    </vbox>
+    <vbox flex="1">
+      <textbox id="name" hidden="true" oninput="doEnabling();"/>
+      <textbox id="existingName" readonly="true" hidden="true" tabindex="0"/>
+      <menulist id="msgNewFolderPicker" class="folderMenuItem" align="center"
+                displayformat="verbose">
+        <menupopup is="folder-menupopup" id="msgNewFolderPopup" class="menulist-menupopup"
+                   mode="newFolder" showFileHereLabel="true" oncommand="onFolderPick(event);"/>
+      </menulist>
+      <hbox align="center">
+        <label id="chosenFoldersCount"/>
+        <spacer flex="1"/>
+        <button id="folderListPicker" label="&chooseFoldersButton.label;"
+                accesskey="&chooseFoldersButton.accesskey;"
+                oncommand="chooseFoldersToSearch();"/>
+      </hbox>
+    </vbox>
+  </hbox>
+
+  <hbox flex="1">
+    <checkbox id="searchOnline" label="&searchOnline.label;"
+              accesskey="&searchOnline.accesskey;"/>
+  </hbox>
+
+  <separator class="thin"/>
+
+  <vbox flex="2">
+    <label value="&searchTermCaption.label;"/>
+    <hbox flex="1">
+      <vbox id="searchTermListBox" flex="2">
+#include ../search/content/searchTerm.inc.xul
+    </hbox>
+  </vbox>
+
+</dialog>
+

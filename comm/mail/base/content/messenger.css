@@ -1,0 +1,257 @@
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+/* ===== messenger.css ==================================================
+  == Content specific styles for Messenger.
+  ======================================================================= */
+@import url("chrome://messenger/content/notification.css");
+
+@namespace url("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul");
+
+:root {
+  --lwt-additional-images: none;
+  --lwt-background-alignment: right top;
+  --lwt-background-tiling: no-repeat;
+
+  --toolbar-bgcolor: var(--toolbar-non-lwt-bgcolor);
+  --toolbar-bgimage: var(--toolbar-non-lwt-bgimage);
+  --toolbar-color: var(--toolbar-non-lwt-textcolor);
+
+  --panelui-subview-transition-duration: 150ms;
+}
+
+/* message header widgets */
+.emailDisplayButton {
+  -moz-user-focus: normal;
+}
+
+.emailStar {
+  -moz-user-focus: normal;
+}
+
+.emailPopup {
+  -moz-user-focus: normal;
+}
+
+mail-tagfield[collapsed="true"] {
+  display: none;
+}
+
+#searchTermList > richlistitem {
+  -moz-binding: url("chrome://messenger/content/searchWidgets.xml#filterlistitem");
+}
+
+search-value {
+  display: -moz-deck;
+}
+
+searchterm {
+  -moz-binding: url("chrome://messenger/content/mailWidgets.xml#searchterm");
+}
+
+.ruleaction {
+  -moz-binding: url("chrome://messenger/content/searchWidgets.xml#ruleaction");
+}
+
+.ruleactiontype {
+  -moz-binding: url("chrome://messenger/content/searchWidgets.xml#ruleactiontype-menulist");
+}
+
+#searchInput {
+  -moz-binding: url("chrome://messenger/content/search.xml#glodaSearch");
+}
+
+.remote-gloda-search {
+  -moz-binding: url("chrome://messenger/content/search.xml#glodaSearch") !important;
+}
+
+.remote-gloda-search-container {
+  min-width: 10em;
+}
+
+tabmail {
+  -moz-binding: url("chrome://messenger/content/tabmail.xml#tabmail");
+}
+
+.chromeclass-toolbar {
+  overflow-x: hidden;
+}
+
+/* Lightweight themes support */
+
+:root:-moz-lwtheme {
+  --toolbar-color: var(--lwt-text-color, inherit);
+
+  background-color: var(--lwt-accent-color);
+  color: var(--lwt-text-color);
+}
+
+:root:-moz-lwtheme[lwtheme-image] {
+  background-image: var(--lwt-header-image) !important;
+  background-repeat: no-repeat;
+  background-position: right top !important;
+}
+
+:root:-moz-lwtheme:-moz-window-inactive {
+  background-color: var(--lwt-accent-color-inactive, var(--lwt-accent-color));
+}
+
+/* Add a box to draw additional background images. */
+#LW-background-box {
+  display: none;
+}
+
+#LW-background-box:-moz-lwtheme {
+  display: -moz-box;
+  height: 60px;
+  position: fixed;
+  pointer-events: none;
+  top: 0;
+  width: -moz-available;
+}
+
+#messengerWindow[windowtype="mail:3pane"] > #LW-background-box:-moz-lwtheme {
+  z-index: -1;
+}
+
+/* Set additional backgrounds alignment relative to toolbox.
+   This rule needs to be in content to avoid CSP issues. */
+#LW-background-box:-moz-lwtheme,
+#ab-toolbox:-moz-lwtheme,
+#compose-toolbox:-moz-lwtheme {
+  background-image: var(--lwt-additional-images);
+  background-position: var(--lwt-background-alignment);
+  background-repeat: var(--lwt-background-tiling);
+}
+
+#status-bar:-moz-lwtheme {
+  background-repeat: no-repeat, var(--lwt-background-tiling);
+  background-position: bottom right, var(--lwt-background-alignment);
+  background-color: var(--lwt-accent-color);
+  background-image: var(--lwt-header-image), var(--lwt-additional-images);
+  color: var(--lwt-text-color);
+}
+
+#titlebar {
+  -moz-window-dragging: drag;
+}
+
+#messengerWindow:not([chromemargin]) > #titlebar {
+  display: none;
+}
+
+#titlebar-spacer {
+  pointer-events: none;
+}
+
+.button-appmenu {
+  -moz-binding: url("chrome://messenger/content/mailWidgets.xml#appmenu-vertical") !important;
+}
+
+%ifndef XP_MACOSX
+toolbar[type="menubar"][autohide="true"] {
+  overflow: hidden;
+}
+
+toolbar[type="menubar"][autohide="true"][inactive="true"]:not([customizing="true"]) {
+  min-height: 0 !important;
+  height: 0 !important;
+  -moz-appearance: none !important;
+}
+%endif
+
+/* Rules to help integrate WebExtension buttons */
+
+.webextension-action > .toolbarbutton-badge-stack > .toolbarbutton-icon {
+  height: 16px;
+  width: 16px;
+}
+
+@media not all and (min-resolution: 1.1dppx) {
+  .webextension-action {
+    list-style-image: var(--webextension-toolbar-image, inherit);
+  }
+
+  toolbar[brighttext] .webextension-action {
+    list-style-image: var(--webextension-toolbar-image-light, inherit);
+  }
+
+  toolbar:not([brighttext]) .webextension-action:-moz-lwtheme {
+    list-style-image: var(--webextension-toolbar-image-dark, inherit);
+  }
+
+  .webextension-action[cui-areatype="menu-panel"] {
+    list-style-image: var(--webextension-menupanel-image, inherit);
+  }
+
+  :root[lwt-popup-brighttext] .webextension-action[cui-areatype="menu-panel"] {
+    list-style-image: var(--webextension-menupanel-image-light, inherit);
+  }
+
+  :root:not([lwt-popup-brighttext]) .webextension-action[cui-areatype="menu-panel"]:-moz-lwtheme {
+    list-style-image: var(--webextension-menupanel-image-dark, inherit);
+  }
+
+  .webextension-menuitem {
+    list-style-image: var(--webextension-menuitem-image, inherit) !important;
+  }
+}
+
+@media (min-resolution: 1.1dppx) {
+  .webextension-action {
+    list-style-image: var(--webextension-toolbar-image-2x, inherit);
+  }
+
+  toolbar[brighttext] .webextension-action {
+    list-style-image: var(--webextension-toolbar-image-2x-light, inherit);
+  }
+
+  toolbar:not([brighttext]) .webextension-action:-moz-lwtheme {
+    list-style-image: var(--webextension-toolbar-image-2x-dark, inherit);
+  }
+
+  .webextension-action[cui-areatype="menu-panel"] {
+    list-style-image: var(--webextension-menupanel-image-2x, inherit);
+  }
+
+  :root[lwt-popup-brighttext] .webextension-action[cui-areatype="menu-panel"] {
+    list-style-image: var(--webextension-menupanel-image-2x-light, inherit);
+  }
+
+  :root:not([lwt-popup-brighttext]) .webextension-action[cui-areatype="menu-panel"]:-moz-lwtheme {
+    list-style-image: var(--webextension-menupanel-image-2x-dark, inherit);
+  }
+
+  .webextension-menuitem {
+    list-style-image: var(--webextension-menuitem-image-2x, inherit) !important;
+  }
+}
+
+/* Status panel */
+
+statuspanel {
+  position: fixed;
+  margin-top: -3em;
+  left: 0;
+  z-index: 20;
+  max-width: 50%;
+  transition: opacity 100ms ease-out;
+}
+
+statuspanel:-moz-locale-dir(ltr)[mirror],
+statuspanel:-moz-locale-dir(rtl):not([mirror]) {
+  left: auto;
+  right: 0;
+}
+
+statuspanel[label=""],
+statuspanel:not([label]) {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.statuspanel-inner {
+  height: 3em;
+  -moz-box-align: end;
+}

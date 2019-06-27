@@ -1,0 +1,208 @@
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+/* ===== addressbook.css ================================================
+  == Styles for the main Address Book window.
+  ======================================================================= */
+
+@import url("chrome://messenger/skin/");
+@import url("chrome://messenger/skin/shared/addressbook.css");
+
+#ab-bar2 {
+  padding: 0 4px;
+}
+
+#ab-toolbox:-moz-lwtheme {
+  -moz-appearance: none;
+}
+
+#ab-toolbox:-moz-lwtheme::before {
+  content: "";
+  display: -moz-box;
+  position: absolute;
+  top: 100%;
+  margin-top: -1px;
+  height: 1px;
+  border-bottom: 1px solid var(--chrome-content-separator-color);
+}
+
+#ab-toolbox > toolbar {
+  /* force iconsize="small" on these toolbars */
+  counter-reset: smallicons;
+}
+
+/* ::::: directory pane icons ::::: */
+
+:root:not([lwt-tree]) #dirTree {
+  -moz-appearance: -moz-mac-source-list;
+  -moz-font-smoothing-background-color: -moz-mac-source-list;
+  border-inline-end: 1px solid #bdbdbd;
+}
+
+#dirTree treechildren::-moz-tree-row {
+  padding-bottom: 1px;
+  background-color: transparent;
+}
+
+:root:not([lwt-tree]) #dirTree treechildren::-moz-tree-row(selected) {
+  -moz-appearance: -moz-mac-source-list-selection;
+  -moz-font-smoothing-background-color: -moz-mac-source-list-selection;
+}
+
+@media not all and (-moz-mac-yosemite-theme) {
+  :root:not([lwt-tree]) #dirTree treechildren::-moz-tree-row(selected, focus) {
+    -moz-appearance: -moz-mac-active-source-list-selection;
+    -moz-font-smoothing-background-color: -moz-mac-active-source-list-selection;
+  }
+
+  #dirTree treechildren::-moz-tree-cell-text(selected) {
+    color: white;
+  }
+}
+
+@media (-moz-mac-yosemite-theme) {
+  #dirTree treechildren::-moz-tree-cell-text {
+    font-family: -apple-system;
+    font-size: 9pt;
+    font-weight: 400;
+  }
+
+  #dirTree treechildren::-moz-tree-cell-text(selected, focus) {
+    color: #282828;
+  }
+}
+
+@media (min-resolution: 2dppx) {
+  treechildren::-moz-tree-image(DirCol) {
+    width: 16px;
+    height: 16px;
+    list-style-image: url("chrome://messenger/skin/addressbook/icons/addressbook@2x.png");
+    -moz-image-region: rect(0px 32px 32px 0px);
+  }
+
+  treechildren::-moz-tree-image(DirCol, IsMailList-true) {
+    list-style-image: url("chrome://messenger/skin/addressbook/icons/addressbook@2x.png");
+    -moz-image-region: rect(0px 64px 32px 32px);
+  }
+
+  treechildren::-moz-tree-image(DirCol, IsRemote-true) {
+    list-style-image: url("chrome://messenger/skin/addressbook/icons/addressbook@2x.png");
+    -moz-image-region: rect(0px 96px 32px 64px);
+  }
+
+  treechildren::-moz-tree-image(DirCol, IsRemote-true, IsSecure-true) {
+    list-style-image: url("chrome://messenger/skin/addressbook/icons/addressbook@2x.png");
+    -moz-image-region: rect(0px 128px 32px 96px);
+  }
+}
+
+/* ::::: splitters ::::: */
+
+#dirTree-splitter {
+  border-width: 0;
+  border-inline-end: 1px solid var(--splitter-color);
+  min-width: 0;
+  width: 5px;
+  background-color: transparent;
+  margin-inline-start: -5px;
+  position: relative;
+  z-index: 10;
+}
+
+#results-splitter {
+  border-width: 0;
+  border-top: 1px solid var(--splitter-color);
+  min-height: 0;
+  height: 5px;
+  background-color: transparent;
+  margin-bottom: -5px;
+  position: relative;
+  z-index: 10;
+}
+
+/* ::::: results pane ::::: */
+
+#GeneratedName {
+  padding-inline-start: 42px;
+}
+
+@media (min-resolution: 2dppx) {
+  treechildren::-moz-tree-image(GeneratedName) {
+    width: 16px;
+    height: 16px;
+    list-style-image: url("chrome://messenger/skin/addressbook/icons/addressbook@2x.png");
+    -moz-image-region: rect(0px 160px 32px 128px);
+  }
+
+  treechildren::-moz-tree-image(GeneratedName, MailList) {
+    list-style-image: url("chrome://messenger/skin/addressbook/icons/addressbook@2x.png");
+    -moz-image-region: rect(0px 64px 32px 32px);
+  }
+}
+
+/* ::::: card view pane ::::: */
+
+#blankResultsPaneMessageBox {
+  border-inline-start: 1px solid #bebebe;
+}
+
+#CardViewOuterBox {
+  color: -moz-DialogText;
+  margin: 0px;
+  padding: 0px;
+}
+
+#CardViewInnerBox {
+  background-color: #FFFFFF;
+}
+
+#CardViewInnerBox > hbox {
+  background-color: #FFFFFF;
+}
+
+#CardTitle {
+  margin: 6px;
+  padding: 4px;
+  -moz-box-pack: center;
+  font-size: 150%;
+  font-weight: bold;
+}
+
+.cardViewGroup {
+  margin: 0px;
+  padding: 6px;
+  min-width: 50px;
+}
+
+.CardViewHeading {
+  padding: 3px 5px;
+  font: icon;
+  font-weight: bold;
+  min-width: 30px;
+  color: #505050;
+}
+
+#cvbPhone,
+#cvbWork {
+  border-left: 1px solid #D1D1D1;
+}
+
+#cvHomeMapIt,
+#cvWorkMapIt {
+  margin-bottom: 0px;
+  min-height: 19px; /* aqua size for small buttons */
+}
+
+#titlebar {
+  display: none;
+}
+
+#titlebar-buttonbox-container {
+  margin-top: 3px;
+  margin-inline-start: 7px;
+}
+
+#titlebar-spacer {
+  display: -moz-box;
+}

@@ -1,0 +1,181 @@
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this
+# file, You can obtain one at http://mozilla.org/MPL/2.0/.
+---
+loader: taskgraph.loader.transform:loader
+
+transforms:
+    - taskgraph.transforms.update_verify_config:transforms
+    - taskgraph.transforms.job:transforms
+    - taskgraph.transforms.task:transforms
+
+job-defaults:
+    name: update-verify-config
+    run-on-projects: []  # to make sure this never runs as part of CI
+    shipping-phase: promote
+    worker-type: b-linux
+    worker:
+        docker-image:
+            in-tree: "update-verify"
+        max-run-time: 3600
+        artifacts:
+            - name: public/build/update-verify.cfg
+              path: /builds/worker/checkouts/gecko/update-verify.cfg
+              type: file
+    run:
+        sparse-profile: mozharness
+    extra:
+        app-name: mail
+        branch-prefix: comm
+        archive-prefix:
+            by-release-level:
+                staging: "http://ftp.stage.mozaws.net/pub"
+                production: "https://archive.mozilla.org/pub"
+        previous-archive-prefix:
+            by-release-level:
+                staging: "https://archive.mozilla.org/pub"
+                production: null
+        aus-server:
+            by-release-level:
+                staging: "https://aus5.stage.mozaws.net"
+                production: "https://aus5.mozilla.org"
+        # This is overridden for devedition to exclude 58.0b1
+        # because of the special case added by
+        # https://bugzilla.mozilla.org/show_bug.cgi?id=1419189
+        # The devedition override can be removed after 58.0b1
+        # is behind a watershed
+        include-version:
+            by-release-type:
+                beta: beta
+                release: nonbeta
+                default: beta
+        last-watershed:
+            by-release-type:
+                beta:
+                    by-platform:
+                        win32.*: "68.0b1"
+                        win64.*: "68.0b1"
+                        default: "56.0b3"
+                release:
+                    by-platform:
+                        win64.*: "60.0"
+                        default: "52.0"
+                # For 68.0 release have a watershed on 60.8
+                # release: "60.8"
+                default: "default"
+
+jobs:
+    thunderbird-linux:
+        shipping-product: thunderbird
+        treeherder:
+            symbol: UVC
+            platform: linux32/opt
+            kind: test
+            tier: 1
+        attributes:
+            build_platform: linux-shippable
+        extra:
+            product: thunderbird
+            platform: linux-i686
+            updater-platform: linux-x86_64
+            channel:
+                by-release-type:
+                    beta: "beta-localtest"
+                    release: "release-localtest"
+                    default: "default"
+            mar-channel-id-override:
+                by-release-type:
+                    beta: beta
+                    default: null
+
+    thunderbird-linux64:
+        shipping-product: thunderbird
+        treeherder:
+            symbol: UVC
+            platform: linux64/opt
+            kind: test
+            tier: 1
+        attributes:
+            build_platform: linux64-shippable
+        extra:
+            product: thunderbird
+            platform: linux-x86_64
+            updater-platform: linux-x86_64
+            channel:
+                by-release-type:
+                    beta: "beta-localtest"
+                    release: "release-localtest"
+                    default: "default"
+            mar-channel-id-override:
+                by-release-type:
+                    beta: beta
+                    default: null
+
+    thunderbird-macosx64:
+        shipping-product: thunderbird
+        treeherder:
+            symbol: UVC
+            platform: osx-cross/opt
+            kind: test
+            tier: 1
+        attributes:
+            build_platform: macosx64-shippable
+        extra:
+            product: thunderbird
+            platform: mac
+            updater-platform: linux-x86_64
+            channel:
+                by-release-type:
+                    beta: "beta-localtest"
+                    release: "release-localtest"
+                    default: "default"
+            mar-channel-id-override:
+                by-release-type:
+                    beta: beta
+                    default: null
+
+    thunderbird-win32:
+        shipping-product: thunderbird
+        treeherder:
+            symbol: UVC
+            platform: windows2012-32/opt
+            kind: test
+            tier: 1
+        attributes:
+            build_platform: win32-shippable
+        extra:
+            product: thunderbird
+            platform: win32
+            updater-platform: linux-x86_64
+            channel:
+                by-release-type:
+                    beta: "beta-localtest"
+                    release: "release-localtest"
+                    default: "default"
+            mar-channel-id-override:
+                by-release-type:
+                    beta: beta
+                    default: null
+
+    thunderbird-win64:
+        shipping-product: thunderbird
+        treeherder:
+            symbol: UVC
+            platform: windows2012-64/opt
+            kind: test
+            tier: 1
+        attributes:
+            build_platform: win64-shippable
+        extra:
+            product: thunderbird
+            platform: win64
+            updater-platform: linux-x86_64
+            channel:
+                by-release-type:
+                    beta: "beta-localtest"
+                    release: "release-localtest"
+                    default: "default"
+            mar-channel-id-override:
+                by-release-type:
+                    beta: beta
+                    default: null

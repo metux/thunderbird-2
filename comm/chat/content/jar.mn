@@ -1,0 +1,21 @@
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this
+# file, You can obtain one at http://mozilla.org/MPL/2.0/.
+
+chat.jar:
+% content chat %content/chat/
+	content/chat/accounts.css
+	content/chat/browserRequest.js
+	content/chat/browserRequest.xul
+	content/chat/imAccountOptionsHelper.js
+	content/chat/chat-account-richlistitem.js
+*	content/chat/imtooltip.xml
+	content/chat/conversation-browser.js
+	content/chat/conv.html
+	content/chat/otr-add-fingerprint.js
+	content/chat/otr-add-fingerprint.xul
+	content/chat/otr-auth.js
+	content/chat/otr-auth.xul
+	content/chat/otr-finger.js
+	content/chat/otr-finger.xul
+	content/chat/otrWorker.js

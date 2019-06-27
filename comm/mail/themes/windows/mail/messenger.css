@@ -1,0 +1,920 @@
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+/* ===== messenger.css ==================================================
+  == Styles shared throughout the Messenger application.
+  ======================================================================= */
+
+@import url("chrome://global/skin/");
+@import url("chrome://messenger/content/messenger.css");
+@import url("chrome://messenger/skin/shared/messenger.css");
+
+:root {
+  --tab-min-height: 30px;
+  --tabs-border-color: threedshadow;
+  --tabline-color: highlight;
+
+  --glassShadowColor: hsla(240, 5%, 5%, .3);
+  --toolbar-non-lwt-bgcolor: -moz-dialog;
+  --toolbar-non-lwt-textcolor: -moz-dialogtext;
+  --toolbar-non-lwt-bgimage: linear-gradient(rgba(255,255,255,.15), rgba(255,255,255,.15));
+  --toolbar-bgcolor: var(--toolbar-non-lwt-bgcolor);
+  --toolbar-bgimage: var(--toolbar-non-lwt-bgimage);
+  --chrome-content-separator-color: ThreeDShadow;
+
+  --toolbarbutton-border-radius: 2px;
+  --toolbarbutton-icon-fill-opacity: .85;
+  --toolbarbutton-hover-background: rgba(0, 0, 0, .1);
+  --toolbarbutton-hover-bordercolor: rgba(0, 0, 0, .1);
+  --toolbarbutton-header-bordercolor: rgba(0, 0, 0, .1);
+  --toolbarbutton-hover-boxshadow: none;
+
+  --toolbarbutton-active-background: rgba(0, 0, 0, .15);
+  --toolbarbutton-active-bordercolor: rgba(0, 0, 0, .15);
+  --toolbarbutton-active-boxshadow: 0 0 0 1px rgba(0, 0, 0, .15) inset;
+
+  --toolbarbutton-checkedhover-backgroundcolor: rgba(0, 0, 0, .2);
+  --toolbarbutton-icon-fill-attention: var(--lwt-toolbarbutton-icon-fill-attention, #0a84ff);
+
+  --lwt-header-image: none;
+  --row-grouped-header-bg-color: -moz-dialog;
+  --row-grouped-header-bg-color-selected: Highlight;
+  --panel-separator-color: ThreeDLightShadow;
+  --arrowpanel-dimmed: hsla(0, 0%, 80%, .3);
+  --arrowpanel-dimmed-further: hsla(0, 0%, 80%, .45);
+  --splitter-color: ThreeDShadow;
+}
+
+@media (-moz-windows-default-theme) {
+  :root {
+    --tabs-border-color: rgba(0,0,0,.3);
+    --tabline-color: #0a84ff;
+
+    --toolbar-non-lwt-bgcolor: #f9f9fa;
+    --toolbar-non-lwt-textcolor: #0c0c0d;
+    --toolbar-non-lwt-bgimage: none;
+
+    --panel-separator-color: hsla(210,4%,10%,.14);
+
+    --urlbar-popup-url-color: hsl(210, 77%, 47%);
+    --urlbar-popup-action-color: hsl(178, 100%, 28%);
+    --splitter-color: #a9b7c9;
+  }
+}
+
+@media (-moz-windows-default-theme: 0) {
+  :root {
+    --urlbar-popup-url-color: -moz-nativehyperlinktext;
+    --urlbar-popup-action-color: -moz-nativehyperlinktext;
+  }
+}
+
+:root:-moz-lwtheme {
+  --tabs-border-color: rgba(0,0,0,.3);
+
+  --toolbar-bgcolor: rgba(255,255,255,.4);
+  --toolbar-bgimage: none;
+
+  --toolbarbutton-icon-fill-opacity: 1;
+
+  --panel-separator-color: hsla(210, 4%, 10%, .14);
+}
+
+:root[lwt-popup-brighttext] {
+  --panel-separator-color: rgba(249, 249, 250, .1);
+  --arrowpanel-dimmed: rgba(249, 249, 250, .1);
+  --arrowpanel-dimmed-further: rgba(249, 249, 250, .15);
+}
+
+:root[lwt-tree] {
+  --splitter-color: var(--sidebar-border-color);
+  --row-grouped-header-bg-color: hsla(0,0%,50%,.15);
+  --row-grouped-header-bg-color-selected: var(--sidebar-highlight-background-color, hsla(0,0%,80%,.6));
+}
+
+:root[lwt-tree-brighttext] {
+  --row-grouped-header-bg-color-selected: var(--sidebar-highlight-background-color, rgba(249,249,250,.3));
+}
+
+toolbar[brighttext] {
+  --toolbarbutton-icon-fill-attention: var(--lwt-toolbarbutton-icon-fill-attention, #45a1ff);
+}
+
+#FindToolbar:-moz-lwtheme,
+.contentTabToolbox:-moz-lwtheme,
+#ab-toolbox > toolbar:-moz-lwtheme,
+.mail-toolbox > toolbar:-moz-lwtheme,
+#compose-toolbox > toolbar:-moz-lwtheme,
+#navigation-toolbox > toolbar:-moz-lwtheme {
+  --toolbarbutton-hover-background: var(--lwt-toolbarbutton-hover-background, rgba(0, 0, 0, .1));
+  --toolbarbutton-hover-bordercolor: var(--lwt-toolbarbutton-hover-background, rgba(0, 0, 0, .1));
+
+  --toolbarbutton-active-background: var(--lwt-toolbarbutton-active-background, rgba(0, 0, 0, .15));
+  --toolbarbutton-active-bordercolor: var(--lwt-toolbarbutton-active-background, rgba(0, 0, 0, .15));
+  --toolbarbutton-active-boxshadow: 0 0 0 1px var(--lwt-toolbarbutton-active-background, rgba(0, 0, 0, .15)) inset;
+
+  --toolbarbutton-checkedhover-backgroundcolor: var(--lwt-toolbarbutton-hover-background, rgba(0, 0, 0, .2));
+}
+
+.toolbar[brighttext],
+.contentTabToolbox[brighttext],
+#header-view-toolbar[brighttext],
+#ab-toolbox > toolbar[brighttext],
+.mail-toolbox > toolbar[brighttext],
+#event-toolbox > toolbar[brighttext],
+#compose-toolbox > toolbar[brighttext],
+#navigation-toolbox > toolbar[brighttext] {
+  --toolbarbutton-hover-background: var(--lwt-toolbarbutton-hover-background, rgba(255, 255, 255, .25));
+  --toolbarbutton-hover-bordercolor: var(--lwt-toolbarbutton-hover-background, rgba(255, 255, 255, .5));
+  --toolbarbutton-header-bordercolor: var(--lwt-toolbarbutton-hover-background, rgba(255, 255, 255, .25));
+
+  --toolbarbutton-active-background: var(--lwt-toolbarbutton-active-background, rgba(255, 255, 255, .4));
+  --toolbarbutton-active-bordercolor: var(--lwt-toolbarbutton-active-background, rgba(255, 255, 255, .7));
+  --toolbarbutton-active-boxshadow: 0 0 0 1px var(--lwt-toolbarbutton-active-background, rgba(255, 255, 255, .4)) inset;
+
+  --toolbarbutton-checkedhover-backgroundcolor: var(--lwt-toolbarbutton-hover-background, rgba(255, 255, 255, .5));
+}
+
+.menu-iconic > .menu-iconic-left,
+.menuitem-iconic > .menu-iconic-left {
+  display: -moz-box;
+  padding-top: 0;
+}
+
+#tabbar-toolbar[customizing="true"] {
+  min-width: 24px;
+}
+
+.inline-toolbar {
+  -moz-appearance: none;
+}
+
+.inline-toolbar toolbarpaletteitem toolbarseparator,
+.inline-toolbar toolbarseparator {
+  height: 24px;
+}
+
+.inline-toolbar toolbarspacer {
+  height: 20px;
+}
+
+.titlebar-placeholder[type="caption-buttons"] {
+  -moz-box-ordinal-group: 1000;
+}
+
+/* ::::: menubar ::::: */
+
+#menubar-items {
+  -moz-box-orient: vertical; /* for flex hack */
+  margin-bottom: 1px;
+}
+
+#menubar-items > menubar {
+  -moz-box-flex: 1; /* make menu items expand to fill toolbar height */
+}
+
+menubar > menu[disabled="true"]:-moz-lwtheme {
+  color: inherit;
+  opacity: .4;
+}
+
+/* ::::: Toolbar customization ::::: */
+
+.toolbarpaletteitem-box[type="spacer"],
+.toolbarpaletteitem-box[type="spring"] {
+  border: 1px solid #808080;
+  background-color: #fff !important;
+}
+
+toolbarpaletteitem[place="toolbar"] > toolbarspacer {
+  width: 11px;
+}
+
+.toolbarpaletteitem-box[type="spacer"][place="toolbar"],
+.toolbarpaletteitem-box[type="spring"][place="toolbar"] {
+  margin-top: 2px;
+  margin-bottom: 2px;
+  margin-inline-start: 0;
+  margin-inline-end: 2px;
+}
+
+.toolbarpaletteitem-box[type="separator"][place="palette"] {
+  width: 2px;
+  height: 50px;
+}
+
+.toolbarpaletteitem-box[type="spacer"][place="palette"],
+.toolbarpaletteitem-box[type="spring"][place="palette"] {
+  margin-bottom: 2px;
+  width: 50px;
+  height: 50px;
+}
+
+.toolbarpaletteitem-box[type="spring"][place="palette"] {
+  background: url("chrome://messenger/skin/icons/spring.png") no-repeat center;
+}
+
+/* ::::: toolbarbutton ::::: */
+
+.toolbarbutton-1 {
+  -moz-box-orient: vertical;
+  -moz-context-properties: fill, fill-opacity;
+  fill: var(--lwt-toolbarbutton-icon-fill, currentColor);
+  fill-opacity: var(--toolbarbutton-icon-fill-opacity);
+}
+
+toolbox[labelalign="end"] .toolbarbutton-1,
+toolbox[labelalign="end"] .toolbarbutton-1[type="menu-button"]
+  > .toolbarbutton-menubutton-button {
+  -moz-box-orient: horizontal;
+}
+
+.toolbarbutton-1,
+.toolbarbutton-menubutton-button {
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-inline-start: 4px;
+  padding-inline-end: 5px;
+}
+
+.toolbarbutton-1:hover:active:not([disabled]),
+.toolbarbutton-1[open="true"],
+.toolbarbutton-menubutton-button:hover:active:not([disabled]),
+.toolbarbutton-menubutton-button[open="true"] {
+  padding-top: 6px;
+  padding-bottom: 5px;
+  padding-inline-start: 5px;
+  padding-inline-end: 4px;
+}
+
+.toolbarbutton-1[checked="true"] {
+  padding: 1px 5px !important;
+}
+
+.toolbarbutton-1[disabled=true]:-moz-lwtheme,
+.toolbarbutton-menubutton-button[disabled=true]:-moz-lwtheme {
+  text-shadow: inherit;
+}
+
+/* ::::: toolbarbutton menu-button ::::: */
+
+toolbarbutton[type="menu-button"] {
+  -moz-box-align: stretch;
+  -moz-box-orient: horizontal !important;
+}
+
+toolbarbutton[type="menu-button"],
+toolbarbutton[type="menu-button"]:hover,
+toolbarbutton[type="menu-button"]:hover:active,
+toolbarbutton[type="menu-button"][open="true"],
+toolbarbutton[type="menu-button"][disabled="true"],
+toolbarbutton[type="menu-button"][disabled="true"]:hover,
+toolbarbutton[type="menu-button"][disabled="true"]:hover:active {
+  padding: 0 !important;
+}
+
+.toolbarbutton-menubutton-button {
+  -moz-box-align: center;
+  -moz-box-pack: center;
+  -moz-box-orient: vertical;
+}
+
+/* .......... dropmarker .......... */
+
+.toolbarbutton-menubutton-dropmarker {
+  -moz-appearance: none;
+  padding: 3px 7px;
+  width: auto;
+}
+
+.toolbarbutton-icon {
+  margin-inline-end: 0;
+}
+
+/* Has to be !important to overrule toolkit's dropmarker.css for the
+   dropmarker[disabled="true"] case. */
+.toolbarbutton-menu-dropmarker {
+  padding-inline-start: 3px !important;
+}
+
+toolbar[mode="full"] .toolbarbutton-1 {
+  min-width: 55px;
+}
+
+sidebarheader .toolbarbutton-text:not([value]) {
+  display: none;
+}
+
+#tabmail-buttons > toolbarbutton {
+  margin-top: 3px;
+  margin-bottom: 0;
+}
+
+menulist.folderMenuItem menu:not(.folderMenuItem) {
+  padding-top: 3px;
+  padding-bottom: 3px;
+}
+
+.treecol-image image {
+  padding-inline-start: 1px;
+  padding-inline-end: 2px;
+  padding-bottom: 2px;
+  -moz-context-properties: fill;
+  fill: currentColor;
+}
+
+treechildren::-moz-tree-row {
+  min-height: 18px;
+}
+
+treechildren::-moz-tree-row(multicol, odd) {
+  background-color: transparent;
+}
+
+treechildren::-moz-tree-row(selected) {
+  background-color: -moz-cellhighlight;
+}
+
+treechildren::-moz-tree-row(selected, focus) {
+  background-color: Highlight;
+}
+
+treechildren::-moz-tree-cell-text {
+  padding-inline-start: 2px;
+  padding-bottom: 2px;
+}
+
+@media (-moz-windows-default-theme: 0) {
+
+  treechildren::-moz-tree-cell-text {
+    padding-inline-start: 4px !important;
+  }
+}
+
+treechildren::-moz-tree-indentation {
+  width: 12px;
+}
+
+@media (-moz-windows-default-theme) {
+  treechildren {
+    --treechildren-focusColor: rgb(123,195,255);
+    --treechildren-selectedFocusColor: rgb(205,232,255);
+    --treechildren-currentColor: rgb(125,162,206);
+    --treechildren-hoverColor: rgb(229,243,255);
+    --treechildren-selectedBorder: rgb(217,217,217);
+    --treechildren-selectedBackground: rgb(217,217,217);
+    --treechildren-currentFocusBorder: var(--treechildren-focusColor);
+    --treechildren-selectedFocusBorder: var(--treechildren-selectedFocusColor) var(--treechildren-selectedFocusColor) rgb(165,214,255);
+    --treechildren-selectedFocusBackground: var(--treechildren-selectedFocusColor);
+    --treechildren-selectedFocusCurrentBorder: var(--treechildren-focusColor);
+    --treechildren-selectedFocusCurrentBackground: rgb(205,232,255);
+    --treechildren-hoverBorder: var(--treechildren-hoverColor);
+    --treechildren-hoverBackground: rgb(229,243,255);
+    --treechildren-hoverCurrentBorder: var(--treechildren-currentColor);
+    --treechildren-hoverCurrentBackground: rgba(131,183,249,.16);
+    --treechildren-hoverSelectedBorder: var(--treechildren-focusColor);
+    --treechildren-hoverSelectedBackground: rgb(205,232,255);
+  }
+
+  treechildren::-moz-tree-row {
+    height: 1.8em;
+    color: -moz-FieldText;
+    margin-inline-start: 1px;
+    margin-inline-end: 1px;
+    border-width: 1px;
+    border-color: transparent;
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+  }
+
+  treechildren::-moz-tree-row(selected) {
+    border-color: var(--treechildren-selectedBorder);
+    background-color: var(--treechildren-selectedBackground);
+  }
+
+  treechildren::-moz-tree-row(current, focus) {
+    border-style: solid;
+    border-color: var(--treechildren-currentFocusBorder);
+  }
+
+  treechildren::-moz-tree-row(selected, focus),
+  treechildren::-moz-tree-row(dropOn) {
+    border-color: var(--treechildren-selectedFocusBorder);
+    background-color: var(--treechildren-selectedFocusBackground);
+  }
+
+  treechildren::-moz-tree-row(selected, current, focus) {
+    border-style: solid;
+    border-color: var(--treechildren-selectedFocusCurrentBorder);
+    background-color: var(--treechildren-selectedFocusCurrentBackground);
+  }
+
+  treechildren::-moz-tree-row(hover) {
+    border-color: var(--treechildren-hoverBorder);
+    background-color: var(--treechildren-hoverBackground);
+  }
+
+  treechildren::-moz-tree-row(hover, current) {
+    border-color: var(--treechildren-hoverCurrentBorder);
+    background-image: var(--treechildren-hoverCurrentBackground);
+  }
+
+  treechildren::-moz-tree-row(hover, selected) {
+    border-color: var(--treechildren-hoverSelectedBorder);
+    background-color: var(--treechildren-hoverSelectedBackground);
+  }
+
+  tree[disabled="true"] > treechildren::-moz-tree-row {
+    background: none;
+    border-color: transparent;
+  }
+
+  treechildren::-moz-tree-cell(dropOn) {
+    background-image: none;
+    background-color: transparent;
+    border-radius: 0;
+  }
+
+  treechildren::-moz-tree-cell-text(primary, dropOn) {
+    color: -moz-FieldText;
+  }
+
+  treechildren::-moz-tree-cell-text {
+    padding-bottom: initial;
+    border-color: transparent;
+    background-color: transparent;
+  }
+
+  treechildren::-moz-tree-image(selected, focus),
+  treechildren::-moz-tree-twisty(selected, focus),
+  treechildren::-moz-tree-cell-text(selected, focus) {
+    color: -moz-DialogText;
+  }
+
+  treechildren::-moz-tree-row(tagged, selected, focus) {
+    border-color: rgba(0,0,0,0.25);
+  }
+
+  @media (-moz-os-version: windows-win7),
+         (-moz-os-version: windows-win8) {
+    treechildren {
+      --treechildren-2ndBorderColor: rgba(255,255,255,.4);
+      --treechildren-selectedBackground: rgba(190,190,190,.4);
+      --treechildren-currentFocusBorder: var(--treechildren-currentColor);
+      --treechildren-selectedFocusBorder: rgb(132,172,221) var(--treechildren-2ndBorderColor) var(--treechildren-currentColor);
+      --treechildren-selectedFocusBackground: rgba(131,183,249,.375);
+      --treechildren-selectedFocusCurrentBorder: var(--treechildren-currentColor);
+      --treechildren-selectedFocusCurrentBackground: rgba(131,183,249,.5);
+      --treechildren-hoverBorder: rgb(184,214,251);
+      --treechildren-hoverBackground: rgba(131,183,249,.16);
+      --treechildren-hoverSelectedBorder: var(--treechildren-currentColor);
+      --treechildren-hoverSelectedBackground: rgba(131,183,249,.5);
+    }
+  }
+
+  @media (-moz-os-version: windows-win7) {
+    treechildren::-moz-tree-row(selected),
+    treechildren::-moz-tree-row(dropOn),
+    treechildren::-moz-tree-row(hover) {
+      background-image: linear-gradient(rgba(255,255,255,.7), transparent);
+    }
+
+    treechildren::-moz-tree-row(tagged, selected, focus) {
+      background-image: linear-gradient(rgba(255,255,255,0.1), rgba(255,255,255,0.5));
+    }
+
+    treechildren::-moz-tree-row {
+      border-radius: 3px;
+    }
+  }
+}
+
+@media (-moz-windows-classic) {
+  treecol[hideheader="true"],
+  treecolpicker[hideheader="true"] {
+    border-width: 0;
+  }
+
+  :root[lwt-tree] treecol:not([hideheader="true"]),
+  :root[lwt-tree] treecolpicker:not([hideheader="true"]) {
+    border-top-width: 0;
+    border-inline-start-width: 0;
+  }
+}
+
+:root[lwt-tree] treechildren::-moz-tree-row(current, focus) {
+  border-color: var(--sidebar-highlight-background-color, hsla(0,0%,80%,.6));
+  outline: none;
+}
+
+:root[lwt-tree-brighttext] treechildren::-moz-tree-row(current, focus) {
+  border-color: var(--sidebar-highlight-background-color, rgba(249,249,250,.3));
+}
+
+:root[lwt-tree] treechildren::-moz-tree-row(hover) {
+  background-color: hsla(0,0%,50%,.15);
+  border-color: transparent;
+  background-image: none;
+}
+
+:root[lwt-tree] #threadTree treechildren::-moz-tree-row(untagged, selected),
+:root[lwt-tree]:-moz-window-inactive #threadTree treechildren::-moz-tree-row(selected),
+:root[lwt-tree] tree:not(#threadTree) treechildren::-moz-tree-row(selected) {
+  border-color: var(--sidebar-highlight-background-color, hsla(0,0%,80%,.3));
+  background: var(--sidebar-highlight-background-color, hsla(0,0%,80%,.3));
+  outline: none;
+}
+
+:root[lwt-tree-brighttext] #threadTree treechildren::-moz-tree-row(untagged, selected),
+:root[lwt-tree-brighttext]:-moz-window-inactive #threadTree treechildren::-moz-tree-row(selected),
+:root[lwt-tree-brighttext] tree:not(#threadTree) treechildren::-moz-tree-row(selected) {
+  border-color: var(--sidebar-highlight-background-color, rgba(249,249,250,.1));
+  background: var(--sidebar-highlight-background-color, rgba(249,249,250,.1));
+}
+
+/* Give menupopup[is="folder-menupopup"] a menu look */
+menupopup[is="folder-menupopup"] {
+  -moz-appearance: menupopup;
+}
+
+menupopup[is="folder-menupopup"] menu[_moz-menuactive="true"],
+menupopup[is="folder-menupopup"] menuitem[_moz-menuactive="true"] {
+  color: -moz-MenuHoverText;
+  background-color: -moz-MenuHover;
+}
+
+menupopup[is="folder-menupopup"] > menu,
+menupopup[is="folder-menupopup"] > menuitem {
+  -moz-appearance: menuitem !important;
+}
+
+menulist.folderMenuItem > .menulist-label-box > .menulist-label {
+  margin-inline-start: 2px !important;
+}
+
+button[type="menu-button"] > .button-box > button {
+  margin: -5px -7px -6px;
+  margin-inline-end: 6px;
+}
+
+@media (-moz-windows-default-theme: 0) {
+  button[type="menu-button"] > .button-box {
+    padding: 0;
+  }
+
+  button[type="menu-button"] > .button-box > button {
+    margin: -2px;
+  }
+
+  .button-menubutton-dropmarker {
+   -moz-appearance: none;
+   margin: 1px;
+   padding-inline-start: 5px;
+  }
+
+  .button-menubutton-dropmarker > .dropmarker-icon {
+    list-style-image: url("chrome://messenger/skin/icons/toolbarbutton-arrow.svg");
+    width: 9px;
+    height: 7px;
+    -moz-context-properties: fill;
+    fill: currentColor;
+  }
+}
+
+button.notification-button {
+  margin-bottom: 1px;
+}
+
+.messageCloseButton > .toolbarbutton-icon {
+  margin-inline-end: 12px;
+}
+
+.toolbarbutton-menu-dropmarker {
+  margin-top: 0;
+}
+
+@media (-moz-windows-default-theme: 0) {
+  #tabmail:not(:-moz-lwtheme) {
+    background-color: ActiveCaption;
+  }
+
+  #tabmail:not(:-moz-lwtheme):-moz-window-inactive {
+    background-color: InactiveCaption;
+  }
+}
+
+@media (-moz-windows-compositor: 0) {
+  #print-preview-toolbar:not(:-moz-lwtheme) {
+    -moz-appearance: -moz-win-browsertabbar-toolbox;
+  }
+}
+
+/* ::::: primary toolbar buttons ::::: */
+
+.toolbarbutton-1:not([type="menu-button"]),
+.toolbarbutton-1 > .toolbarbutton-menubutton-button,
+.toolbarbutton-1 > .toolbarbutton-menubutton-dropmarker {
+  padding: 1px 5px !important;
+}
+
+.toolbarbutton-1 {
+  min-height: 24px;
+}
+
+.findbar-button {
+  padding: 2px 6px;
+  color: inherit;
+}
+
+.toolbarbutton-1[disabled=true] .toolbarbutton-icon,
+.toolbarbutton-1[disabled=true] .toolbarbutton-text,
+.toolbarbutton-1[disabled=true] .toolbarbutton-menu-dropmarker,
+.toolbarbutton-1[disabled=true] > .toolbarbutton-menubutton-dropmarker,
+.toolbarbutton-1[disabled=true] > .toolbarbutton-menubutton-button >
+.toolbarbutton-icon {
+  opacity: .4;
+}
+
+.toolbarbutton-menubutton-button > .toolbarbutton-icon,
+.toolbarbutton-1 .toolbarbutton-icon {
+  padding: 1px;
+}
+
+toolbox[labelalign="end"] > toolbar[mode="full"] .toolbarbutton-1
+.toolbarbutton-text {
+  padding-inline-start: 2px;
+  padding-inline-end: 2px;
+}
+
+.toolbarbutton-1 .toolbarbutton-menu-dropmarker,
+.toolbarbutton-1 > .toolbarbutton-menubutton-dropmarker {
+  list-style-image: url("chrome://messenger/skin/icons/toolbarbutton-arrow.svg");
+}
+
+.toolbarbutton-1 .toolbarbutton-menu-dropmarker > .dropmarker-icon,
+.toolbarbutton-1 > .toolbarbutton-menubutton-dropmarker > .dropmarker-icon {
+  width: 9px;
+  height: 7px;
+}
+
+/* Separator between menu and split type buttons */
+.toolbarbutton-1:not(:hover):not(:active):not([open]):not([checked]) >
+.toolbarbutton-menubutton-dropmarker::before,
+.toolbarbutton-1[disabled="true"] >
+.toolbarbutton-menubutton-dropmarker::before {
+  content: "";
+  display: -moz-box;
+  width: 1px;
+  height: 18px;
+  margin-inline-start: -4px;
+  margin-inline-end: 3px;
+  background-image: linear-gradient(currentColor 0, currentColor 100%);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 1px 18px;
+  opacity: .2;
+}
+
+.toolbarbutton-1[type="menu-button"] {
+  -moz-appearance: none;
+  border: none;
+  padding: 0 !important;
+  background: none !important;
+  box-shadow: none !important;
+}
+
+.toolbarbutton-1:not([type="menu-button"]),
+.toolbarbutton-1 > .toolbarbutton-menubutton-button,
+.toolbarbutton-1 > .toolbarbutton-menubutton-dropmarker {
+  -moz-box-pack: center;
+}
+
+.toolbarbutton-1,
+.toolbarbutton-1[type="menu-button"] {
+  margin: 4px 1px;
+}
+
+toolbar[mode="icons"] .toolbarbutton-menubutton-button,
+toolbar[mode="icons"] .toolbarbutton-1:not([type="menu-button"]) {
+  padding-inline-start: 6px !important;
+  padding-inline-end: 6px !important;
+}
+
+.toolbarbutton-1 > .toolbarbutton-menubutton-dropmarker {
+  -moz-box-align: center;
+}
+
+.toolbarbutton-1[type="menu-button"] > .toolbarbutton-menubutton-button {
+  border-inline-end: none;
+}
+
+.toolbarbutton-1 > .toolbarbutton-menubutton-dropmarker {
+  padding: 1px 3px !important;
+}
+
+.findbar-button,
+.toolbarbutton-1:not([type="menu-button"]),
+.toolbarbutton-1 > .toolbarbutton-menubutton-button,
+.toolbarbutton-1 > .toolbarbutton-menubutton-dropmarker {
+  -moz-appearance: none;
+  background: hsla(210, 32%, 93%, 0) padding-box;
+  border: 1px solid;
+  border-color: hsla(210, 54%, 20%, 0) hsla(210, 54%, 20%, 0)
+                hsla(210, 54%, 20%, 0);
+  box-shadow: 0 1px hsla(0, 0%, 100%, 0) inset,
+              0 1px hsla(210, 54%, 20%, 0),
+              0 0 2px hsla(210, 54%, 20%, 0);
+  transition-property: background-color, border-color, box-shadow;
+  transition-duration: 150ms;
+}
+
+.findbar-button:not(:-moz-any([checked="true"],[disabled="true"])):hover,
+.toolbarbutton-1:not([disabled="true"]):-moz-any(:hover,[open="true"]) >
+.toolbarbutton-menubutton-button,
+.toolbarbutton-1:not([disabled="true"]):hover >
+.toolbarbutton-menubutton-dropmarker,
+.toolbarbutton-1:not([type="menu-button"]):not([disabled="true"]):not([checked="true"]):not([open="true"]):not(:active):hover {
+  background: var(--toolbarbutton-hover-background);
+  border-color: var(--toolbarbutton-hover-bordercolor);
+  box-shadow: var(--toolbarbutton-hover-boxshadow);
+}
+
+.findbar-button:not([disabled=true]):-moz-any([checked="true"],:hover:active),
+.toolbarbutton-1 > .toolbarbutton-menubutton-button:not([disabled="true"]):hover:active,
+.toolbarbutton-1[open="true"] > .toolbarbutton-menubutton-dropmarker:not([disabled="true"]),
+.toolbarbutton-1:not([type="menu-button"]):not([disabled="true"]):-moz-any([open="true"],[checked="true"],:hover:active) {
+  background: var(--toolbarbutton-active-background);
+  border-color: var(--toolbarbutton-active-bordercolor);
+  box-shadow: var(--toolbarbutton-active-boxshadow);
+  transition-duration: 10ms;
+}
+
+.findbar-button[checked=true]:not(:active):hover,
+.toolbarbutton-1[checked=true]:not(:active):hover {
+  background-color: var(--toolbarbutton-checkedhover-backgroundcolor);
+  transition: background-color .4s;
+}
+
+menulist > menupopup:not([is="folder-menupopup"]) > menuseparator {
+  -moz-appearance: none;
+  margin-top: 3px;
+  margin-bottom: 3px;
+  padding-top: 0;
+  padding-bottom: 0;
+  border-top-color: #d7d7d7;
+}
+
+@media (-moz-os-version: windows-win7) {
+  .findbar-button,
+  .toolbarbutton-1:not([type="menu-button"]),
+  .toolbarbutton-1 > .toolbarbutton-menubutton-button,
+  .toolbarbutton-1 > .toolbarbutton-menubutton-dropmarker {
+    border-radius: var(--toolbarbutton-border-radius);
+  }
+
+  .toolbarbutton-1 > .toolbarbutton-menubutton-button:-moz-locale-dir(ltr),
+  .toolbarbutton-1 > .toolbarbutton-menubutton-dropmarker:-moz-locale-dir(rtl) {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+  }
+
+  .toolbarbutton-1 > .toolbarbutton-menubutton-button:-moz-locale-dir(rtl),
+  .toolbarbutton-1 > .toolbarbutton-menubutton-dropmarker:-moz-locale-dir(ltr) {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+  }
+}
+
+@media (-moz-windows-compositor) {
+  #unifinder-searchBox,
+  #task-addition-box {
+    border-top: none;
+    background-color: -moz-dialog;
+  }
+}
+
+/* Status bar */
+
+.statusbar {
+  -moz-appearance: statusbar;
+  min-height: 22px;
+}
+
+.statusbar:-moz-lwtheme {
+  -moz-appearance: none;
+}
+
+.statusbar:-moz-lwtheme-brighttext {
+  --tabs-border-color: hsla(0,0%,60%,.4);
+}
+
+statusbarpanel,
+.statusbarpanel {
+  -moz-appearance: none;
+  border-inline-end: 1px solid ThreeDLightShadow;
+}
+
+statusbarpanel:-moz-lwtheme,
+.statsubarpanel:-moz-lwtheme {
+  border-inline-end-color: var(--tabs-border-color);
+}
+
+@media (-moz-os-version: windows-win7) and (-moz-windows-default-theme),
+       (-moz-os-version: windows-win8) and (-moz-windows-default-theme) {
+  #status-bar:not(:-moz-lwtheme) {
+    -moz-appearance: none;
+    border-style: none;
+    border-top: 1px solid ThreeDShadow;
+    background-color: var(--toolbar-bgcolor);
+  }
+}
+
+@media (-moz-windows-classic) {
+  statusbarpanel:not(:-moz-lwtheme),
+  .statusbarpanel:not(:-moz-lwtheme) {
+    -moz-appearance: statusbarpanel;
+  }
+}
+
+/* Status panel */
+
+.statusbarpanel-iconic {
+  padding: 0 1px;
+}
+
+.statuspanel-label {
+  margin: 0;
+  padding: 2px 4px;
+  background-color: -moz-dialog;
+  border: 1px none ThreeDLightShadow;
+  border-top-style: solid;
+  color: -moz-dialogText;
+  text-shadow: none;
+}
+
+@media (-moz-windows-default-theme) {
+  .statuspanel-label {
+    background-color: #f9f9fa;
+    color: #444;
+  }
+}
+
+.statuspanel-label:-moz-locale-dir(ltr):not([mirror]),
+.statuspanel-label:-moz-locale-dir(rtl)[mirror] {
+  border-right-style: solid;
+  /* disabled for triggering grayscale AA (bug 659213)
+  border-top-right-radius: .3em;
+  */
+  margin-right: 1em;
+}
+
+.statuspanel-label:-moz-locale-dir(rtl):not([mirror]),
+.statuspanel-label:-moz-locale-dir(ltr)[mirror] {
+  border-left-style: solid;
+  /* disabled for triggering grayscale AA (bug 659213)
+  border-top-left-radius: .3em;
+  */
+  margin-left: 1em;
+}
+
+.contentTabInstance {
+  background-color: -moz-dialog;
+}
+
+.contentTabInstance:-moz-lwtheme {
+  background-color: transparent;
+  background-image: linear-gradient(transparent 40px, -moz-dialog 40px);
+}
+
+findbar {
+  background-color: var(--toolbar-non-lwt-bgcolor);
+  color: var(--toolbar-non-lwt-textcolor);
+  text-shadow: none;
+}
+
+:root:not([lwtheme-image]) findbar:-moz-lwtheme {
+  background-color: var(--lwt-accent-color);
+  background-image: linear-gradient(var(--toolbar-bgcolor), var(--toolbar-bgcolor));
+  border-top-color: var(--chrome-content-separator-color);
+  color: var(--toolbar-color);
+}
+
+/* ::::: groupbox ::::: */
+
+groupbox {
+  -moz-appearance: groupbox;
+  border: 2px groove ThreeDFace;
+  border-radius: 3px;
+  margin: 3px;
+  padding: 3px 3px 6px;
+}
+
+caption {
+  margin: -5px 6px 6px;
+  font-weight: bold;
+}
+
+tabpanels caption {
+  -moz-appearance: tabpanel;
+}

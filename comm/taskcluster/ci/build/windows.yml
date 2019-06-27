@@ -1,0 +1,215 @@
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this
+# file, You can obtain one at http://mozilla.org/MPL/2.0/.
+---
+job-defaults:
+    run:
+        using: mozharness
+        use-caches: false
+        comm-checkout: true
+        config-paths:
+            - comm/mozharness
+
+win32/opt:
+    description: "Win32 Opt"
+    index:
+        product: thunderbird
+        job-name: win32-opt
+    treeherder:
+        platform: windows2012-32/opt
+        symbol: B
+        tier: 1
+    worker-type: b-win2012
+    worker:
+        max-run-time: 7200
+        env:
+            TOOLTOOL_MANIFEST: "comm/mail/config/tooltool-manifests/win32/releng.manifest"
+    run:
+        actions: [build, check-test]
+        options: [append-env-variables-from-configs]
+        script: mozharness/scripts/fx_desktop_build.py
+        config:
+            - builds/taskcluster_base_thunderbird.py
+            - builds/taskcluster_base_windows.py
+            - builds/taskcluster_base_win32.py
+        extra-config:
+            stage_platform: win32
+    toolchains:
+        - win64-cbindgen
+        - win64-clang-cl
+        - win64-nasm
+        - win64-node
+        - win64-rust
+        - win64-sccache
+
+win32-shippable/opt:
+    description: "Win32 Opt Shippable"
+    index:
+        product: thunderbird
+        job-name: win32-opt
+        type: shippable
+    attributes:
+        shippable: true
+        enable-full-crashsymbols: true
+    shipping-phase: build
+    shipping-product: thunderbird
+    treeherder:
+        platform: windows2012-32-shippable/opt
+        symbol: B
+        tier: 1
+    worker-type: b-win2012
+    worker:
+        max-run-time: 10800
+        env:
+            TOOLTOOL_MANIFEST: "comm/mail/config/tooltool-manifests/win32/releng.manifest"
+    run:
+        actions: [build, check-test]
+        options: [append-env-variables-from-configs]
+        script: mozharness/scripts/fx_desktop_build.py
+        config:
+            - builds/taskcluster_base_thunderbird.py
+            - builds/taskcluster_base_windows.py
+            - builds/taskcluster_base_win32.py
+            - taskcluster_nightly.py
+        extra-config:
+            stage_platform: win32
+    toolchains:
+        - win64-cbindgen
+        - win64-clang-cl
+        - win64-nasm
+        - win64-node
+        - win64-rust
+
+win32/debug:
+    description: "Win32 Debug"
+    index:
+        product: thunderbird
+        job-name: win32-debug
+    treeherder:
+        platform: windows2012-32/debug
+        symbol: B
+        tier: 1
+    worker-type: b-win2012
+    worker:
+        max-run-time: 7200
+        env:
+            TOOLTOOL_MANIFEST: "comm/mail/config/tooltool-manifests/win32/releng.manifest"
+    run:
+        actions: [build, check-test]
+        options: [append-env-variables-from-configs]
+        script: mozharness/scripts/fx_desktop_build.py
+        config:
+            - builds/taskcluster_base_thunderbird.py
+            - builds/taskcluster_base_windows.py
+            - builds/taskcluster_base_win32.py
+            - builds/taskcluster_sub_win32/debug.py
+        mozconfig-variant: debug
+    toolchains:
+        - win64-cbindgen
+        - win64-clang-cl
+        - win64-nasm
+        - win64-node
+        - win64-rust
+        - win64-sccache
+
+win64/opt:
+    description: "Win64 Opt"
+    index:
+        product: thunderbird
+        job-name: win64-opt
+    treeherder:
+        platform: windows2012-64/opt
+        symbol: B
+        tier: 1
+    worker-type: b-win2012
+    worker:
+        max-run-time: 7200
+        env:
+            TOOLTOOL_MANIFEST: "comm/mail/config/tooltool-manifests/win64/releng.manifest"
+    run:
+        actions: [build, check-test]
+        options: [append-env-variables-from-configs]
+        script: mozharness/scripts/fx_desktop_build.py
+        config:
+            - builds/taskcluster_base_thunderbird.py
+            - builds/taskcluster_base_windows.py
+            - builds/taskcluster_base_win64.py
+        extra-config:
+            stage_platform: win64
+    toolchains:
+        - win64-cbindgen
+        - win64-clang-cl
+        - win64-nasm
+        - win64-node
+        - win64-rust
+        - win64-sccache
+
+win64-shippable/opt:
+    description: "Win64 Opt Shippable"
+    index:
+        product: thunderbird
+        job-name: win64-opt
+        type: shippable
+    attributes:
+        shippable: true
+        enable-full-crashsymbols: true
+    shipping-phase: build
+    shipping-product: thunderbird
+    treeherder:
+        platform: windows2012-64-shippable/opt
+        symbol: B
+        tier: 1
+    worker-type: b-win2012
+    worker:
+        max-run-time: 10800
+        env:
+            TOOLTOOL_MANIFEST: "comm/mail/config/tooltool-manifests/win64/releng.manifest"
+    run:
+        actions: [build, check-test]
+        options: [append-env-variables-from-configs]
+        script: mozharness/scripts/fx_desktop_build.py
+        config:
+            - builds/taskcluster_base_thunderbird.py
+            - builds/taskcluster_base_windows.py
+            - builds/taskcluster_base_win64.py
+            - taskcluster_nightly.py
+        extra-config:
+            stage_platform: win64
+    toolchains:
+        - win64-cbindgen
+        - win64-clang-cl
+        - win64-nasm
+        - win64-node
+        - win64-rust
+
+win64/debug:
+    description: "Win64 Debug"
+    index:
+        product: thunderbird
+        job-name: win64-debug
+    treeherder:
+        platform: windows2012-64/debug
+        symbol: B
+        tier: 1
+    worker-type: b-win2012
+    worker:
+        max-run-time: 7200
+        env:
+            TOOLTOOL_MANIFEST: "comm/mail/config/tooltool-manifests/win64/releng.manifest"
+    run:
+        actions: [build, check-test]
+        options: [append-env-variables-from-configs]
+        script: mozharness/scripts/fx_desktop_build.py
+        config:
+            - builds/taskcluster_base_thunderbird.py
+            - builds/taskcluster_base_windows.py
+            - builds/taskcluster_base_win64.py
+            - builds/taskcluster_sub_win64/debug.py
+        mozconfig-variant: debug
+    toolchains:
+        - win64-cbindgen
+        - win64-clang-cl
+        - win64-nasm
+        - win64-node
+        - win64-rust
+        - win64-sccache

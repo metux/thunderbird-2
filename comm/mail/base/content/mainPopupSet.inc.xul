@@ -1,0 +1,577 @@
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this
+# file, You can obtain one at http://mozilla.org/MPL/2.0/.
+
+  <menupopup id="emailAddressPopup" position="after_start" class="emailAddressPopup"
+             onpopupshowing="setupEmailAddressPopup(document.popupNode); goUpdateCommand('cmd_createFilterFromPopup')"
+             onpopuphiding="hideEmailNewsPopup(document.popupNode);">
+    <menuitem id="emailAddressPlaceHolder"
+              disabled="true"/>
+    <menuseparator/>
+    <menuitem id="addToAddressBookItem"
+              label="&AddDirectlyToAddressBook.label;"
+              accesskey="&AddDirectlyToAddressBook.accesskey;"
+              oncommand="AddContact(document.popupNode)"/>
+    <menuitem id="editContactItem" label="&EditContact1.label;" hidden="true"
+              accesskey="&EditContact1.accesskey;"
+              oncommand="EditContact(document.popupNode)"/>
+    <menuitem id="viewContactItem" label="&ViewContact.label;" hidden="true"
+              accesskey="&ViewContact.accesskey;"
+              oncommand="EditContact(document.popupNode)"/>
+    <menuitem id="sendMailToItem" label="&SendMessageTo.label;"
+              accesskey="&SendMessageTo.accesskey;"
+              oncommand="SendMailToNode(document.popupNode, event)"/>
+    <menuitem id="copyEmailAddressItem" label="&CopyEmailAddress.label;"
+              accesskey="&CopyEmailAddress.accesskey;"
+              oncommand="CopyEmailNewsAddress(document.popupNode)"/>
+    <menuitem id="copyNameAndEmailAddressItem" label="&CopyNameAndEmailAddress.label;"
+              accesskey="&CopyNameAndEmailAddress.accesskey;"
+              oncommand="CopyEmailNewsAddress(document.popupNode, true)"/>
+    <menuseparator/>
+    <menuitem id="createFilterFromItem" label="&CreateFilterFrom.label;"
+              accesskey="&CreateFilterFrom.accesskey;"
+              oncommand="CreateFilter(document.popupNode, gMessageDisplay.displayedMessage)"
+              observes="cmd_createFilterFromPopup"/>
+  </menupopup>
+
+  <menupopup id="copyPopup">
+    <menuitem id="copyMenuitem"
+              label="&copyCmd.label;"
+              accesskey="&copyCmd.accesskey;"
+              tooltiptext="&copyCmd.label;"
+              oncommand="Cc['@mozilla.org/widget/clipboardhelper;1']
+                           .getService(Ci.nsIClipboardHelper)
+                           .copyString(window.getSelection().isCollapsed ?
+                             document.popupNode.textContent :
+                             window.getSelection().toString());"/>
+    <menuitem id="createFilterFromMenuItem" label="&CreateFilterFrom.label;"
+              accesskey="&CreateFilterFrom.accesskey;"
+              oncommand="CreateFilter(document.popupNode, gMessageDisplay.displayedMessage)"
+              observes="cmd_createFilterFromPopup"/>
+  </menupopup>
+  <!-- "Please keep all items and separators up to date in nsContextMenu.js when making changes here" -->
+  <menupopup id="mailContext"
+             pagemenu="start"
+             onpopupshowing="return fillMailContextMenu(event);"
+             onpopuphiding="mailContextOnPopupHiding(event);">
+
+    <menuseparator id="page-menu-separator"/>
+
+    <!-- Spellchecking suggestions -->
+    <menuitem id="mailContext-spell-no-suggestions"
+              disabled="true"
+              label="&spellNoSuggestions.label;"/>
+    <menuitem id="mailContext-spell-add-to-dictionary"
+              label="&spellAddToDictionary.label;"
+              accesskey="&spellAddToDictionary.accesskey;"
+              oncommand="gSpellChecker.addToDictionary();"/>
+    <menuseparator id="mailContext-spell-suggestions-separator"/>
+
+    <menuitem id="mailContext-openInBrowser"
+              label="&openInBrowser.label;"
+              accesskey="&openInBrowser.accesskey;"
+              oncommand="gContextMenu.openInBrowser();"/>
+    <menuitem id="mailContext-openLinkInBrowser"
+              label="&openLinkInBrowser.label;"
+              accesskey="&openLinkInBrowser.accesskey;"
+              oncommand="gContextMenu.openLinkInBrowser();"/>
+    <menuseparator id="mailContext-sep-open-browser"/>
+    <menuitem id="mailContext-reload"
+              label="&reloadCmd.label;"
+              accesskey="&reloadCmd.accesskey;"
+              command="cmd_reload"/>
+    <menuitem id="mailContext-stop"
+              label="&stopCmd.label;"
+              accesskey="&stopCmd.accesskey;"
+              command="cmd_stop"/>
+    <menuseparator id="mailContext-sep-link"/>
+    <menuitem id="mailContext-undo"
+              label="&undoDefaultCmd.label;"
+              accesskey="&undoDefaultCmd.accesskey;"
+              command="cmd_undo"/>
+    <menuseparator id="mailContext-sep-undo"/>
+    <menuitem id="mailContext-cut"
+              label="&cutCmd.label;"
+              accesskey="&cutCmd.accesskey;"
+              command="cmd_copy"/>
+    <menuitem id="mailContext-copy"
+              label="&copyCmd.label;"
+              accesskey="&copyCmd.accesskey;"
+              command="cmd_copy"/>
+    <menuitem id="mailContext-paste"
+              label="&pasteCmd.label;"
+              accesskey="&pasteCmd.accesskey;"
+              command="cmd_paste"/>
+    <menuitem id="mailContext-selectall"
+              label="&selectAllCmd.label;"
+              accesskey="&selectAllCmd.accesskey;"
+              command="cmd_selectAll"/>
+    <menuseparator id="mailContext-sep-clipboard"/>
+
+    <menuitem id="mailContext-searchTheWeb"
+              label="[glodaComplete.webSearch1.label]"
+              oncommand="openWebSearch(event.target.value)"/>
+
+    <!-- Spellchecking general menu items (enable, add dictionaries...) -->
+    <menuseparator id="mailContext-spell-separator"/>
+    <menuitem id="mailContext-spell-check-enabled"
+              label="&spellCheckToggle.label;"
+              type="checkbox"
+              accesskey="&spellCheckToggle.accesskey;"
+              oncommand="gSpellChecker.toggleEnabled();"/>
+    <menuitem id="mailContext-spell-add-dictionaries-main"
+              label="&spellAddDictionaries.label;"
+              accesskey="&spellAddDictionaries.accesskey;"
+              oncommand="gContextMenu.addDictionaries();"/>
+    <menu id="mailContext-spell-dictionaries"
+          label="&spellDictionaries.label;"
+          accesskey="&spellDictionaries.accesskey;">
+        <menupopup id="mailContext-spell-dictionaries-menu">
+            <menuseparator id="mailContext-spell-language-separator"/>
+            <menuitem id="mailContext-spell-add-dictionaries"
+                      label="&spellAddDictionaries.label;"
+                      accesskey="&spellAddDictionaries.accesskey;"
+                      oncommand="gContextMenu.addDictionaries();"/>
+        </menupopup>
+    </menu>
+
+    <menuitem id="mailContext-editDraftMsg"
+              label="&contextEditDraftMsg.label;"
+              default="true"
+              oncommand="MsgEditDraftMessage(event);"/>
+    <menuitem id="mailContext-newMsgFromTemplate"
+              label="&contextNewMsgFromTemplate.label;"
+              default="true"
+              oncommand="MsgNewMessageFromTemplate(event);"/>
+    <menuseparator id="mailContext-sep-editTemplate"/>
+    <menuitem id="mailContext-editTemplateMsg"
+              label="&contextEditTemplate.label;"
+              accesskey="&contextEditTemplate.accesskey;"
+              oncommand="MsgEditTemplateMessage(event);"/>
+    <menuseparator id="mailContext-sep-open"/>
+    <menuitem id="mailContext-media-play"
+              label="&contextPlay.label;"
+              accesskey="&contextPlay.accesskey;"
+              oncommand="gContextMenu.mediaCommand('play');"/>
+    <menuitem id="mailContext-media-pause"
+              label="&contextPause.label;"
+              accesskey="&contextPause.accesskey;"
+              oncommand="gContextMenu.mediaCommand('pause');"/>
+    <menuitem id="mailContext-media-mute"
+              label="&contextMute.label;"
+              accesskey="&contextMute.accesskey;"
+              oncommand="gContextMenu.mediaCommand('mute');"/>
+    <menuitem id="mailContext-media-unmute"
+              label="&contextUnmute.label;"
+              accesskey="&contextUnmute.accesskey;"
+              oncommand="gContextMenu.mediaCommand('unmute');"/>
+    <menuitem id="threadPaneContext-openNewTab"
+              label="&contextOpenNewTab.label;"
+              accesskey="&contextOpenNewTab.accesskey;"
+              oncommand="OpenMessageInNewTab(event);"/>
+    <menuitem id="mailContext-openNewWindow"
+              label="&contextOpenNewWindow.label;"
+              accesskey="&contextOpenNewWindow.accesskey;"
+              oncommand="MsgOpenNewWindowForMessage();"/>
+    <menuitem id="mailContext-openConversation"
+              label="&contextOpenConversation.label;"
+              accesskey="&contextOpenConversation.accesskey;"
+              oncommand="gConversationOpener.openConversationForMessages(gFolderDisplay.selectedMessages);"/>
+    <menuitem id="mailContext-openContainingFolder"
+              label="&contextOpenContainingFolder.label;"
+              accesskey="&contextOpenContainingFolder.accesskey;"
+              oncommand="OpenContainingFolder();"/>
+    <menuseparator id="mailContext-sep-open2"/>
+    <menuitem id="mailContext-replyNewsgroup"
+              label="&contextReplyNewsgroup2.label;"
+              accesskey="&contextReplyNewsgroup2.accesskey;"
+              oncommand="MsgReplyGroup(event);"/>
+    <menuitem id="mailContext-replySender"
+              label="&contextReplySender.label;"
+              accesskey="&contextReplySender.accesskey;"
+              oncommand="MsgReplySender(event);"/>
+    <menuitem id="mailContext-replyAll"
+              label="&contextReplyAll.label;"
+              accesskey="&contextReplyAll.accesskey;"
+              oncommand="MsgReplyToAllMessage(event);"/>
+    <menuitem id="mailContext-replyList"
+              label="&contextReplyList.label;"
+              accesskey="&contextReplyList.accesskey;"
+              oncommand="MsgReplyToListMessage(event);"/>
+    <menuitem id="mailContext-forward"
+              label="&contextForward.label;"
+              accesskey="&contextForward.accesskey;"
+              oncommand="MsgForwardMessage(event);"/>
+    <menu id="mailContext-forwardAsMenu"
+          label="&contextForwardAsMenu.label;"
+          accesskey="&contextForwardAsMenu.accesskey;">
+      <menupopup id="mailContext-forwardAsPopup">
+        <menuitem id="mailContext-forwardAsInline"
+                  label="&contextForwardAsInline.label;"
+                  accesskey="&contextForwardAsInline.accesskey;"
+                  command="cmd_forwardInline"/>
+        <menuitem id="mailContext-forwardAsAttachment"
+                  label="&contextForwardAsAttachmentItem.label;"
+                  accesskey="&contextForwardAsAttachmentItem.accesskey;"
+                  command="cmd_forwardAttachment"/>
+      </menupopup>
+    </menu>
+    <menuitem id="mailContext-multiForwardAsAttachment"
+              label="&contextMultiForwardAsAttachment.label;"
+              accesskey="&contextMultiForwardAsAttachment.accesskey;"
+              oncommand="MsgForwardAsAttachment(event);"/>
+    <!-- The following item (mailContext-editAsNew) is not hooked to its command
+         because we need to enable it even in some cases there is no real
+         selected message yet, only a rightclick on a message. -->
+    <menuitem id="mailContext-editAsNew"
+              label="&contextEditMsgAsNew.label;"
+              accesskey="&contextEditMsgAsNew.accesskey;"
+              oncommand="MsgEditMessageAsNew(event);"/>
+    <menuseparator id="mailContext-sep-reply"/>
+    <menu id="mailContext-tags" label="&tagMenu.label;" accesskey="&tagMenu.accesskey;">
+      <menupopup id="mailContext-tagpopup"
+                 onpopupshowing="InitMessageTags(this);">
+        <menuitem id="mailContext-addNewTag"
+                  label="&addNewTag.label;"
+                  accesskey="&addNewTag.accesskey;"
+                  command="cmd_addTag"/>
+        <menuitem id="mailContext-manageTags"
+                  label="&manageTags.label;"
+                  accesskey="&manageTags.accesskey;"
+                  command="cmd_manageTags"/>
+        <menuseparator id="mailContext-sep-afterTagAddNew"/>
+        <menuitem id="mailContext-tagRemoveAll"
+                  command="cmd_removeTags"/>
+        <menuseparator id="mailContext-sep-afterTagRemoveAll"/>
+      </menupopup>
+    </menu>
+    <menu id="mailContext-mark"
+          label="&markMenu.label;"
+          accesskey="&markMenu.accesskey;">
+      <menupopup id="mailContext-markPopup"
+                 onpopupshowing="InitMessageMark()">
+        <menuitem id="mailContext-markRead"
+                  label="&markAsReadCmd.label;"
+                  accesskey="&markAsReadCmd.accesskey;"
+                  command="cmd_markAsRead"/>
+        <menuitem id="mailContext-markUnread"
+                  label="&markAsUnreadCmd.label;"
+                  accesskey="&markAsUnreadCmd.accesskey;"
+                  command="cmd_markAsUnread"/>
+        <menuitem id="mailContext-markThreadAsRead"
+                  label="&markThreadAsReadCmd.label;"
+                  accesskey="&markThreadAsReadCmd.accesskey;"
+                  command="cmd_markThreadAsRead"/>
+        <menuitem id="mailContext-markReadByDate"
+                  label="&markReadByDateCmd.label;"
+                  accesskey="&markReadByDateCmd.accesskey;"
+                  command="cmd_markReadByDate"/>
+        <menuitem id="mailContext-markAllRead"
+                  label="&markAllReadCmd.label;"
+                  accesskey="&markAllReadCmd.accesskey;"
+                  command="cmd_markAllRead"/>
+        <menuseparator id="mailContext-sep-afterMarkAllRead"/>
+        <menuitem id="mailContext-markFlagged"
+                  type="checkbox"
+                  label="&markStarredCmd.label;"
+                  accesskey="&markStarredCmd.accesskey;"
+                  command="cmd_markAsFlagged"/>
+        <menuseparator id="mailContext-sep-afterMarkFlagged"/>
+        <menuitem id="mailContext-markAsJunk"
+                  label="&markAsJunkCmd.label;"
+                  accesskey="&markAsJunkCmd.accesskey;"
+                  command="cmd_markAsJunk"/>
+        <menuitem id="mailContext-markAsNotJunk"
+                  label="&markAsNotJunkCmd.label;"
+                  accesskey="&markAsNotJunkCmd.accesskey;"
+                  command="cmd_markAsNotJunk"/>
+        <menuitem id="mailContext-recalculateJunkScore"
+                  label="&recalculateJunkScoreCmd.label;"
+                  accesskey="&recalculateJunkScoreCmd.accesskey;"
+                  command="cmd_recalculateJunkScore"/>
+      </menupopup>
+    </menu>
+    <menuseparator id="mailContext-sep-afterMarkMenu"/>
+    <menuitem id="mailContext-copyMessageUrl"
+              label="&copyMessageLocation.label;"
+              accesskey="&copyMessageLocation.accesskey;"
+              oncommand="CopyMessageUrl()"/>
+    <menuitem id="mailContext-archive"
+              label="&contextArchive.label;"
+              accesskey="&contextArchive.accesskey;"
+              oncommand="MsgArchiveSelectedMessages(event);"/>
+    <menu id="mailContext-moveMenu"
+          label="&contextMoveMsgMenu.label;"
+          accesskey="&contextMoveMsgMenu.accesskey;"
+          oncommand="MsgMoveMessage(event.target._folder)">
+      <menupopup is="folder-menupopup" id="mailContext-fileHereMenu"
+                 mode="filing"
+                 showFileHereLabel="true"
+                 showRecent="true"
+                 recentLabel="&contextMoveCopyMsgRecentMenu.label;"
+                 recentAccessKey="&contextMoveCopyMsgRecentMenu.accesskey;"
+                 showFavorites="true"
+                 favoritesLabel="&contextMoveCopyMsgFavoritesMenu.label;"
+                 favoritesAccessKey="&contextMoveCopyMsgFavoritesMenu.accesskey;"/>
+    </menu>
+    <menu id="mailContext-copyMenu"
+          label="&contextCopyMsgMenu.label;"
+          accesskey="&contextCopyMsgMenu.accesskey;"
+          oncommand="MsgCopyMessage(event.target._folder)">
+      <menupopup is="folder-menupopup" id="mailContext-copyHereMenu"
+                 mode="filing"
+                 showFileHereLabel="true"
+                 showRecent="true"
+                 recentLabel="&contextMoveCopyMsgRecentMenu.label;"
+                 recentAccessKey="&contextMoveCopyMsgRecentMenu.accesskey;"
+                 showFavorites="true"
+                 favoritesLabel="&contextMoveCopyMsgFavoritesMenu.label;"
+                 favoritesAccessKey="&contextMoveCopyMsgFavoritesMenu.accesskey;"/>
+    </menu>
+    <menuitem id="mailContext-moveToFolderAgain"
+              command="cmd_moveToFolderAgain"
+              label="&moveToFolderAgain.label;"
+              accesskey="&moveToFolderAgain.accesskey;"/>
+
+    <menuitem id="mailContext-delete"
+              command="cmd_delete"/>
+
+    <menuseparator id="paneContext-afterMove"/>
+    <menuitem id="mailContext-ignoreThread"
+              label="&contextKillThreadMenu.label;"
+              accesskey="&contextKillThreadMenu.accesskey;"
+              command="cmd_killThread"/>
+    <menuitem id="mailContext-ignoreSubthread"
+              label="&contextKillSubthreadMenu.label;"
+              accesskey="&contextKillSubthreadMenu.accesskey;"
+              command="cmd_killSubthread"/>
+    <menuitem id="mailContext-watchThread"
+              label="&contextWatchThreadMenu.label;"
+              accesskey="&contextWatchThreadMenu.accesskey;"
+              command="cmd_watchThread"/>
+    <menuseparator id="mailContext-afterWatchThread"/>
+    <menuitem id="mailContext-saveAs"
+              label="&contextSaveAs.label;"
+              accesskey="&contextSaveAs.accesskey;"
+              oncommand="MsgSaveAsFile();"/>
+    <menuitem id="mailContext-printpreview"
+              label="&contextPrintPreview.label;"
+              accesskey="&contextPrintPreview.accesskey;"
+              observes="cmd_printpreview"
+              command="cmd_printpreview"/>
+    <menuitem id="mailContext-print"
+              label="&contextPrint.label;"
+              accesskey="&contextPrint.accesskey;"
+              observes="cmd_print"
+              command="cmd_print"/>
+
+    <menuitem id="downloadSelected"
+              label="&downloadSelectedCmd.label;"
+              accesskey="&downloadSelectedCmd.accesskey;"
+              command="cmd_downloadSelected"/>
+    <menuseparator id="mailContext-sep-edit"/>
+    <menuitem id="mailContext-copylink"
+              label="&copyLinkCmd.label;"
+              accesskey="&copyLinkCmd.accesskey;"
+              command="cmd_copyLink"/>
+    <menuitem id="mailContext-copyimage"
+              label="&copyImageAllCmd.label;"
+              accesskey="&copyImageAllCmd.accesskey;"
+              command="cmd_copyImage"/>
+    <menuitem id="mailContext-addemail"
+              label="&AddToAddressBook.label;"
+              accesskey="&AddToAddressBook.accesskey;"
+              oncommand="addEmail();"/>
+    <menuitem id="mailContext-composeemailto"
+              label="&SendMessageTo.label;"
+              accesskey="&SendMessageTo.accesskey;"
+              oncommand="composeEmailTo();"/>
+    <menuitem id="mailContext-copyemail"
+              label="&copyEmailCmd.label;"
+              accesskey="&copyEmailCmd.accesskey;"
+              oncommand="gContextMenu.copyEmail();"/>
+    <menuseparator id="mailContext-sep-copy"/>
+    <menuitem id="mailContext-savelink"
+              label="&saveLinkAsCmd.label;"
+              accesskey="&saveLinkAsCmd.accesskey;"
+              oncommand="gContextMenu.saveLink();"/>
+    <menuitem id="mailContext-saveimage"
+              label="&saveImageAsCmd.label;"
+              accesskey="&saveImageAsCmd.accesskey;"
+              oncommand="gContextMenu.saveImage();"/>
+    <menuseparator id="mailContext-sep-reportPhishing"/>
+    <menuitem id="mailContext-reportPhishingURL"
+              label="&reportPhishingURL.label;"
+              accesskey="&reportPhishingURL.accesskey;"
+              oncommand="gPhishingDetector.reportPhishingURL(gContextMenu.linkURL);"/>
+  </menupopup>
+
+  <menupopup id="folderPaneContext"
+             onpopupshowing="return fillFolderPaneContextMenu(event);"
+             onpopuphiding="if (event.target == this) folderPaneOnPopupHiding();">
+    <menuitem id="folderPaneContext-getMessages"
+              label="&folderContextGetMessages.label;"
+              accesskey="&folderContextGetMessages.accesskey;"
+              oncommand="MsgGetMessage();"/>
+    <menuitem id="folderPaneContext-pauseAllUpdates"
+              type="checkbox"
+              label="&folderContextPauseAllUpdates.label;"
+              accesskey="&folderContextPauseUpdates.accesskey;"
+              oncommand="MsgPauseUpdates(this);"/>
+    <menuitem id="folderPaneContext-pauseUpdates"
+              type="checkbox"
+              label="&folderContextPauseUpdates.label;"
+              accesskey="&folderContextPauseUpdates.accesskey;"
+              oncommand="MsgPauseUpdates(this);"/>
+    <menuseparator id="folderPaneContext-sepPause"/>
+    <menuitem id="folderPaneContext-openNewTab"
+              label="&folderContextOpenNewTab.label;"
+              accesskey="&folderContextOpenNewTab.accesskey;"
+              oncommand="FolderPaneContextMenuNewTab(event);"/>
+    <menuitem id="folderPaneContext-openNewWindow"
+              label="&folderContextOpenInNewWindow.label;"
+              accesskey="&folderContextOpenInNewWindow.accesskey;"
+              oncommand="MsgOpenNewWindowForFolder(null, -1);"/>
+    <menuitem id="folderPaneContext-searchMessages"
+              label="&folderContextSearchForMessages.label;"
+              accesskey="&folderContextSearchForMessages.accesskey;"
+              oncommand="gFolderTreeController.searchMessages();"/>
+    <menuitem id="folderPaneContext-subscribe"
+              label="&folderContextSubscribe.label;"
+              accesskey="&folderContextSubscribe.accesskey;"
+              oncommand="MsgSubscribe();"/>
+    <menuitem id="folderPaneContext-newsUnsubscribe"
+              label="&folderContextUnsubscribe.label;"
+              accesskey="&folderContextUnsubscribe.accesskey;"
+              oncommand="MsgUnsubscribe();"/>
+    <menuseparator id="folderPaneContext-sep1"/>
+    <menuitem id="folderPaneContext-new"
+              label="&folderContextNew.label;"
+              accesskey="&folderContextNew.accesskey;"
+              oncommand="gFolderTreeController.newFolder();"/>
+    <menuitem id="folderPaneContext-remove"
+              label="&folderContextRemove.label;"
+              accesskey="&folderContextRemove.accesskey;"
+              oncommand="gFolderTreeController.deleteFolder();"/>
+    <menuitem id="folderPaneContext-rename"
+              label="&folderContextRename.label;"
+              accesskey="&folderContextRename.accesskey;"
+              oncommand="gFolderTreeController.renameFolder();"/>
+    <menuseparator id="folderPaneContext-sep2"/>
+    <menuitem id="folderPaneContext-compact"
+              label="&folderContextCompact.label;"
+              accesskey="&folderContextCompact.accesskey;"
+              oncommand="gFolderTreeController.compactFolders();"/>
+    <menuitem id="folderPaneContext-markMailFolderAllRead"
+              label="&folderContextMarkMailFolderRead.label;"
+              accesskey="&folderContextMarkMailFolderRead.accesskey;"
+              oncommand="MsgMarkAllRead();"/>
+    <menuitem id="folderPaneContext-markNewsgroupAllRead"
+              label="&folderContextMarkNewsgroupRead.label;"
+              accesskey="&folderContextMarkNewsgroupRead.accesskey;"
+              oncommand="MsgMarkAllRead();"/>
+    <menuitem id="folderPaneContext-emptyTrash"
+              label="&folderContextEmptyTrash.label;"
+              accesskey="&folderContextEmptyTrash.accesskey;"
+              oncommand="gFolderTreeController.emptyTrash();"/>
+    <menuitem id="folderPaneContext-emptyJunk"
+              label="&folderContextEmptyJunk.label;"
+              accesskey="&folderContextEmptyJunk.accesskey;"
+              oncommand="gFolderTreeController.emptyJunk();"/>
+    <menuitem id="folderPaneContext-sendUnsentMessages"
+              label="&folderContextSendUnsentMessages.label;"
+              accesskey="&folderContextSendUnsentMessages.accesskey;"
+              oncommand="goDoCommand('cmd_sendUnsentMsgs')"/>
+    <menuseparator id="folderPaneContext-sep3"/>
+    <menuitem id="folderPaneContext-favoriteFolder"
+              type="checkbox"
+              label="&folderContextFavoriteFolder.label;"
+              accesskey="&folderContextFavoriteFolder.accesskey;"
+              checked="false"
+              oncommand="ToggleFavoriteFolderFlag();"/>
+    <menuitem id="folderPaneContext-properties"
+              label="&folderContextProperties2.label;"
+              accesskey="&folderContextProperties2.accesskey;"
+              oncommand="gFolderTreeController.editFolder();"/>
+    <menuitem id="folderPaneContext-markAllFoldersRead"
+              label="&folderContextMarkAllFoldersRead.label;"
+              oncommand="MsgMarkAllFoldersRead();"/>
+    <menuseparator id="folderPaneContext-sep4"/>
+    <menuitem id="folderPaneContext-settings"
+              label="&folderContextSettings2.label;"
+              accesskey="&folderContextSettings2.accesskey;"
+              oncommand="gFolderTreeController.editFolder();"/>
+  </menupopup>
+
+  <menupopup id="aboutPagesContext"
+             onpopupshowing="goUpdateCommand('cmd_copy'); goUpdateCommand('cmd_selectAll');">
+    <menuitem id="aboutPagesContext-copy"
+              label="&copyCmd.label;"
+              accesskey="&copyCmd.accesskey;"
+              command="cmd_copy"/>
+    <menuitem id="aboutPagesContext-selectall"
+              label="&selectAllCmd.label;"
+              accesskey="&selectAllCmd.accesskey;"
+              command="cmd_selectAll"/>
+  </menupopup>
+
+  <menupopup id="toolbar-context-menu"
+             onpopupshowing="onViewToolbarsPopupShowing(event, 'mail-toolbox');">
+    <menuseparator id="customizeMailToolbarMenuSeparator"/>
+    <menuitem id="CustomizeMailToolbar"
+              command="cmd_CustomizeMailToolbar"
+              label="&customizeToolbar.label;"
+              accesskey="&customizeToolbar.accesskey;"/>
+  </menupopup>
+
+  <menupopup id="remoteContentOptions" value=""
+             onpopupshowing="onRemoteContentOptionsShowing(event);">
+    <menuitem id="remoteContentOptionAllowForMsg"
+              label="&remoteContentOptionsAllowForMsg.label;"
+              accesskey="&remoteContentOptionsAllowForMsg.accesskey;"
+              oncommand="LoadMsgWithRemoteContent();"/>
+    <menuseparator id="remoteContentSettingsMenuSeparator"/>
+    <menuitem id="editRemoteContentSettings"
+#ifdef XP_WIN
+              label="&editRemoteContentSettings.label;"
+              accesskey="&editRemoteContentSettings.accesskey;"
+#else
+              label="&editRemoteContentSettingsUnix.label;"
+              accesskey="&editRemoteContentSettingsUnix.accesskey;"
+#endif
+              oncommand="editRemoteContentSettings();"/>
+    <menuseparator id="remoteContentOriginsMenuSeparator"/>
+    <menuseparator id="remoteContentAllMenuSeparator"/>
+    <menuitem id="remoteContentOptionAllowAll"
+              oncommand="allowRemoteContentForAll(this.parentNode);"/>
+  </menupopup>
+
+  <menupopup id="phishingOptions">
+    <menuitem id="phishingOptionIgnore"
+              label="&phishingOptionIgnore.label;"
+              accesskey="&phishingOptionIgnore.accesskey;"
+              oncommand="IgnorePhishingWarning();"/>
+    <menuitem id="phishingOptionSettings"
+#ifdef XP_WIN
+              label="&phishingOptionSettings.label;"
+              accesskey="&phishingOptionSettings.accesskey;"
+#else
+              label="&phishingOptionSettingsUnix.label;"
+              accesskey="&phishingOptionSettingsUnix.accesskey;"
+#endif
+              oncommand="OpenPhishingSettings();"/>
+  </menupopup>
+
+  <tooltip id="qfb-text-search-upsell"
+           level="parent"
+           style="background-color: #ffeeee;">
+    <vbox>
+      <label id="qfb-upsell-line-one"
+             class="header"
+             fmt="&quickFilterBar.glodaUpsell.continueSearch;"
+             value=""/>
+      <label id="qfb-upsell-line-two"
+             fmt="&quickFilterBar.glodaUpsell.pressEnterAndCurrent;"
+             value=""/>
+    </vbox>
+  </tooltip>

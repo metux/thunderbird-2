@@ -1,0 +1,165 @@
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+/* compacttheme.css is loaded in messenger.xul after messenger.css when it
+   is preffed on.  The bulk of the styling is here in the shared file, but
+   there are overrides for each platform in their compacttheme.css files. */
+
+:root:-moz-lwtheme {
+  --toolbar-non-lwt-bgcolor: var(--toolbar-bgcolor);
+  --toolbar-non-lwt-textcolor: var(--lwt-text-color);
+  --toolbar-non-lwt-bgimage: none;
+  --lwt-toolbar-field-border-color: hsla(240,5%,5%,.25);
+}
+
+:root:-moz-lwtheme-brighttext {
+  /* Toolbar buttons */
+  --lwt-toolbarbutton-hover-background: rgba(179, 179, 179, 0.4);
+  --lwt-toolbarbutton-active-background: rgba(179, 179, 179, 0.6);
+
+  /* !important to override LightweightThemeManager.addBuiltInTheme in
+     mailGlue.js */
+  --autocomplete-popup-background: #2A2A2E !important;
+  --autocomplete-popup-highlight-background: #0060DF;
+
+  /* composer header fields bottom border */
+  --composer-header-border-color: rgb(127, 127, 128);
+}
+
+:root:-moz-lwtheme-darktext {
+  /* composer header fields bottom border */
+  --composer-header-border-color: #aaa;
+}
+
+#headers-box,
+#msgHeaderView {
+  background-color: var(--toolbar-bgcolor) !important;
+  background-image: none !important;
+  color: var(--lwt-text-color);
+}
+
+/* Let the message headers use the theme colors */
+.headerValue {
+  color: inherit;
+}
+
+/* Style the editContactPanel textfields */
+.editContactTextbox {
+  background-color: var(--lwt-toolbar-field-background-color);
+  color: var(--lwt-toolbar-field-color);
+}
+.editContactTextbox:not([readonly="true"]):not([focused="true"]) {
+  border-color: var(--panel-separator-color);
+}
+
+/* Quick-Filter-Bar */
+#quick-filter-bar:-moz-lwtheme {
+  background-color: var(--lwt-accent-color);
+  color: var(--lwt-text-color);
+}
+#quick-filter-bar:-moz-lwtheme-brighttext {
+  --toolbarbutton-hover-background: var(--lwt-toolbarbutton-hover-background);
+  --toolbarbutton-hover-bordercolor: var(--lwt-toolbarbutton-hover-background);
+
+  --toolbarbutton-checkedhover-backgroundcolor: var(--lwt-toolbarbutton-hover-background);
+
+  --toolbarbutton-active-background: var(--lwt-toolbarbutton-active-background);
+  --toolbarbutton-active-bordercolor: var(--lwt-toolbarbutton-active-background);
+  --toolbarbutton-active-boxshadow: 0 0 0 1px var(--lwt-toolbarbutton-active-background) inset;
+}
+
+#qfb-qs-textbox:-moz-lwtheme {
+  background-color: var(--lwt-toolbar-field-background-color, hsla(0,0%,100%,.8));
+  color: var(--lwt-toolbar-field-color, black);
+}
+
+#qfb-qs-textbox:not([focused="true"]):-moz-lwtheme {
+  border-color: var(--lwt-toolbar-field-border-color, hsla(240,5%,5%,.25));
+}
+
+#qfb-qs-textbox:-moz-lwtheme:hover {
+  background-color: var(--lwt-toolbar-field-background-color, white);
+}
+
+#qfb-qs-textbox:-moz-lwtheme-brighttext:hover {
+  box-shadow: 0 1px 3px rgba(255,255,255,.15);
+}
+
+#qfb-qs-textbox:-moz-lwtheme[focused="true"] {
+  background-color: var(--lwt-toolbar-field-focus, var(--lwt-toolbar-field-background-color, white));
+  color: var(--lwt-toolbar-field-focus-color, var(--lwt-toolbar-field-color, black));
+  border-color: var(--toolbar-field-focus-border-color);
+}
+
+/* Composer header box styling */
+#headers-box:-moz-lwtheme-brighttext {
+  --toolbarbutton-hover-background: var(--lwt-toolbarbutton-hover-background);
+  --toolbarbutton-hover-bordercolor: var(--lwt-toolbarbutton-hover-background);
+
+  --toolbarbutton-active-background: var(--lwt-toolbarbutton-active-background);
+  --toolbarbutton-active-bordercolor: var(--lwt-toolbarbutton-active-background);
+  --toolbarbutton-active-boxshadow: 0 0 0 1px var(--lwt-toolbarbutton-active-background) inset;
+
+  scrollbar-color: rgba(249,249,250,.4) rgba(20,20,25,.3);
+}
+
+#MsgHeadersToolbar,
+#addressingWidget,
+.aw-menulist {
+  color: inherit;
+}
+
+#msgIdentity,
+#msgSubject,
+textbox.textbox-addressingWidget,
+.dummy-row-cell:last-child {
+  border-bottom-color: var(--composer-header-border-color) !important;
+  color: var(--lwt-text-color);
+}
+
+#msgIdentity:hover,
+#msgIdentity:focus,
+#msgIdentity:focus-within,
+#msgSubject:hover,
+#msgSubject[focused="true"],
+textbox.textbox-addressingWidget:hover,
+textbox.textbox-addressingWidget[focused="true"] {
+  background-color: var(--lwt-toolbar-field-background-color);
+  color: var(--lwt-toolbar-field-color);
+  border-color: var(--lwt-toolbar-field-border-color) !important;
+}
+
+.textbox-addressingWidget > .autocomplete-result-popupset {
+  -moz-appearance: none;
+  margin-top: -1px;
+  background: var(--autocomplete-popup-background);
+  color: var(--autocomplete-popup-color);
+}
+
+.textbox-addressingWidget panel[type="autocomplete-richlistbox"] {
+  padding: 2px 0;
+  color: inherit;
+  background-color: inherit;
+  border-color: var(--autocomplete-popup-border-color);
+}
+
+.textbox-addressingWidget .autocomplete-richlistbox {
+  color: inherit;
+  background-color: inherit;
+}
+
+.textbox-addressingWidget .autocomplete-richlistitem[selected] {
+  background: #0a84ff;
+  color: #fff;
+}
+
+/* Make the new mail indicator better visible on dark theme */
+#folderTree:-moz-lwtheme-brighttext
+  treechildren::-moz-tree-cell-text(folderNameCol, isServer-true, biffState-NewMail),
+#folderTree:-moz-lwtheme-brighttext
+  treechildren::-moz-tree-cell-text(folderNameCol, newMessages-true),
+#folderTree:-moz-lwtheme-brighttext
+  treechildren::-moz-tree-cell-text(folderNameCol, specialFolder-Inbox, newMessages-true) {
+  color: #0aa5ff !important;
+}

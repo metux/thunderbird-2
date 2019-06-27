@@ -1,0 +1,43 @@
+# -*- Mode: python; indent-tabs-mode: nil; tab-width: 40 -*-
+# vim: set filetype=python:
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this
+# file, You can obtain one at http://mozilla.org/MPL/2.0/.
+
+DEFINES['MOZ_APP_VERSION'] = CONFIG['MOZ_APP_VERSION']
+DEFINES['MOZ_APP_MAXVERSION'] = CONFIG['MOZ_APP_MAXVERSION']
+
+FINAL_TARGET_FILES.features['webcompat@mozilla.org'] += [
+  'aboutCompat.css',
+  'aboutCompat.html',
+  'aboutCompat.js',
+  'aboutConfigPrefs.js',
+  'aboutConfigPrefs.json',
+  'aboutPage.js',
+  'aboutPage.json',
+  'background.js',
+  'injections.js',
+  'manifest.json',
+  'ua_overrides.js'
+]
+
+FINAL_TARGET_FILES.features['webcompat@mozilla.org']['injections']['css'] += [
+  'injections/css/bug0000000-dummy-css-injection.css',
+  'injections/css/bug1305028-gaming.youtube.com-webkit-scrollbar.css',
+  'injections/css/bug1518781-twitch.tv-webkit-scrollbar.css',
+  'injections/css/bug1526977-sreedharscce.in-login-fix.css'
+]
+
+FINAL_TARGET_FILES.features['webcompat@mozilla.org']['injections']['js'] += [
+  'injections/js/bug0000000-dummy-js-injection.js',
+  'injections/js/bug1452707-window.controllers-shim-ib.absa.co.za.js',
+  'injections/js/bug1457335-histography.io-ua-change.js',
+  'injections/js/bug1472075-bankofamerica.com-ua-change.js',
+  'injections/js/bug1472081-election.gov.np-window.sidebar-shim.js',
+  'injections/js/bug1482066-portalminasnet.com-window.sidebar-shim.js'
+]
+
+JAR_MANIFESTS += ['jar.mn']
+
+with Files('**'):
+  BUG_COMPONENT = ('Web Compatibility Tools', 'Go Faster')

@@ -1,0 +1,120 @@
+<?xml version="1.0"?>
+
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this
+# file, You can obtain one at http://mozilla.org/MPL/2.0/.
+
+#ifdef XP_MACOSX
+<!DOCTYPE window [
+<!ENTITY % brandDTD SYSTEM "chrome://branding/locale/brand.dtd" >
+%brandDTD;
+<!ENTITY % messengerDTD SYSTEM "chrome://messenger/locale/messenger.dtd" >
+%messengerDTD;
+<!ENTITY % utilityDTD SYSTEM "chrome://communicator/locale/utilityOverlay.dtd">
+%utilityDTD;
+<!ENTITY % msgViewPickerDTD SYSTEM "chrome://messenger/locale/msgViewPickerOverlay.dtd" >
+%msgViewPickerDTD;
+<!ENTITY % textcontextDTD SYSTEM "chrome://global/locale/textcontext.dtd">
+%textcontextDTD;
+<!ENTITY % baseMenuOverlayDTD SYSTEM "chrome://messenger/locale/baseMenuOverlay.dtd">
+%baseMenuOverlayDTD;
+<!ENTITY % charsetDTD SYSTEM "chrome://global/locale/charsetMenu.dtd">
+%charsetDTD;
+<!ENTITY % viewZoomOverlayDTD SYSTEM "chrome://messenger/locale/viewZoomOverlay.dtd">
+%viewZoomOverlayDTD;
+<!ENTITY % msgReadSMIMEDTD SYSTEM "chrome://messenger-smime/locale/msgReadSMIMEOverlay.dtd">
+%msgReadSMIMEDTD;
+<!ENTITY % quickFilterBarDTD SYSTEM "chrome://messenger/locale/quickFilterBar.dtd">
+%quickFilterBarDTD;
+<!ENTITY % msgViewPickerDTD SYSTEM "chrome://messenger/locale/msgViewPickerOverlay.dtd" >
+%msgViewPickerDTD;
+<!ENTITY % msgHdrViewOverlayDTD SYSTEM "chrome://messenger/locale/msgHdrViewOverlay.dtd">
+%msgHdrViewOverlayDTD;
+]>
+
+<window id="hidden-window"
+        xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" xmlns:html="http://www.w3.org/1999/xhtml"
+        onload="hiddenWindowStartup();">
+
+<script src="chrome://global/content/globalOverlay.js"/>
+<script src="chrome://messenger/content/commandglue.js"/>
+<script src="chrome://messenger/content/mailWindow.js"/>
+<script src="chrome://messenger/content/msgMail3PaneWindow.js"/>
+<script src="chrome://messenger/content/mail3PaneWindowCommands.js"/>
+<script src="chrome://messenger/content/searchBar.js"/>
+<script src="chrome://messenger/content/hiddenWindow.js"/>
+<script src="chrome://messenger/content/mailCommands.js"/>
+<script src="chrome://messenger/content/junkCommands.js"/>
+<script src="chrome://messenger/content/mailWindowOverlay.js"/>
+<script src="chrome://messenger/content/mailTabs.js"/>
+<script src="chrome://messenger/content/messageDisplay.js"/>
+<script src="chrome://messenger/content/folderDisplay.js"/>
+<script src="chrome://messenger-newsblog/content/newsblogOverlay.js"/>
+<script src="chrome://messenger/content/mail-offline.js"/>
+<script src="chrome://global/content/printUtils.js"/>
+<script src="chrome://messenger/content/msgViewPickerOverlay.js"/>
+<script src="chrome://messenger/content/viewZoomOverlay.js"/>
+<script src="chrome://communicator/content/utilityOverlay.js"/>
+<script src="chrome://messenger/content/mailCore.js"/>
+<script src="chrome://messenger/content/quickFilterBar.js"/>
+<script src="chrome://messenger/content/newmailaccount/uriListener.js"/>
+<script src="chrome://messenger-smime/content/msgReadSMIMEOverlay.js"/>
+#ifdef XP_MACOSX
+<script src="chrome://global/content/macWindowMenu.js"/>
+#endif
+
+
+<stringbundleset id="stringbundleset">
+  <stringbundle id="bundle_messenger" src="chrome://messenger/locale/messenger.properties"/>
+  <stringbundle id="bundle_brand" src="chrome://branding/locale/brand.properties"/>
+  <stringbundle id="bundle_search" src="chrome://messenger/locale/search.properties"/>
+  <stringbundle id="bundle_offlinePrompts" src="chrome://messenger/locale/offline.properties"/>
+  <stringbundle id="charsetBundle" src="chrome://communicator/content/labelsencodings.properties"/>
+</stringbundleset>
+
+  <!-- keys are appended from the overlay -->
+<keyset id="mailKeys">
+#include mainKeySet.inc.xul
+  <keyset id="tasksKeys">
+    <key id="key_newMessage" key="&newMessageCmd.key;" command="cmd_newMessage"
+         modifiers="accel,shift"/>
+    <key id="key_newMessage2" key="&newMessageCmd2.key;" command="cmd_newMessage"
+         modifiers="accel"/>
+  </keyset>
+</keyset>
+
+<commandset id="mailCommands">
+#include mainCommandSet.inc.xul
+  <commandset id="mailSearchMenuItems"/>
+  <commandset id="globalEditMenuItems"
+              commandupdater="true"
+              events="create-menu-edit"
+              oncommandupdate="goUpdateGlobalEditMenuItems()"/>
+  <commandset id="selectEditMenuItems"
+              commandupdater="true"
+              events="create-menu-edit"
+              oncommandupdate="goUpdateSelectEditMenuItems()"/>
+  <commandset id="clipboardEditMenuItems"
+              commandupdater="true"
+              events="clipboard"
+              oncommandupdate="goUpdatePasteMenuItems()"/>
+  <commandset id="tasksCommands">
+    <command id="cmd_newMessage" oncommand="goOpenNewMessage();"/>
+    <command id="cmd_newCard" oncommand="openNewCardDialog()"/>
+  </commandset>
+</commandset>
+
+  <!-- it's the whole mailWindowOverlay.xul menubar! hidden windows need to
+       have a menubar for situations where they're the only window remaining
+       on a platform that wants to leave the app running, like the Mac.
+  -->
+
+#include mainNavigationToolbox.inc.xul
+  </toolbox>
+#include mainMailToolbox.inc.xul
+
+<browser id="hiddenBrowser" disablehistory="true"/>
+
+</window>
+
+#endif

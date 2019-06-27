@@ -1,0 +1,38 @@
+# vim: set filetype=python:
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this
+# file, You can obtain one at http://mozilla.org/MPL/2.0/.
+
+EXTRA_JS_MODULES += [
+    'ChromeManifest.jsm',
+    'ExtensionSupport.jsm',
+    'Overlays.jsm',
+]
+
+SOURCES += [
+    'nsCommonModule.cpp',
+    'nsComponentManagerExtra.cpp',
+]
+
+if CONFIG['OS_ARCH'] == 'WINNT':
+    # This file cannot be built in unified mode because of name clashes with Windows headers.
+    SOURCES += [
+        'nsUserInfoWin.cpp',
+    ]
+elif CONFIG['MOZ_WIDGET_TOOLKIT'] == 'cocoa':
+    SOURCES += [
+        'nsUserInfoMac.mm',
+    ]
+else:
+    SOURCES += [
+        'nsUserInfoUnix.cpp',
+    ]
+
+LOCAL_INCLUDES += [
+    '/%s/netwerk/base' % CONFIG['mozreltopsrcdir']
+]
+
+FINAL_LIBRARY = 'xul'
+
+if CONFIG['MOZ_CALENDAR']:
+    DEFINES['MOZ_CALENDAR'] = True

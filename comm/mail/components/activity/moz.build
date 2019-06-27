@@ -1,0 +1,31 @@
+# vim: set filetype=python:
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this
+# file, You can obtain one at http://mozilla.org/MPL/2.0/.
+
+XPIDL_SOURCES += [
+    'nsIActivity.idl',
+    'nsIActivityManager.idl',
+    'nsIActivityManagerUI.idl',
+]
+
+XPIDL_MODULE = 'activity'
+
+EXTRA_COMPONENTS += [
+    'activityComponents.manifest',
+    'nsActivity.js',
+    'nsActivityManager.js',
+    'nsActivityManagerUI.js',
+]
+
+EXTRA_JS_MODULES.activity += [
+    'modules/activityModules.jsm',
+    'modules/alertHook.jsm',
+    'modules/autosync.jsm',
+    'modules/glodaIndexer.jsm',
+    'modules/moveCopy.jsm',
+    'modules/pop3Download.jsm',
+    'modules/sendLater.jsm',
+]
+
+JAR_MANIFESTS += ['jar.mn']

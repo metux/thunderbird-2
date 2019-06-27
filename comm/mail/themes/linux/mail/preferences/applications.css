@@ -1,0 +1,82 @@
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+/**
+ * Line up the actions menu with action labels above and below it.
+ * Equalize the distance from the left side of the action box to the left side
+ * of the icon for both the menu and the non-menu versions of the action box.
+ * Also make sure the labels are the same distance away from the icons.
+ */
+.actionsMenu {
+  margin-top: -1px;
+  margin-bottom: -1px;
+  margin-inline-start: -1px;
+  margin-inline-end: 0;
+}
+
+.actionIcon {
+  margin: 0 3px;
+}
+
+richlistitem {
+  min-height: 35px;
+}
+
+richlistitem[appHandlerIcon="ask"],
+menuitem[appHandlerIcon="ask"] {
+  list-style-image: url("chrome://messenger/skin/preferences/alwaysAsk.png");
+}
+
+richlistitem[appHandlerIcon="save"],
+menuitem[appHandlerIcon="save"] {
+  list-style-image: url("moz-icon://stock/gtk-save?size=menu");
+}
+
+.actionsMenu .menulist-icon {
+  margin-inline-end: 1px;
+  height: 16px;
+  width: 16px;
+}
+
+.actionsMenu > menupopup > menuitem > .menu-iconic-left {
+  padding-inline-start: 0;
+  padding-inline-end: 4px !important;
+}
+
+.actionsMenu > menupopup > menuitem {
+  padding-inline-start: 3px;
+}
+
+/**
+ * Used by the outgoing attachment manager
+ */
+.cloudfileAccount {
+  padding: 4px;
+}
+
+.cloudfileAccount .typeIcon {
+  height: 16px;
+  width: 16px;
+}
+
+.cloudfileAccount > label {
+  margin-inline-start: 1px;
+  margin-top: initial;
+  margin-bottom: initial;
+}
+
+.cloudfileAccount:not([selected]) > label {
+  pointer-events: none;
+}
+
+.cloudfileAccount > textbox {
+  color: -moz-fieldtext !important;
+  min-height: unset;
+  margin: 0;
+  padding-inline-start: 4px;
+}
+
+#cloudFileToggleAndThreshold {
+  margin-bottom: 15px;
+}

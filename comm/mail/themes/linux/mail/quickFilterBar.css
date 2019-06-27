@@ -1,0 +1,51 @@
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+@import url("chrome://messenger/content/quickFilterBar.css");
+
+/* :::: Filter Bar :::: */
+
+#quick-filter-bar {
+  background-color: -moz-dialog;
+  border-bottom: 1px solid ThreeDShadow;
+}
+
+#quick-filter-bar-main-bar {
+  padding-inline-start: 4px;
+}
+
+#qfb-qs-textbox {
+  margin: 5px;
+}
+
+#quick-filter-bar-expando {
+  margin-top: -1px;
+  padding-bottom: 2px;
+}
+
+#quick-filter-bar-filter-text-bar {
+  padding-inline-end: 4px;
+}
+
+/* :::: Filter Buttons :::: */
+
+#quick-filter-bar toolbarbutton {
+  margin-right: 1px;
+  margin-left: 1px;
+}
+
+#quick-filter-bar-tab-bar > .qfb-tag-button {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+#quick-filter-bar-filter-text-bar > toolbarbutton {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+#qfb-boolean-mode {
+  margin-top: 0;
+  margin-bottom: 0;
+}

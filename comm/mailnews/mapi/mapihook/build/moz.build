@@ -1,0 +1,40 @@
+# vim: set filetype=python:
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this
+# file, You can obtain one at http://mozilla.org/MPL/2.0/.
+
+SharedLibrary('MapiProxy')
+
+OS_LIBS += [
+    'rpcrt4',
+]
+
+SOURCES += [
+    '!dlldata.c',
+    '!msgMapi_i.c',
+    '!msgMapi_p.c'
+]
+
+GENERATED_FILES += [
+    'dlldata.c',
+    'msgMapi.h',
+    'msgMapi_i.c',
+    'msgMapi_p.c'
+]
+
+for var in ('REGISTER_PROXY_DLL', 'UNICODE', '_UNICODE'):
+    DEFINES[var] = True
+
+DEFFILE = SRCDIR + '/MapiProxy.def'
+
+# The Windows MIDL code generator creates things like:
+#
+#   #endif !_MIDL_USE_GUIDDEF_
+#
+# which clang-cl complains about.  MSVC doesn't, so turn this warning off.
+if CONFIG['CC_TYPE'] == 'clang-cl':
+    CFLAGS += ['-Wno-extra-tokens']
+
+# clang-cl complains about these in generated code:
+if CONFIG['CC_TYPE'] == 'clang-cl':
+    CFLAGS += ['-Wno-extern-initializer','-Wno-missing-braces','-Wno-unused-const-variable']

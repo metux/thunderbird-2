@@ -1,0 +1,72 @@
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this
+# file, You can obtain one at http://mozilla.org/MPL/2.0/.
+
+# Calendar builders currently use STRIP_XPI to reduce the binary component in
+# Lightning.
+
+XPI_PKGNAME = lightning-$(LIGHTNING_VERSION).$(AB_CD)
+XPI_VERSION = $(LIGHTNING_VERSION)
+
+XPI_EM_ID = {e2fda1a4-762b-4020-b5ad-a41df1933103}
+
+ifneq (,$(findstring a,$(LIGHTNING_VERSION)))
+DEFINES += -DLIGHTNING_PRERELEASE_VERSION=1
+endif
+
+# Gecko milestone
+GRE_MILESTONE = $(shell $(PYTHON) $(moztopsrcdir)/config/printconfigsetting.py $(DIST)/bin/platform.ini Build Milestone)
+ifdef GRE_MILESTONE
+DEFINES += -DGRE_MILESTONE=$(GRE_MILESTONE)
+endif
+
+# comm-central source repo and stamp
+SOURCE_STAMP ?= $(firstword $(shell hg -R $(commtopsrcdir) parent --template='{node}\n' 2>/dev/null))
+ifdef SOURCE_STAMP
+DEFINES += -DSOURCE_STAMP='$(SOURCE_STAMP)'
+endif
+
+SOURCE_REPO := $(shell hg -R $(commtopsrcdir) showconfig paths.default 2>/dev/null | sed -e 's/^ssh:/http:/')
+ifdef SOURCE_REPO
+DEFINES += -DSOURCE_REPO='$(SOURCE_REPO)'
+endif
+
+# Mozilla source repo and stamps
+MOZ_SOURCE_STAMP = $(firstword $(shell hg -R $(moztopsrcdir) parent --template='{node}\n' 2>/dev/null))
+ifdef MOZ_SOURCE_STAMP
+DEFINES += -DMOZ_SOURCE_STAMP='$(MOZ_SOURCE_STAMP)'
+endif
+
+MOZ_SOURCE_REPO := $(shell hg -R $(moztopsrcdir) showconfig paths.default 2>/dev/null | sed -e 's/^ssh:/http:/')
+ifdef MOZ_SOURCE_REPO
+DEFINES += -DMOZ_SOURCE_REPO='$(MOZ_SOURCE_REPO)'
+endif
+
+DEFINES += -DTHUNDERBIRD_VERSION=$(THUNDERBIRD_VERSION) \
+           -DTHUNDERBIRD_MAXVERSION=$(THUNDERBIRD_MAXVERSION) \
+           -DSEAMONKEY_VERSION=$(SEAMONKEY_VERSION) \
+           -DSEAMONKEY_MAXVERSION=$(SEAMONKEY_MAXVERSION) \
+           -DLIGHTNING_VERSION=$(LIGHTNING_VERSION) \
+           -DXPI_EM_ID="$(XPI_EM_ID)" \
+           $(NULL)
+
+MOZ_BUILDID = $(shell $(PYTHON) $(moztopsrcdir)/config/printconfigsetting.py $(DIST)/bin/application.ini App BuildID)
+DEFINES += -DMOZ_BUILDID=$(MOZ_BUILDID)
+
+LOCALE_TOPDIR=$(commtopsrcdir)
+LOCALE_RELATIVEDIR=calendar/lightning
+
+include $(moztopsrcdir)/config/rules.mk
+include $(srcdir)/versions.mk
+include $(srcdir)/lightning-tests.mk
+
+ident:
+	@printf 'comm_revision '
+	@$(PYTHON) $(moztopsrcdir)/config/printconfigsetting.py \
+	    $(FINAL_TARGET)/app.ini App SourceStamp
+	@printf 'moz_revision '
+	@$(PYTHON) $(moztopsrcdir)/config/printconfigsetting.py \
+	    $(FINAL_TARGET)/app.ini Build SourceStamp
+	@printf 'buildid '
+	@$(PYTHON) $(moztopsrcdir)/config/printconfigsetting.py \
+	    $(FINAL_TARGET)/app.ini App BuildID

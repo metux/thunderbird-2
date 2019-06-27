@@ -1,0 +1,120 @@
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+@import url("chrome://messenger/skin/shared/accountCreation.css");
+@namespace html url("http://www.w3.org/1999/xhtml");
+
+/* ::::: BUTTONS ::::: */
+
+.important-button {
+  font-weight: bold;
+}
+
+/* Set the order of the buttons to: (stop|re-test), (continue|create account), cancel */
+#stop_button, #half-manual-test_button {
+  -moz-box-ordinal-group: 1;
+}
+#next_button, #create_button {
+  -moz-box-ordinal-group: 2;
+}
+#cancel_button {
+  -moz-box-ordinal-group: 3;
+}
+
+#result_area {
+  padding-bottom: 2em;
+}
+
+.errordescription {
+  padding-inline-start: 3px;
+  margin-top: 2px;
+}
+
+.initialDesc, .columnHeader {
+  margin-top: 2px;
+  color: GrayText;
+}
+
+menulist[disabled="true"] {
+  -moz-appearance: none;
+  border: none;
+  background-color: #fff;
+  color: -moz-DialogText;
+}
+
+menulist[disabled="true"] > .menulist-editable-box,
+menulist[disabled="true"] > .menulist-editable-box > .menulist-editable-input,
+menulist[disabled="true"] > .menulist-dropmarker {
+  -moz-appearance: none;
+  color: -moz-DialogText;
+}
+
+#config_status_title {
+  font-weight: bold;
+}
+
+.mastervbox {
+  padding: 8px;
+}
+
+#warningbox {
+  width: 650px;
+  height: 400px;
+}
+
+.outgoing_hostname {
+  margin-bottom: 4px !important;
+  margin-top: 4px !important;
+}
+
+#result-username {
+  margin-inline-start: 1px;
+}
+
+textbox[disabled="true"],
+input[disabled="true"],
+menulist[disabled="true"] {
+  -moz-appearance: none;
+  border: 0;
+  background-color: -moz-dialog;
+  color: -moz-DialogText;
+}
+
+textbox.padded html|*.textbox-input::placeholder {
+  font-style: normal;
+}
+
+.textbox-input-box {
+  padding-top: 2px;
+  padding-bottom: 1px;
+}
+
+.menulist-editable-box {
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-inline-start: 5px;
+}
+
+@media (-moz-windows-default-theme: 0) {
+  .menulist-label-box {
+    padding-top: 2px;
+    padding-bottom: 2px;
+  }
+}
+
+.menulist-dropmarker[disabled="true"] {
+  visibility: hidden;
+}
+
+textbox.port[disabled="true"] {
+  padding-top: 6px;
+}
+
+#outgoing_server_area {
+  padding-top: 2px;
+}
+
+#incoming_protocol[disabled="true"] {
+  padding-left: 6px;
+}

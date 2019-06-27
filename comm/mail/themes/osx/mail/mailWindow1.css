@@ -1,0 +1,204 @@
+/*
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this
+# file, You can obtain one at http://mozilla.org/MPL/2.0/.
+*/
+
+/* ===== mailWindow1.css ================================================
+  == Styles for the main Mail window in the default layout scheme.
+  ======================================================================= */
+
+@import url("chrome://messenger/skin/");
+@import url("chrome://messenger/skin/primaryToolbar.css");
+@import url("chrome://messenger/skin/folderMenus.css");
+@import url("chrome://messenger/skin/folderPane.css");
+@import url("chrome://messenger/skin/messageIcons.css");
+@import url("chrome://messenger/skin/shared/mailWindow1.css");
+
+#tabmail:-moz-lwtheme {
+  text-shadow: inherit;
+}
+
+#messengerBox:-moz-lwtheme {
+  text-shadow: none;
+}
+
+#folderPane-toolbar {
+  background: linear-gradient(#f3f3f3, #ebebeb);
+  border-bottom: 1px solid #bebebe;
+}
+
+#folderPane-toolbar:-moz-window-inactive {
+  background-color: -moz-mac-chrome-inactive;
+  background-image: none;
+}
+
+:root:not([lwt-tree]) #folderTree {
+  -moz-appearance: -moz-mac-source-list;
+  -moz-font-smoothing-background-color: -moz-mac-source-list;
+}
+
+.focusring > .tree-stack > .tree-rows > .tree-bodybox {
+  border: 0;
+}
+
+#folderTree treechildren::-moz-tree-indentation {
+ background-color: black !important;
+}
+
+#folderTree treechildren::-moz-tree-row {
+  padding-inline-start: 2px !important;
+  padding-bottom: 2px;
+  background: transparent;
+}
+
+:root:not([lwt-tree]) #folderTree treechildren::-moz-tree-row(selected) {
+  -moz-appearance: -moz-mac-source-list-selection;
+  -moz-font-smoothing-background-color: -moz-mac-source-list-selection;
+}
+
+@media (-moz-mac-yosemite-theme: 0) {
+  :root:not([lwt-tree]) #folderTree treechildren::-moz-tree-row(selected, focus) {
+    -moz-appearance: -moz-mac-active-source-list-selection;
+    -moz-font-smoothing-background-color: -moz-mac-active-source-list-selection;
+  }
+
+  #folderTree treechildren::-moz-tree-twisty(selected),
+  #folderTree treechildren::-moz-tree-cell-text(selected) {
+    color: white;
+  }
+}
+
+@media (-moz-mac-yosemite-theme) {
+  #folderTree treechildren::-moz-tree-cell-text {
+    font-family: -apple-system;
+    font-size: 9pt;
+    font-weight: 400;
+  }
+
+  #folderTree treechildren::-moz-tree-twisty(selected, focus),
+  #folderTree treechildren::-moz-tree-cell-text(selected, focus) {
+    color: #282828;
+  }
+}
+
+/* ::::: group rows ::::: */
+
+treechildren::-moz-tree-row(dummy) {
+  background-color: var(--row-grouped-header-bg-color) !important;
+  border-color: transparent !important;
+  margin: 1px;
+}
+
+treechildren::-moz-tree-row(dummy, selected, focus) {
+  background-color: var(--row-grouped-header-bg-color-selected) !important;
+}
+
+treechildren::-moz-tree-cell-text(dummy) {
+  font-weight: bold;
+}
+
+:root[lwt-tree] treechildren::-moz-tree-cell-text(dummy, selected) {
+  color: var(--sidebar-highlight-text-color);
+}
+
+/* ..... message pane adjustments ..... */
+
+/* We need to hide overflow in messagepanebox, so that resizing doesn't spill
+   header content over the statusbar.
+   */
+
+#messagepanebox {
+  background-color: #FFFFFF;
+  -moz-appearance: none;
+}
+
+/* ..... splitter adjustments ..... */
+
+#folderpane_splitter,
+#threadpane-splitter:not([orient="vertical"]) {
+  border-width: 0;
+  min-width: 0;
+  width: 5px;
+  background-color: transparent;
+  margin-top: 0;
+  position: relative;
+  z-index: 10;
+  transition: border-width .3s ease-in;
+}
+
+#folderpane_splitter {
+  border-inline-start: 1px solid var(--splitter-color);
+  /* make only the splitter border visible */
+  margin-inline-end: -4px;
+}
+
+#folderpane_splitter[state="collapsed"]:hover {
+  border-inline-start: 4px solid highlight;
+}
+
+#threadpane-splitter:not([orient="vertical"]) {
+  border-inline-end: 1px solid var(--splitter-color);
+  /* make only the splitter border visible */
+  margin-inline-start: -4px;
+}
+
+#threadpane-splitter[state="collapsed"]:not([orient="vertical"]):hover {
+  border-inline-end: 4px solid highlight;
+}
+
+#threadpane-splitter,
+#attachment-splitter {
+  border-width: 0;
+  min-height: 0;
+  height: 5px;
+  background-color: transparent;
+  margin-top: -5px;
+  position: relative;
+  z-index: 10;
+  transition: border-width .3s ease-in;
+}
+
+#threadpane-splitter {
+  border-bottom: 1px solid var(--splitter-color);
+}
+
+#attachment-splitter {
+  border-bottom: 1px solid #bdbdbd;
+}
+
+#attachment-splitter:not([state="collapsed"]) {
+  border-bottom: 1px solid transparent;
+}
+
+#attachment-splitter,
+#threadpane-splitter[state="collapsed"] {
+  transition: border-color .3s;
+}
+
+#threadpane-splitter[state="collapsed"]:hover,
+#attachment-splitter[state="collapsed"]:hover {
+  border-bottom: 4px solid highlight;
+}
+
+/* ..... status bar adjustments ..... */
+
+#quotaMeter {
+  -moz-appearance: none;
+}
+
+.tabmail-tab[type="message"][IsFeedMessage] {
+  list-style-image: url("chrome://messenger-newsblog/skin/rss-feed.png");
+  -moz-image-region: rect(16px 16px 32px 0);
+}
+
+@media (min-resolution: 2dppx) {
+  .tabmail-tab[type="message"][IsFeedMessage] {
+    list-style-image: url("chrome://messenger-newsblog/skin/rss-feed@2x.png");
+    -moz-image-region: rect(32px 32px 64px 0);
+  }
+}
+
+.telemetry-text-link {
+  color: #fff;
+}

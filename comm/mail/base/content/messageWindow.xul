@@ -1,0 +1,241 @@
+<?xml version="1.0"?>
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this
+# file, You can obtain one at http://mozilla.org/MPL/2.0/.
+
+#filter substitution
+
+<?xml-stylesheet href="chrome://messenger/content/bindings.css" type="text/css"?>
+<?xml-stylesheet href="chrome://messenger/skin/messageWindow.css" type="text/css"?>
+<?xml-stylesheet href="chrome://messenger/skin/editContactPanel.css" type="text/css"?>
+<?xml-stylesheet href="chrome://messenger/skin/messageHeader.css" type="text/css"?>
+<?xml-stylesheet href="chrome://messenger/skin/folderMenus.css" type="text/css"?>
+<?xml-stylesheet href="chrome://messenger/skin/attachmentList.css" type="text/css"?>
+<?xml-stylesheet href="chrome://messenger/skin/smime/msgHdrViewSMIMEOverlay.css" type="text/css"?>
+<?xml-stylesheet href="chrome://messenger/skin/smime/msgReadSMIMEOverlay.css" type="text/css"?>
+<?xml-stylesheet href="chrome://messenger/skin/searchBox.css" type="text/css"?>
+<?xml-stylesheet href="chrome://messenger/skin/customizableui/panelUI.css" type="text/css"?>
+
+<!DOCTYPE window [
+<!ENTITY % brandDTD SYSTEM "chrome://branding/locale/brand.dtd" >
+%brandDTD;
+<!ENTITY % msgHdrViewOverlayDTD SYSTEM "chrome://messenger/locale/msgHdrViewOverlay.dtd">
+%msgHdrViewOverlayDTD;
+<!ENTITY % messengerDTD SYSTEM "chrome://messenger/locale/messenger.dtd" >
+%messengerDTD;
+<!ENTITY % editContactOverlayDTD SYSTEM "chrome://messenger/locale/editContactOverlay.dtd">
+%editContactOverlayDTD;
+<!ENTITY % customizeToolbarDTD SYSTEM "chrome://messenger/locale/customizeToolbar.dtd">
+%customizeToolbarDTD;
+<!ENTITY % utilityDTD SYSTEM "chrome://communicator/locale/utilityOverlay.dtd">
+%utilityDTD;
+<!ENTITY % msgViewPickerDTD SYSTEM "chrome://messenger/locale/msgViewPickerOverlay.dtd" >
+%msgViewPickerDTD;
+<!ENTITY % textcontextDTD SYSTEM "chrome://global/locale/textcontext.dtd">
+%textcontextDTD;
+<!ENTITY % baseMenuOverlayDTD SYSTEM "chrome://messenger/locale/baseMenuOverlay.dtd">
+%baseMenuOverlayDTD;
+<!ENTITY % utilityDTD SYSTEM "chrome://communicator/locale/utilityOverlay.dtd">
+%utilityDTD;
+<!ENTITY % charsetDTD SYSTEM "chrome://global/locale/charsetMenu.dtd">
+%charsetDTD;
+<!ENTITY % viewZoomOverlayDTD SYSTEM "chrome://messenger/locale/viewZoomOverlay.dtd">
+%viewZoomOverlayDTD;
+<!ENTITY % msgReadSMIMEDTD SYSTEM "chrome://messenger-smime/locale/msgReadSMIMEOverlay.dtd">
+%msgReadSMIMEDTD;
+<!ENTITY % quickFilterBarDTD SYSTEM "chrome://messenger/locale/quickFilterBar.dtd">
+%quickFilterBarDTD;
+<!ENTITY % msgViewPickerDTD SYSTEM "chrome://messenger/locale/msgViewPickerOverlay.dtd" >
+%msgViewPickerDTD;
+]>
+
+<!--
+  - This window displays a single message.
+  -->
+<window id="messengerWindow"
+        xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+        xmlns:html="http://www.w3.org/1999/xhtml"
+        icon="messengerWindow"
+        title="&titledefault.label;@PRE_RELEASE_SUFFIX@"
+        titlemodifier="&titledefault.label;@PRE_RELEASE_SUFFIX@"
+        titlemenuseparator="&titleSeparator.label;"
+        onload="OnLoadMessageWindow()"
+        onunload="OnUnloadMessageWindow()"
+        persist="width height screenX screenY sizemode"
+        toggletoolbar="true"
+        windowtype="mail:messageWindow"
+        macanimationtype="document"
+        lightweightthemes="true"
+        fullscreenbutton="true">
+
+  <stringbundleset id="stringbundleset">
+    <stringbundle id="bundle_brand" src="chrome://branding/locale/brand.properties"/>
+    <stringbundle id="bundle_messenger" src="chrome://messenger/locale/messenger.properties"/>
+    <stringbundle id="bundle_offlinePrompts" src="chrome://messenger/locale/offline.properties"/>
+    <stringbundle id="bundle_editContact"
+                  src="chrome://messenger/locale/editContactOverlay.properties"/>
+    <stringbundle id="charsetBundle" src="chrome://communicator/content/labelsencodings.properties"/>
+    <stringbundle id="bundle_read_smime" src="chrome://messenger-smime/locale/msgReadSMIMEOverlay.properties"/>
+  </stringbundleset>
+
+  <linkset>
+    <html:link rel="localization" href="toolkit/main-window/findbar.ftl"/>
+  </linkset>
+
+  <script src="chrome://global/content/globalOverlay.js"/>
+  <script src="chrome://messenger/content/commandglue.js"/>
+  <script src="chrome://messenger/content/folderDisplay.js"/>
+  <script src="chrome://messenger/content/messageDisplay.js"/>
+  <script src="chrome://messenger/content/mailWindow.js"/>
+  <script src="chrome://messenger/content/messageWindow.js"/>
+  <script src="chrome://messenger/content/accountUtils.js"/>
+  <script src="chrome://global/content/contentAreaUtils.js"/>
+  <script src="chrome://messenger/content/nsContextMenu.js"/>
+  <script src="chrome://messenger/content/mailContextMenus.js"/>
+  <script src="chrome://messenger/content/phishingDetector.js"/>
+  <script src="chrome://communicator/content/contentAreaClick.js"/>
+  <script src="chrome://global/content/nsDragAndDrop.js"/>
+  <script src="chrome://messenger/content/msgViewNavigation.js"/>
+  <script src="chrome://messenger/content/editContactPanel.js"/>
+  <script src="chrome://messenger/content/toolbarIconColor.js"/>
+  <script src="chrome://messenger/content/msgHdrView.js"/>
+  <script src="chrome://messenger-smime/content/msgHdrViewSMIMEOverlay.js"/>
+  <script src="chrome://messenger-smime/content/msgReadSMIMEOverlay.js"/>
+  <script src="chrome://messenger/content/mailCommands.js"/>
+  <script src="chrome://messenger/content/junkCommands.js"/>
+  <script src="chrome://messenger/content/mailWindowOverlay.js"/>
+  <script src="chrome://messenger/content/mailTabs.js"/>
+  <script src="chrome://messenger-newsblog/content/newsblogOverlay.js"/>
+  <script src="chrome://messenger/content/mail-offline.js"/>
+  <script src="chrome://global/content/printUtils.js"/>
+  <script src="chrome://messenger/content/msgViewPickerOverlay.js"/>
+  <script src="chrome://messenger/content/viewZoomOverlay.js"/>
+  <script src="chrome://communicator/content/utilityOverlay.js"/>
+  <script src="chrome://messenger/content/mailCore.js"/>
+  <script src="chrome://messenger/content/quickFilterBar.js"/>
+  <!-- panelUI.js is for the appmenus. -->
+  <script src="chrome://messenger/content/customizableui/panelUI.js"/>
+#ifdef XP_MACOSX
+  <script src="chrome://global/content/macWindowMenu.js"/>
+#endif
+  <script src="chrome://messenger/content/newmailaccount/uriListener.js"/>
+
+  <commandset id="mailCommands">
+#include mainCommandSet.inc.xul
+    <commandset id="mailSearchMenuItems"/>
+    <commandset id="attachmentCommands">
+      <command id="cmd_openAllAttachments"
+               oncommand="goDoCommand('cmd_openAllAttachments');"
+               disabled="true"/>
+      <command id="cmd_saveAllAttachments"
+               oncommand="goDoCommand('cmd_saveAllAttachments');"
+               disabled="true"/>
+      <command id="cmd_detachAllAttachments"
+               oncommand="goDoCommand('cmd_detachAllAttachments');"
+               disabled="true"/>
+      <command id="cmd_deleteAllAttachments"
+               oncommand="goDoCommand('cmd_deleteAllAttachments');"
+               disabled="true"/>
+    </commandset>
+    <commandset id="tasksCommands">
+      <command id="cmd_newMessage" oncommand="goOpenNewMessage();"/>
+      <command id="cmd_newCard" oncommand="openNewCardDialog()"/>
+    </commandset>
+    <commandset id="commandKeys"/>
+    <command id="cmd_close" oncommand="window.close();"/>
+  </commandset>
+
+  <keyset id="mailKeys">
+    <key keycode="VK_ESCAPE" oncommand="window.close();"/>
+#include mainKeySet.inc.xul
+    <keyset id="tasksKeys">
+#ifdef XP_MACOSX
+      <key id="key_newMessage" key="&newMessageCmd.key;" command="cmd_newMessage"
+           modifiers="accel,shift"/>
+      <key id="key_newMessage2" key="&newMessageCmd2.key;" command="cmd_newMessage"
+           modifiers="accel"/>
+#else
+      <key id="key_newMessage"  key="&newMessageCmd.key;" command="cmd_newMessage"
+           modifiers="accel"/>
+      <key id="key_newMessage2" key="&newMessageCmd2.key;" command="cmd_newMessage"
+           modifiers="accel"/>
+#endif
+    </keyset>
+  </keyset>
+
+  <!-- Popup menus provided by mailWindowOverlay.xul -->
+  <popupset id="mainPopupSet">
+#include mainPopupSet.inc.xul
+
+<!-- The panelUI is for the appmenu. -->
+#include ../../components/customizableui/content/panelUI.inc.xul
+
+#include msgHdrPopup.inc.xul
+  </popupset>
+#include editContactPanel.inc.xul
+
+#ifdef XP_MACOSX
+  <vbox id="titlebar">
+    <hbox id="titlebar-content">
+      <spacer id="titlebar-spacer" flex="1"/>
+      <hbox id="titlebar-buttonbox-container" align="start">
+        <hbox id="titlebar-buttonbox">
+          <toolbarbutton class="titlebar-button" id="titlebar-min" oncommand="window.minimize();"/>
+          <toolbarbutton class="titlebar-button" id="titlebar-max" oncommand="onTitlebarMaxClick();"/>
+          <toolbarbutton class="titlebar-button" id="titlebar-close" oncommand="window.close()"/>
+        </hbox>
+      </hbox>
+      <hbox id="titlebar-fullscreen-button"/>
+    </hbox>
+  </vbox>
+#endif
+
+  <!-- navigation-toolbox with the main menubar -->
+#include mainNavigationToolbox.inc.xul
+  </toolbox>
+
+  <!-- mail-toolbox with the main toolbarbuttons -->
+#include mainMailToolbox.inc.xul
+
+  <tooltip id="aHTMLTooltip" page="true"/>
+
+  <!-- msg header view -->
+  <!-- a convenience box for ease of extension overlaying -->
+  <hbox id="messagepaneboxwrapper" flex="1">
+    <vbox id="messagepanebox" flex="3"
+          ondragover="nsDragAndDrop.dragOver(event, messagepaneObserver);"
+          ondrop="nsDragAndDrop.drop(event, messagepaneObserver);"
+          ondragexit="nsDragAndDrop.dragExit(event, messagepaneObserver);">
+
+      <hbox id="msgHeaderView" collapsed="true" class="main-header-area">
+#include msgHdrView.inc.xul
+      </hbox>
+      <!-- The msgNotificationBar appears on top of the message and displays
+           information like: junk, mdn, remote content and phishing warnings -->
+      <hbox id="mail-notification-top">
+        <!-- notificationbox will be added here lazily. -->
+      </hbox>
+
+      <!-- message view -->
+      <browser id="messagepane" context="mailContext" tooltip="aHTMLTooltip"
+               style="height: 0px; min-height: 1px" flex="1" name="messagepane"
+               disablesecurity="true" disablehistory="true" type="content" primary="true"
+               onresize="return messagePaneOnResize(event);" autofind="false"
+               src="about:blank" onclick="return contentAreaClick(event);" />
+      <splitter id="attachment-splitter" collapse="after" resizebefore="closest" resizeafter="closest" collapsed="true"/>
+      <vbox id="attachmentView" collapsed="true">
+#include msgAttachmentView.inc.xul
+      </vbox>
+      <findbar id="FindToolbar" browserid="messagepane"/>
+    </vbox>
+  </hbox>
+  <panel id="customizeToolbarSheetPopup" noautohide="true">
+    <iframe id="customizeToolbarSheetIFrame"
+            style="&dialog.dimensions;"
+            hidden="true"/>
+  </panel>
+
+  <hbox id="status-bar" class="statusbar chromeclass-status">
+#include mainStatusbar.inc.xul
+  </hbox>
+</window>

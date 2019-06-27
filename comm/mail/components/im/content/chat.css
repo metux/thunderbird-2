@@ -1,0 +1,130 @@
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+@namespace html url(http://www.w3.org/1999/xhtml);
+
+imconversation {
+  -moz-binding: url("chrome://messenger/content/chat/imconversation.xml#conversation");
+}
+
+imgroup {
+  -moz-binding: url("chrome://messenger/content/chat/imgroup.xml#group");
+  -moz-box-align: center;
+}
+
+imcontact {
+  -moz-binding: url("chrome://messenger/content/chat/imcontact.xml#contact");
+  -moz-box-align: center;
+}
+
+.startChatBubble, .closeConversationButton {
+  cursor: pointer;
+  -moz-user-focus: ignore;
+}
+
+.startChatBubble {
+  display: none;
+}
+
+imcontact[cansend]:hover .startChatBubble {
+  display: -moz-box;
+}
+
+imconv {
+  -moz-binding: url("chrome://messenger/content/chat/imconv.xml#conv");
+  -moz-box-align: center;
+}
+
+.convUnreadCount[value="0"],
+.convUnreadTargetedCount[value="0"] {
+  display: none;
+}
+
+tooltip[type="im"] {
+  -moz-binding: url("chrome://chat/content/imtooltip.xml#tooltip");
+}
+
+#contextPaneFlexibleBox {
+  overflow: hidden;
+}
+
+#contextPane:not([chat]) > vbox > .conv-chat {
+  display: none;
+}
+
+#IMSearchInput {
+  -moz-binding: url("chrome://messenger/content/search.xml#glodaSearch");
+}
+
+#statusTypeIcon:not([disabled]) {
+  cursor: pointer;
+}
+
+#statusMessage {
+  width: 15em;
+}
+
+#statusMessage:not([statusType="offline"]):not([disabled]), .statusMessageInput[editable] {
+  cursor: text;
+}
+
+#statusMessage[editing], .statusMessageInput[editing] {
+  -moz-appearance: textfield;
+}
+
+#button-chat {
+  -moz-binding: url('chrome://messenger/content/chat/badgebutton.xml#badgebutton');
+}
+
+toolbar[mode="text"] #button-chat {
+  -moz-box-orient: horizontal;
+}
+
+.badgeButton-badge {
+  display: none;
+  background-color: red;
+  border: 1px solid white;
+  border-radius: 12px;
+  box-shadow: 1px 1px 1px black;
+  color: white;
+  font: 8px Helvetica, Verdana, Tahoma;
+  height: 11px;
+  min-width: 11px;
+  text-align: center;
+  margin-top: -1px;
+  margin-inline-start: 5px;
+  margin-inline-end: 0;
+  margin-bottom: 5px;
+  padding: 0 2px;
+}
+
+toolbar[mode="text"] .badgeButton-badge {
+  margin: 0;
+  margin-bottom: 3px;
+}
+
+#button-chat[showingBadge="true"] > stack > .badgeButton-badge {
+  display: block;
+}
+
+.badgeButton-badgeLabel {
+  margin: 0;
+}
+
+#joinChatGrid {
+  display: inline-grid;
+  grid-template-columns: auto auto auto;
+}
+
+#joinChatGrid textbox, menulist {
+  width: 100%;
+}
+
+#joinChatGrid html|div {
+  display: flex;
+  align-items: center;
+}
+.required {
+  visibility: hidden;
+}

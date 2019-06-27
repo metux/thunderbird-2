@@ -1,0 +1,132 @@
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this
+# file, You can obtain one at http://mozilla.org/MPL/2.0/.
+---
+trust-domain: comm
+project-repo-param-prefix: comm_
+product-dir: comm/mail
+
+treeherder:
+    group-names:
+        'X': 'Xpcshell tests'
+        'Z': 'MozMill tests'
+        'I': 'Docker Image Builds'
+        'TL': 'Toolchain builds for Linux 64-bits'
+        'TM': 'Toolchain builds for OSX'
+        'TMW': 'Toolchain builds for Windows MinGW'
+        'TW32': 'Toolchain builds for Windows 32-bits'
+        'TW64': 'Toolchain builds for Windows 64-bits'
+        'Deb7': 'Packages for Debian 7'
+        'Deb7-32': 'Packages for Debian 7 32-bits'
+        'Deb9': 'Packages for Debian 9'
+        'Fetch-URL': 'Fetch and store content'
+        'L10n': 'Localised Repacks'
+        'L10n-Rpk': 'Localized Repackaged Repacks'
+        'M': 'Mochitests'
+        'ms': 'Complete MAR signing'
+        'MSI': 'Repack installers into MSIs'
+        'MSIs': 'Signing of Repacked installers of MSIs'
+        'rs': 'Repackage signing'
+        'BM': 'Beetmover'
+        'BMR': 'Beetmover repackages'
+        'c-Up': 'Balrog submission of complete updates'
+        'cs': 'Checksum signing'
+        'BMcs': 'Beetmover checksums,'
+        'Rel': 'Release promotion'
+        'css': 'Checksum signing for source'
+        'BMcss': 'Beetmover checksums for source'
+        'UV': 'Update verify'
+
+index:
+    products:
+        - thunderbird
+
+try:
+    ridealong-builds: {}
+
+release-promotion:
+    products:
+        - 'thunderbird'
+    flavors:
+        promote_thunderbird:
+            product: thunderbird
+            target-tasks-method: promote_desktop
+        push_thunderbird:
+            product: thunderbird
+            target-tasks-method: push_desktop
+        ship_thunderbird:
+            product: thunderbird
+            target-tasks-method: ship_desktop
+            version-bump: true
+
+scriptworker:
+    scope-prefix: 'project:comm:thunderbird:releng'
+
+    worker-types:
+        'scriptworker-prov-v1/tb-depsigning':
+            - 'project:comm:thunderbird:releng:signing:cert:dep-signing'
+        'scriptworker-prov-v1/tb-signing-v1':
+            - 'project:comm:thunderbird:releng:signing:cert:nightly-signing'
+            - 'project:comm:thunderbird:releng:signing:cert:release-signing'
+        'scriptworker-prov-v1/tb-beetmover-dev':
+            - 'project:comm:thunderbird:releng:beetmover:bucket:dep'
+        'scriptworker-prov-v1/tb-beetmover-v1':
+            - 'project:comm:thunderbird:releng:beetmover:bucket:nightly'
+            - 'project:comm:thunderbird:releng:beetmover:bucket:release'
+        'scriptworker-prov-v1/tb-balrog-dev':
+            - 'project:comm:thunderbird:releng:balrog:server:dep'
+        'scriptworker-prov-v1/tb-balrog-v1':
+            - 'project:comm:thunderbird:releng:balrog:server:nightly'
+            - 'project:comm:thunderbird:releng:balrog:server:beta'
+            - 'project:comm:thunderbird:releng:balrog:server:release'
+
+partner-urls:
+    release-partner-repack: {}
+    release-eme-free-repack: {}
+
+task-priority:
+    by-project:
+        'comm-(esr60|esr68)': 'very-high'
+        'comm-beta': 'high'
+        'comm-central': 'medium'
+        'default': 'low'
+
+version-directory: comm/mail/config
+
+workers:
+    aliases:
+        b-linux.*:
+            provisioner: aws-provisioner-v1
+            implementation: docker-worker
+            os: linux
+            worker-type: 'gecko-{level}-{alias}'
+        b-win2012:
+            provisioner: aws-provisioner-v1
+            implementation: generic-worker
+            os: windows
+            worker-type: 'gecko-{level}-{alias}'
+        images:
+            provisioner: aws-provisioner-v1
+            implementation: docker-worker
+            os: linux
+            worker-type: 'gecko-{level}-{alias}'
+        t-linux(-large|-xlarge):
+            provisioner: aws-provisioner-v1
+            implementation: docker-worker
+            os: linux
+            worker-type: 'gecko-{alias}'
+        t-osx-1010:
+            provisioner: releng-hardware
+            implementation: generic-worker
+            os: macosx
+            worker-type: 'gecko-{alias}'
+        t-win10-64(|-gpu):
+            provisioner: aws-provisioner-v1
+            implementation: generic-worker
+            os: windows
+            worker-type: 'gecko-{alias}'
+        t-win7-32(|-gpu):
+            provisioner: aws-provisioner-v1
+            implementation: generic-worker
+            os: windows
+            worker-type: 'gecko-{alias}'

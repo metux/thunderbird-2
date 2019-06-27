@@ -1,0 +1,24 @@
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+@import url("chrome://messenger/skin/shared/compacttheme.css");
+
+/* Quick-Filter-Bar */
+#quick-filter-bar {
+  border-bottom-color: var(--chrome-content-separator-color);
+}
+
+#MsgHeadersToolbar {
+  background-image: none;
+}
+
+#headers-box {
+  -moz-appearance: none;
+}
+
+#FormatToolbar {
+  color: inherit;
+  background-image: none;
+}
+

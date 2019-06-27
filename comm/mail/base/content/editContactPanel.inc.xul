@@ -1,0 +1,103 @@
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this
+# file, You can obtain one at http://mozilla.org/MPL/2.0/.
+
+<panel id="editContactPanel"
+        type="arrow"
+        orient="vertical"
+        ignorekeys="true"
+        hidden="true"
+#if 0
+        # consumeoutsideclicks=true is here so clicking onto the star icon next
+        # to an address (onClickEmailStar()) for a second time will close the
+        # panel due to the outside click and not trigger opening the panel
+        # again since the panel itself consumes the click.
+        # That's the theory. In practice we haven't seen any platform where
+        # this would be necessary, so we leave it as a reference to the
+        # quirky old past where setConsumeRollupEvent(PopupBoxObject.ROLLUP_CONSUME)
+        # was used.
+        consumeoutsideclicks="true"
+#endif
+        aria-labelledby="editContactPanelTitle"
+        onpopuphidden="editContactInlineUI.onPopupHidden(event);"
+        onpopupshown="editContactInlineUI.onPopupShown(event);"
+        onkeypress="editContactInlineUI.onKeyPress(event, true);">
+  <hbox id="editContactHeader"
+        flex="1" align="center">
+    <image id="editContactPanelIcon"/>
+    <label id="editContactPanelTitle" flex="1"/>
+  </hbox>
+
+  <hbox id="editContactContent">
+    <vbox flex="1">
+      <hbox flex="1" align="center" pack="end">
+        <label value="&editContactName.label;"
+               class="editContactPanel_rowLabel"
+               accesskey="&editContactName.accesskey;"
+               control="editContactName"/>
+      </hbox>
+      <hbox flex="1" align="center" pack="end">
+        <label value="&editContactEmail.label;"
+               class="editContactPanel_rowLabel"
+               accesskey="&editContactEmail.accesskey;"
+               control="editContactEmail"/>
+      </hbox>
+      <hbox flex="1" align="center" pack="end">
+        <label id="editContactAddressBook"
+               class="editContactPanel_rowLabel"
+               value="&editContactAddressBook.label;"
+               accesskey="&editContactAddressBook.accesskey;"
+               control="editContactAddressBookList"/>
+      </hbox>
+      <hbox flex="1" align="center" pack="end" collapsed="true">
+        <label value=""/>
+      </hbox>
+    </vbox>
+    <vbox>
+      <textbox id="editContactName" class="editContactTextbox"
+                    onkeypress="editContactInlineUI.onKeyPress(event, true);"/>
+      <textbox id="editContactEmail" readonly="true"
+               class="editContactTextbox"
+               onkeypress="editContactInlineUI.onKeyPress(event, true);"/>
+      <menulist is="menulist-addrbooks" id="editContactAddressBookList"
+                flex="1" />
+      <description id="contactMoveDisabledText" collapsed="true">
+        &contactMoveDisabledWarning.description;
+      </description>
+    </vbox>
+  </hbox>
+
+  <hbox flex="1"
+        id="editContactPanelBottomButtons">
+    <button id="editContactPanelEditDetailsButton"
+            class="editContactPanelButton"
+            flex="1"
+            oncommand="editContactInlineUI.editDetails();"
+            onkeypress="editContactInlineUI.onKeyPress(event, false);"/>
+#ifdef XP_WIN
+    <button id="editContactPanelDoneButton"
+            class="editContactPanelButton"
+            flex="1"
+            label="&editContactPanelDone.label;"
+            accesskey="&editContactPanelDone.accesskey;" default="true"
+            oncommand="editContactInlineUI.saveChanges();"
+            onkeypress="editContactInlineUI.onKeyPress(event, false);"/>
+#endif
+    <button id="editContactPanelDeleteContactButton"
+            class="editContactPanelButton"
+            flex="1"
+            label="&editContactPanelDeleteContact.label;"
+            accesskey="&editContactPanelDeleteContact.accesskey;"
+            oncommand="editContactInlineUI.deleteContact();"
+            onkeypress="editContactInlineUI.onKeyPress(event, false);"/>
+#ifdef XP_UNIX
+    <button id="editContactPanelDoneButton"
+            class="editContactPanelButton"
+            flex="1"
+            label="&editContactPanelDone.label;"
+            accesskey="&editContactPanelDone.accesskey;" default="true"
+            oncommand="editContactInlineUI.saveChanges();"
+            onkeypress="editContactInlineUI.onKeyPress(event, false);"/>
+#endif
+  </hbox>
+</panel>

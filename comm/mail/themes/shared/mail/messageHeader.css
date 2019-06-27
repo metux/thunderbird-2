@@ -1,0 +1,314 @@
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+@namespace url("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul");
+
+/* ::::: msg header buttons ::::: */
+
+.headerContainer {
+  min-width: 1px;
+}
+
+#otherActionsButton > .toolbarbutton-icon {
+  display: none;
+}
+
+.toolbarbutton-1.msgHeaderView-button {
+  fill: currentColor;
+}
+
+.msgHeaderView-button[type="menu"] {
+  -moz-binding: url("chrome://global/content/bindings/toolbarbutton.xml#toolbarbutton");
+}
+
+hbox > .toolbarbutton-1.msgHeaderView-button,
+hbox > .msgHeaderView-button[type="menu-button"] > toolbarbutton,
+#attachmentSaveAll > .msgHeaderView-button[type="menu-button"] > toolbarbutton {
+  -moz-box-orient: horizontal;
+}
+
+/* ::::: msg header toolbars ::::: */
+
+#expandedHeaderRows > row,
+#expandedHeader2Rows > row {
+  /* Ensure that the header names and values are aligned with each other. */
+  -moz-box-align: baseline;
+}
+
+#expandedHeadersTopBox {
+  /* Use the HTML layout model to allow the message header toolbar to float to
+     the right of the From field. */
+  display: block;
+}
+
+/* ::::: expanded header pane ::::: */
+
+#expandedsubjectBox {
+  font-weight: bold;
+}
+
+/* ::::: attachment view ::::: */
+
+#attachmentCount {
+  margin: 0;
+  padding: 2px 0;
+  margin-inline-start: 2px;
+  margin-inline-end: 1px;
+}
+
+#attachmentName {
+  -moz-user-focus: normal;
+  margin: 0;
+  margin-inline-end: -3px;
+  padding: 1px 2px;
+  border-radius: 2px;
+  border: 1px dotted transparent;
+}
+
+#attachmentName:focus {
+  border-color: Highlight;
+}
+
+/* ::::: msg header captions ::::: */
+
+#header-view-toolbar .msgHeaderView-button[disabled="true"] {
+  display: none;
+}
+
+toolbarpaletteitem > #hdrReplyToSenderButton {
+  display: -moz-box;
+}
+
+window[toolboxId="header-view-toolbox"] #wrapper-spring {
+  display: none;
+}
+
+window[toolboxId="header-view-toolbox"] #modefull {
+  display: none;
+}
+
+.inline-toolbox[doCustomization] {
+  background: grey;
+}
+
+#header-view-toolbar {
+  -moz-box-pack: end;
+}
+
+/* Only show the dummy smart reply button when customizing. */
+.inline-toolbox[doCustomization] #hdrSmartReplyButton > toolbarbutton,
+toolbarpaletteitem #hdrSmartReplyButton > toolbarbutton {
+  display: none;
+}
+
+.inline-toolbox[doCustomization] #hdrDummyReplyButton,
+toolbarpaletteitem #hdrDummyReplyButton {
+  display: -moz-box !important;
+}
+
+.headerValue {
+  overflow-wrap: anywhere;
+  display: block;
+}
+
+.headerValue[containsEmail="true"] {
+  margin-inline-start: 0px !important;
+}
+
+#otherActionsBox {
+  margin-inline-start: 8px;
+}
+
+.headerValueBox {
+  overflow: visible;
+}
+
+mail-newsgroups-headerfield.headerValueBox {
+  padding: .1em 0;
+  margin-bottom: 4px;
+}
+
+.headerValueBox[singleline="true"] > .headerValue[containsEmail="true"] {
+  white-space: nowrap;
+}
+
+.headerValueBox[singleline="true"] {
+  overflow: hidden;
+}
+
+.headerField {
+  color: inherit;
+}
+
+.moreIndicator:hover {
+  text-decoration: underline;
+  color: darkred;
+}
+
+.tagvalue {
+  padding: 0 0.5ex;
+  margin-inline-start: 0;
+  background-image: linear-gradient(rgba(255,255,255,0.35),
+                                    rgba(255,255,255,0.35));
+  border-radius: 3px;
+  border-width: 0.5px;
+  border-style: outset;
+  text-shadow: 0 1px 0 rgba(238, 238, 236, 0.4); /* Tango Alumninum 1 */
+  color: #111111;
+}
+
+/* ::::: msg header email addresses ::::: */
+
+.emailDisplayButton {
+  padding-inline-start: 2px;
+  padding-inline-end: 2px;
+}
+
+.emailDisplayButton:hover {
+  cursor: pointer;
+  color: HighlightText;
+  background-color: Highlight;
+}
+
+mail-emailaddress[selected="true"] > .emailDisplayButton {
+  /* when an email address context menu is selected,
+   * make sure that the email menupopup stays displayed,
+   * and tweak the bottom to blend in more w/ the menu
+   */
+  cursor: pointer;
+  color: HighlightText;
+  background-color: Highlight;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+/* this is for the comma in between email addresses */
+.emailSeparator {
+  margin-inline-start: -3px; /* squeeze it inside the bubble, by the star */
+}
+
+/* Because there's no star for newsgroups like there is for email addresses,
+ * pushing it back the same number of pixels as emailSeparator causes
+ * the comma to be drawn too close to the last letter, which looks bad, so
+ * using a separate rule here.
+ */
+.newsgroupSeparator {
+  margin-inline-start: -2px;
+}
+
+.emailStar {
+  width: 1em;
+  height: 1em;
+  margin-inline-start: 2px;
+  list-style-image: url("chrome://messenger/skin/icons/star.svg");
+  -moz-context-properties: fill;
+  fill: currentColor;
+}
+
+.emailStar[hascard="true"] {
+  list-style-image: url("chrome://messenger/skin/icons/starred.svg");
+  fill: var(--toolbarbutton-icon-fill-attention);
+}
+
+.emailDisplayButton:hover > .emailStar,
+mail-emailaddress[selected="true"] > .emailDisplayButton > .emailStar {
+  fill: HighlightText;
+}
+
+.emailStar:focus {
+  outline: 1px dotted;
+}
+
+.emaillabel {
+  max-width: 60vw; /* for very long email fields */
+}
+
+.emaillabel,
+.newsgrouplabel {
+  padding: 0;  /* override <label> defaults */
+  margin: 0;  /* override <label> defaults */
+  overflow: hidden;
+}
+
+.emailStar[chatStatus],
+.emailPresence:not([chatStatus]) {
+  display: none;
+}
+
+.emailPresence[chatStatus="available"] {
+  list-style-image: url("chrome://messenger/skin/icons/status-small.png");
+  -moz-image-region: rect(0 10px 10px 0);
+}
+
+.emailPresence[chatStatus="away"] {
+  list-style-image: url("chrome://messenger/skin/icons/status-small.png");
+  -moz-image-region: rect(0 40px 10px 30px);
+}
+
+.emailPopup:hover {
+  list-style-image: url("chrome://messenger/skin/icons/arrow-dn-blue.png");
+}
+
+/* ::::: email address twisty ::::: */
+
+.addresstwisty {
+  padding-inline-end: 0px;
+  padding-top: 4px;
+  list-style-image:url("chrome://messenger/skin/icons/arrow/arrow-right-dim.png");
+}
+
+.addresstwisty:hover {
+  list-style-image:url("chrome://messenger/skin/icons/arrow/arrow-right.png");
+}
+
+.addresstwisty[open] {
+  list-style-image:url("chrome://messenger/skin/icons/arrow/arrow-down-dim.png");
+}
+
+.addresstwisty[open]:hover {
+  list-style-image:url("chrome://messenger/skin/icons/arrow/arrow-down.png");
+}
+
+.emailToggleHeaderfield {
+  padding-top: 1px;
+  width: 8px; /* The image's width is 8 pixels */
+  height: 8px;
+  margin-inline-end: 2px;
+  margin-inline-start: 4px;
+  background: url("chrome://global/skin/icons/twisty-collapsed.svg") no-repeat left 7px;
+  -moz-context-properties: fill;
+  fill: currentColor;
+}
+
+.emailToggleHeaderfield:-moz-locale-dir(rtl) {
+  background: url("chrome://global/skin/icons/twisty-collapsed-rtl.svg");
+}
+
+.emailToggleHeaderfield.open {
+  background: url("chrome://global/skin/icons/twisty-expanded.svg") no-repeat left 6px;
+}
+
+/* ::::: view expand and collapse twisties  ::::: */
+
+mail-multi-emailheaderfield,
+mail-headerfield,
+mail-urlfield,
+mail-newsgroups-headerfield {
+  -moz-box-align: baseline;
+}
+
+mail-headerfield {
+  -moz-user-focus: normal;
+  -moz-user-select: text;
+  word-wrap: break-word;
+}
+
+mail-headerfield:focus {
+  outline: 1px dotted;
+  outline-offset: -1px;
+}
+
+#header-view-toolbox:-moz-locale-dir(rtl) {
+  float: left;
+}

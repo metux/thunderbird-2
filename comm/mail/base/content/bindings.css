@@ -1,0 +1,35 @@
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+@import url("chrome://messenger/skin/textbox.css");
+
+@namespace url("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul");
+
+toolbox {
+  -moz-binding: url("chrome://messenger/content/toolbar.xml#toolbox");
+}
+
+toolbar {
+  -moz-binding: url("chrome://messenger/content/toolbar.xml#toolbar");
+}
+
+%ifndef XP_MACOSX
+toolbar[type="menubar"][autohide="true"] {
+  -moz-binding: url("chrome://messenger/content/toolbar.xml#toolbar-menubar-autohide");
+}
+%endif
+
+toolbarbutton[type="menu-button"] {
+  -moz-binding: url("chrome://messenger/content/toolbar.xml#menu-button");
+}
+
+toolbarpaletteitem {
+  -moz-binding: url("chrome://messenger/content/toolbar.xml#toolbarpaletteitem");
+}
+
+toolbarpaletteitem[place="palette"] {
+  -moz-box-orient: vertical;
+  -moz-binding: url("chrome://messenger/content/toolbar.xml#toolbarpaletteitem-palette");
+}
+

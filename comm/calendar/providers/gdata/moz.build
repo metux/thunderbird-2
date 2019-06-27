@@ -1,0 +1,40 @@
+# vim: set filetype=python:
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this
+# file, You can obtain one at http://mozilla.org/MPL/2.0/.
+
+XPI_NAME = 'gdata-provider'
+export('XPI_NAME')
+
+FINAL_TARGET_PP_FILES += ['manifest.json']
+
+DIRS += [
+    'locales',
+]
+
+EXTRA_JS_MODULES += [
+    'modules/calUtilsShim.jsm',
+    'modules/gdataLogging.jsm',
+    'modules/gdataRequest.jsm',
+    'modules/gdataSession.jsm',
+    'modules/gdataUtils.jsm',
+    'modules/OAuth2.jsm',
+    'modules/timezoneMap.jsm',
+]
+
+EXTRA_COMPONENTS += [
+    'components/calGoogleCalendar.js',
+    'components/calGoogleCalendar.manifest',
+]
+
+JAR_MANIFESTS += ['jar.mn']
+
+USE_EXTENSION_MANIFEST = True
+export('USE_EXTENSION_MANIFEST')
+
+JS_PREFERENCE_FILES += [
+    'defaults/preferences.js',
+]
+
+with Files('**'):
+    BUG_COMPONENT = ('Calendar', 'Provider: GData')

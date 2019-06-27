@@ -1,0 +1,174 @@
+%if 0
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+%endif
+
+%include ../../../components/im/themes/chat.css
+
+#chatTabPanel {
+  --imbox-selected-text-color: -moz-FieldText;
+  --imbox-selected-background-color: -moz-Field;
+  --imbox-selected-border-color: var(--splitter-color);
+  --imgroup-selected-background-color: ThreeDLightShadow;
+}
+
+/* Adaptation from #folderTree */
+:root:not([lwt-tree]) #listPaneBox {
+  -moz-appearance:  none;
+  background-color: -moz-Field;
+  color: -moz-FieldText;
+}
+
+#listPaneBox > * {
+  background: transparent !important;
+  -moz-appearance: none !important;
+  border: none;
+}
+
+#conversationsDeck {
+  background: var(--imbox-selected-background-color);
+}
+
+.conv-textbox {
+  -moz-appearance: none;
+  /* Right/left margins so the borders show up on all sides. */
+  margin: 0 1px 0 1px;
+}
+
+.conv-counter[value^="-"] {
+  margin-inline-end: 2px;
+  padding-inline-end: 4px;
+}
+
+#contextPane {
+  background-color: -moz-field;
+  color: -moz-fieldtext;
+}
+
+.userIcon {
+  border-width: 0px;
+}
+
+#logTree,
+.conv-nicklist {
+  -moz-appearance: none;
+  border: none;
+  margin: 0;
+}
+
+.conv-nicklist-header,
+.conv-logs-header-label {
+  -moz-appearance: none;
+  margin: 0;
+  padding-top: 2px;
+  padding-bottom: 2px;
+  border-bottom: 1px solid ThreeDShadow;
+  background-color: -moz-Dialog;
+}
+
+.statusMessageInput[editing] {
+  color: -moz-dialogtext;
+  margin: 28px 0 -1px -2px;
+}
+
+#displayNameAndstatusMessageStack #statusMessage {
+  margin: 32px 0 0;
+}
+
+#displayNameAndstatusMessageStack  #statusMessage[editing] {
+  margin: 30px 0 1px -2px;
+}
+
+#displayNameAndstatusMessageStack #displayName[editing] {
+  margin-left: -2px;
+  margin-bottom: 18px;
+}
+
+.statusMessageToolbarItem {
+  margin: 0 1px;
+  margin-inline-start: -2px;
+  padding: 3px 3px 4px;
+  border-radius: 2px;
+}
+
+#listSplitter,
+#contextSplitter {
+  background-color: transparent;
+  min-width: 0;
+}
+
+#listSplitter {
+  border-inline-end-width: 0;
+}
+
+#contextSplitter {
+  border-inline-start-width: 0;
+}
+
+@media (-moz-windows-default-theme) {
+  .conv-status-container {
+    border-bottom-color: #a9b7c9;
+  }
+
+  #statusTypeIcon > .toolbarbutton-menu-dropmarker {
+    padding: 1px 3px;
+  }
+
+  #chat-status-selector > .statusMessageToolbarItem[editing] {
+    -moz-appearance: none;
+    padding-inline-start: 2px;
+    padding-inline-end: 2px;
+  }
+
+  #chat-status-selector:not(:-moz-lwtheme):hover > .statusMessageToolbarItem,
+  .statusMessageToolbarItem:not(:-moz-lwtheme):focus {
+    border-color: hsla(210, 54%, 20%, .25) hsla(210, 54%, 20%, .27)
+                  hsla(210, 54%, 20%, .3);
+  }
+
+  #chat-status-selector:not(:-moz-lwtheme) > .statusMessageToolbarItem[editing] {
+    border-color: hsla(206, 100%, 60%, .65) hsla(206, 100%, 55%, .65)
+                  hsla(206, 100%, 50%, .65);
+    background-color: -moz-field;
+  }
+
+  #nicklist > richlistitem[selected] > label,
+  #nicklist:focus > richlistitem[inactive][selected] > label {
+    color: -moz-dialogtext !important;
+  }
+}
+
+@media (-moz-os-version: windows-win7) and (-moz-windows-default-theme) {
+  :root:not([lwt-tree]) #listPaneBox {
+    background-color: rgb(238, 243, 250);
+  }
+
+  #conversationsDeck {
+    background-color: rgb(233, 239, 245);
+  }
+
+  .conv-nicklist-header,
+  .conv-logs-header-label {
+    background-color: rgb(233, 239, 245);
+  }
+}
+
+@media (-moz-os-version: windows-win8) and (-moz-windows-default-theme) {
+  :root:not([lwt-tree]) #listPaneBox {
+    background-color: -moz-Dialog;
+  }
+}
+
+@media (-moz-os-version: windows-win10) and (-moz-windows-default-theme) {
+  :root:not([lwt-tree]) #listPaneBox {
+    background-color: #fafafa;
+  }
+}
+
+@media (-moz-os-version: windows-win8) and (-moz-windows-default-theme),
+       (-moz-os-version: windows-win10) and (-moz-windows-default-theme) {
+  .statusMessageToolbarItem {
+    border-radius: 0;
+  }
+}

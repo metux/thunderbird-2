@@ -1,0 +1,53 @@
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this
+# file, You can obtain one at http://mozilla.org/MPL/2.0/.
+---
+loader: taskgraph.loader.transform:loader
+
+transforms:
+    - taskgraph.transforms.release:run_on_releases
+    - taskgraph.transforms.release_deps:transforms
+    - taskgraph.transforms.scriptworker:add_balrog_scopes
+    - taskgraph.transforms.balrog_toplevel:transforms
+    - taskgraph.transforms.task:transforms
+
+job-defaults:
+    run-on-projects: []  # to make sure this never runs in CI
+    shipping-phase: promote
+    worker:
+        implementation: balrog
+        balrog-action: submit-toplevel
+        require-mirrors: true
+        archive-domain:
+            by-release-level:
+                production: archive.mozilla.org
+                staging: ftp.stage.mozaws.net
+        download-domain:
+            by-release-level:
+                production: download.mozilla.org
+                staging: bouncer-bouncer-releng.stage.mozaws.net
+    whats-new-config: comm/mail/config/whats_new_page.yml
+
+jobs:
+    thunderbird:
+        name: submit-toplevel-thunderbird-release-to-balrog
+        description: Submit toplevel Thunderbird release to balrog
+        shipping-product: thunderbird
+        worker:
+            product: thunderbird
+            channel-names:
+                by-release-type:
+                    beta: ["beta", "beta-localtest", "beta-cdntest"]
+                    release: ["release", "release-localtest", "release-cdntest"]
+                    default: []
+            rules-to-update:
+                by-release-type:
+                    beta: ["thunderbird-beta-cdntest", "thunderbird-beta-localtest"]
+                    release: ["thunderbird-release60-cdntest", "thunderbird-release60-localtest"]
+                    default: []
+            platforms: ["linux", "linux64", "macosx64", "win32", "win64"]
+        treeherder:
+            platform: thunderbird-release/opt
+            symbol: Rel(BPTb)
+            tier: 1
+            kind: build

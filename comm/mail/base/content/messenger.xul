@@ -1,0 +1,823 @@
+<?xml version="1.0"?>
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this
+# file, You can obtain one at http://mozilla.org/MPL/2.0/.
+
+#filter substitution
+#define MAIN_WINDOW
+<?xml-stylesheet href="chrome://messenger/skin/mailWindow1.css" type="text/css"?>
+<?xml-stylesheet href="chrome://messenger/skin/tagColors.css" type="text/css"?>
+<?xml-stylesheet href="chrome://gloda/content/glodacomplete.css" type="text/css"?>
+<?xml-stylesheet href="chrome://messenger/content/bindings.css" type="text/css"?>
+<?xml-stylesheet href="chrome://messenger/content/tabmail.css" type="text/css"?>
+<?xml-stylesheet href="chrome://messenger/skin/tabmail.css" type="text/css"?>
+<?xml-stylesheet href="chrome://messenger/skin/quickFilterBar.css" type="text/css"?>
+<?xml-stylesheet href="chrome://messenger/skin/editContactPanel.css" type="text/css"?>
+<?xml-stylesheet href="chrome://messenger/content/chat/chat.css" type="text/css"?>
+<?xml-stylesheet href="chrome://messenger/skin/chat.css" type="text/css"?>
+<?xml-stylesheet href="chrome://chat/skin/imtooltip.css" type="text/css"?>
+<?xml-stylesheet href="chrome://messenger/skin/messageHeader.css" type="text/css"?>
+<?xml-stylesheet href="chrome://messenger/skin/folderMenus.css" type="text/css"?>
+<?xml-stylesheet href="chrome://messenger/skin/attachmentList.css" type="text/css"?>
+<?xml-stylesheet href="chrome://messenger/skin/smime/msgHdrViewSMIMEOverlay.css" type="text/css"?>
+<?xml-stylesheet href="chrome://messenger/skin/smime/msgReadSMIMEOverlay.css" type="text/css"?>
+<?xml-stylesheet href="chrome://messenger/skin/searchBox.css" type="text/css"?>
+<?xml-stylesheet href="chrome://messenger/skin/customizableui/panelUI.css" type="text/css"?>
+
+<!DOCTYPE window [
+<!ENTITY % brandDTD SYSTEM "chrome://branding/locale/brand.dtd" >
+%brandDTD;
+<!ENTITY % chatDTD SYSTEM "chrome://messenger/locale/chat.dtd">
+%chatDTD;
+<!ENTITY % msgHdrViewOverlayDTD SYSTEM "chrome://messenger/locale/msgHdrViewOverlay.dtd">
+%msgHdrViewOverlayDTD;
+<!ENTITY % messengerDTD SYSTEM "chrome://messenger/locale/messenger.dtd" >
+%messengerDTD;
+<!ENTITY % customizeToolbarDTD SYSTEM "chrome://messenger/locale/customizeToolbar.dtd">
+%customizeToolbarDTD;
+<!ENTITY % textcontextDTD SYSTEM "chrome://global/locale/textcontext.dtd">
+%textcontextDTD;
+<!ENTITY % tabMailDTD SYSTEM "chrome://messenger/locale/tabmail.dtd" >
+%tabMailDTD;
+<!ENTITY % quickFilterBarDTD SYSTEM "chrome://messenger/locale/quickFilterBar.dtd">
+%quickFilterBarDTD;
+<!ENTITY % utilityDTD SYSTEM "chrome://communicator/locale/utilityOverlay.dtd">
+%utilityDTD;
+<!ENTITY % editContactOverlayDTD SYSTEM "chrome://messenger/locale/editContactOverlay.dtd">
+%editContactOverlayDTD;
+<!ENTITY % msgViewPickerDTD SYSTEM "chrome://messenger/locale/msgViewPickerOverlay.dtd" >
+%msgViewPickerDTD;
+<!ENTITY % baseMenuOverlayDTD SYSTEM "chrome://messenger/locale/baseMenuOverlay.dtd">
+%baseMenuOverlayDTD;
+<!ENTITY % charsetDTD SYSTEM "chrome://global/locale/charsetMenu.dtd">
+%charsetDTD;
+<!ENTITY % viewZoomOverlayDTD SYSTEM "chrome://messenger/locale/viewZoomOverlay.dtd">
+%viewZoomOverlayDTD;
+<!ENTITY % msgReadSMIMEDTD SYSTEM "chrome://messenger-smime/locale/msgReadSMIMEOverlay.dtd">
+%msgReadSMIMEDTD;
+<!ENTITY % msgViewPickerDTD SYSTEM "chrome://messenger/locale/msgViewPickerOverlay.dtd" >
+%msgViewPickerDTD;
+<!-- for the chat context menu -->
+<!ENTITY % textcontextDTD SYSTEM "chrome://global/locale/textcontext.dtd">
+]>
+
+<!--
+  - The 'what you think of when you think of thunderbird' window;
+  -  3-pane view inside of tabs.
+  -->
+<window id="messengerWindow"
+        xmlns:html="http://www.w3.org/1999/xhtml"
+        xmlns:svg="http://www.w3.org/2000/svg"
+        xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+        icon="messengerWindow"
+        title="&titledefault.label;@PRE_RELEASE_SUFFIX@"
+        titlemodifier="&titledefault.label;@PRE_RELEASE_SUFFIX@"
+        titlemenuseparator="&titleSeparator.label;"
+        defaultTabTitle="&defaultTabTitle.label;"
+        onload="OnLoadMessenger()"
+        onunload="OnUnloadMessenger()"
+        screenX="10" screenY="10"
+        persist="width height screenX screenY sizemode"
+        toggletoolbar="true"
+        windowtype="mail:3pane"
+        macanimationtype="document"
+        lightweightthemes="true"
+        fullscreenbutton="true">
+
+<stringbundleset id="stringbundleset">
+  <stringbundle id="bundle_brand" src="chrome://branding/locale/brand.properties"/>
+  <stringbundle id="bundle_messenger" src="chrome://messenger/locale/messenger.properties"/>
+  <stringbundle id="bundle_search" src="chrome://messenger/locale/search.properties"/>
+  <stringbundle id="chatBundle" src="chrome://messenger/locale/chat.properties"/>
+  <stringbundle id="bundle_dateformat" src="chrome://chat/locale/dateFormat.properties"/>
+  <stringbundle id="bundle_places" src="chrome://places/locale/places.properties"/>
+  <stringbundle id="bundle_editContact"
+                src="chrome://messenger/locale/editContactOverlay.properties"/>
+  <stringbundle id="bundle_offlinePrompts" src="chrome://messenger/locale/offline.properties"/>
+  <stringbundle id="charsetBundle" src="chrome://communicator/content/labelsencodings.properties"/>
+  <stringbundle id="bundle_read_smime" src="chrome://messenger-smime/locale/msgReadSMIMEOverlay.properties"/>
+</stringbundleset>
+
+<linkset>
+  <html:link rel="localization" href="toolkit/main-window/findbar.ftl"/>
+</linkset>
+
+<script src="chrome://global/content/globalOverlay.js"/>
+<script src="chrome://global/content/editMenuOverlay.js"/>
+<script src="chrome://messenger/content/commandglue.js"/>
+<script src="chrome://messenger/content/msgViewNavigation.js"/>
+<script src="chrome://messenger/content/mailWindow.js"/>
+<script src="chrome://messenger/content/selectionsummaries.js"/>
+<script src="chrome://messenger/content/msgMail3PaneWindow.js"/>
+<script src="chrome://messenger/content/specialTabs.js"/>
+<!-- accountProvisionerTab.js relies on code from specialTabs.js, and so much be loaded after it. -->
+<script src="chrome://messenger/content/newmailaccount/accountProvisionerTab.js"/>
+<script src="chrome://messenger/content/glodaFacetTab.js"/>
+<script src="chrome://gloda/content/overlay.js"/>
+<script src="chrome://messenger/content/searchBar.js"/>
+<script src="chrome://messenger/content/mail3PaneWindowCommands.js"/>
+<script src="chrome://global/content/contentAreaUtils.js"/>
+<script src="chrome://messenger/content/nsContextMenu.js"/>
+<script src="chrome://messenger/content/mailContextMenus.js"/>
+<script src="chrome://messenger/content/accountUtils.js"/>
+<script src="chrome://messenger/content/folderPane.js"/>
+<script src="chrome://messenger/content/phishingDetector.js"/>
+<script src="chrome://communicator/content/contentAreaClick.js"/>
+<script src="chrome://global/content/nsDragAndDrop.js"/>
+<script src="chrome://messenger/content/editContactPanel.js"/>
+<script src="chrome://messenger/content/toolbarIconColor.js"/>
+<script src="chrome://messenger/content/jsTreeView.js"/>
+<script src="chrome://messenger/content/msgHdrView.js"/>
+<script src="chrome://global/content/nsDragAndDrop.js"/>
+<script src="chrome://messenger-smime/content/msgHdrViewSMIMEOverlay.js"/>
+<script src="chrome://messenger-smime/content/msgReadSMIMEOverlay.js"/>
+<script src="chrome://messenger/content/chat/chat-messenger.js"/>
+<script src="chrome://messenger/content/chat/imStatusSelector.js"/>
+<script src="chrome://messenger/content/chat/imContextMenu.js"/>
+<script src="chrome://messenger/content/preferences/preferencesTab.js"/>
+<script src="chrome://messenger/content/mailCore.js"/>
+<script src="chrome://messenger/content/mailCommands.js"/>
+<script src="chrome://messenger/content/junkCommands.js"/>
+<script src="chrome://messenger/content/mailWindowOverlay.js"/>
+<script src="chrome://messenger/content/mailTabs.js"/>
+<script src="chrome://messenger/content/messageDisplay.js"/>
+<script src="chrome://messenger/content/folderDisplay.js"/>
+<script src="chrome://messenger-newsblog/content/newsblogOverlay.js"/>
+<script src="chrome://messenger/content/mail-offline.js"/>
+<script src="chrome://global/content/printUtils.js"/>
+<script src="chrome://messenger/content/msgViewPickerOverlay.js"/>
+<script src="chrome://messenger/content/viewZoomOverlay.js"/>
+<script src="chrome://communicator/content/utilityOverlay.js"/>
+<script src="chrome://messenger/content/quickFilterBar.js"/>
+<script src="chrome://messenger/content/newmailaccount/uriListener.js"/>
+<script src="chrome://messenger/content/chat/chat-conversation-info.js"/>
+<script src="chrome://gloda/content/autocomplete-richlistitem.js"/>
+<!-- panelUI.js is for the appmenus. -->
+<script src="chrome://messenger/content/customizableui/panelUI.js"/>
+#ifdef XP_MACOSX
+<script src="chrome://messenger/content/macMessengerMenu.js"/>
+<script src="chrome://global/content/macWindowMenu.js"/>
+#endif
+
+<!-- move needed functions into a single js file -->
+<script src="chrome://messenger/content/threadPane.js"/>
+
+<commandset id="mailCommands">
+#include mainCommandSet.inc.xul
+  <commandset id="mailSearchMenuItems"/>
+  <commandset id="globalEditMenuItems"
+              commandupdater="true"
+              events="create-menu-edit"
+              oncommandupdate="goUpdateGlobalEditMenuItems()"/>
+  <commandset id="selectEditMenuItems"
+              commandupdater="true"
+              events="create-menu-edit"
+              oncommandupdate="goUpdateSelectEditMenuItems()"/>
+  <commandset id="undoEditMenuItems"
+              commandupdater="true"
+              events="undo"
+              oncommandupdate="goUpdateUndoEditMenuItems()"/>
+  <commandset id="clipboardEditMenuItems"
+              commandupdater="true"
+              events="clipboard"
+              oncommandupdate="goUpdatePasteMenuItems()"/>
+  <commandset id="webSearchItems"/>
+  <commandset id="attachmentCommands">
+    <command id="cmd_openAllAttachments"
+             oncommand="goDoCommand('cmd_openAllAttachments');"
+             disabled="true"/>
+    <command id="cmd_saveAllAttachments"
+             oncommand="goDoCommand('cmd_saveAllAttachments');"
+             disabled="true"/>
+    <command id="cmd_detachAllAttachments"
+             oncommand="goDoCommand('cmd_detachAllAttachments');"
+             disabled="true"/>
+    <command id="cmd_deleteAllAttachments"
+             oncommand="goDoCommand('cmd_deleteAllAttachments');"
+             disabled="true"/>
+  </commandset>
+  <commandset id="FocusRingUpdate_Mail"
+        commandupdater="true"
+        events="focus"
+        oncommandupdate="FocusRingUpdate_Mail()"/>
+  <commandset id="tasksCommands">
+    <command id="cmd_newMessage" oncommand="goOpenNewMessage();"/>
+    <command id="cmd_newCard" oncommand="openNewCardDialog()"/>
+  </commandset>
+  <command id="cmd_close" oncommand="CloseTabOrWindow();"/>
+</commandset>
+
+<keyset id="mailKeys">
+#include mainKeySet.inc.xul
+  <keyset id="tasksKeys">
+#ifdef XP_MACOSX
+    <key id="key_newMessage" key="&newMessageCmd.key;" command="cmd_newMessage"
+         modifiers="accel,shift"/>
+    <key id="key_newMessage2" key="&newMessageCmd2.key;" command="cmd_newMessage"
+         modifiers="accel"/>
+#else
+    <key id="key_newMessage"  key="&newMessageCmd.key;" command="cmd_newMessage"
+         modifiers="accel"/>
+    <key id="key_newMessage2" key="&newMessageCmd2.key;" command="cmd_newMessage"
+         modifiers="accel"/>
+#endif
+  </keyset>
+</keyset>
+
+<!-- Popup menus provided by mailWindowOverlay.xul -->
+<popupset id="mainPopupSet">
+#include mainPopupSet.inc.xul
+
+<!-- The panelUI is for the appmenu. -->
+#include ../../components/customizableui/content/panelUI.inc.xul
+
+#include msgHdrPopup.inc.xul
+  <panel type="glodacomplete-richlistbox"
+         id="PopupGlodaAutocomplete"
+         noautofocus="true" />
+  <panel type="autocomplete"
+         id="PopupAutoComplete"
+         noautofocus="true"/>
+
+  <tooltip id="attachmentListTooltip"/>
+
+  <menupopup id="newsgroupPopup" position="after_start" class="newsgroupPopup"
+             onpopupshowing="setupNewsgroupPopup(document.popupNode); goUpdateCommand('cmd_createFilterFromPopup')"
+             onpopuphiding="hideEmailNewsPopup(document.popupNode);">
+      <menuitem id="newsgroupPlaceHolder"
+                disabled="true"/>
+      <menuseparator/>
+      <menuitem id="sendMessageToNewsgroupItem" label="&SendMessageTo.label;"
+                accesskey="&SendMessageTo.accesskey;"
+                oncommand="SendMailToNode(document.popupNode, event)"/>
+      <menuitem id="copyNewsgroupNameItem" label="&CopyNewsgroupName.label;"
+                accesskey="&CopyNewsgroupName.accesskey;"
+                oncommand="CopyEmailNewsAddress(document.popupNode)"/>
+      <menuitem id="copyNewsgroupURLItem" label="&CopyNewsgroupURL.label;"
+                accesskey="&CopyNewsgroupURL.accesskey;"
+                oncommand="CopyNewsgroupURL(document.popupNode)"/>
+      <menuseparator id="subscribeToNewsgroupSeparator"/>
+      <menuitem id="subscribeToNewsgroupItem" label="&SubscribeToNewsgroup.label;"
+                accesskey="&SubscribeToNewsgroup.accesskey;"
+                oncommand="SubscribeToNewsgroup(document.popupNode)"/>
+  </menupopup>
+
+  <menupopup id="pageContextMenu"
+             pagemenu="end"
+             onpopupshowing="InitPageMenu(this, event);">
+  </menupopup>
+
+  <!-- We want to be able to do the following:
+
+       1)  Open the tabContextMenu by right-clicking on individual tab selectors
+       2)  Open the mail-toolbox customize context menu when right-clicking on
+           the empty space of the tab selector.
+
+       In order to do that, we make the tabContextMenu available in the main
+       document, and refer to it via the context attributes of each newly spawned
+       tab selector.  We also make the context attribute of the tab strip default
+       to the mail-toolbox customization popup.
+
+       So, when right-clicking on a tab, the tabContextMenu opens up, and stops
+       the click event from propagating - but when the strip is right-clicked
+       outside of any tabs, the mail-toolbox context menu opens, as desired.
+  -->
+
+  <menupopup id="tabContextMenu"
+                 onpopupshowing="return document.getElementById('tabmail').onTabContextMenuShowing(document.popupNode);">
+    <menuitem label="&moveToNewWindow.label;"
+                  accesskey="&moveToNewWindow.accesskey;"
+                  anonid="openTabInWindow"
+                  oncommand="document.getElementById('tabmail').replaceTabWithWindow(document.popupNode);"/>
+    <menuseparator />
+    <menuitem label="&closeOtherTabsCmd2.label;"
+                  accesskey="&closeOtherTabsCmd2.accesskey;"
+                  anonid="closeOtherTabs"
+                  oncommand="document.getElementById('tabmail').closeOtherTabs(document.popupNode);"/>
+    <menuseparator />
+    <menu label="&recentlyClosedTabsCmd.label;"
+              accesskey="&recentlyClosedTabsCmd.accesskey;"
+              anonid="recentlyClosedTabs" >
+      <menupopup onpopupshowing="return InitRecentlyClosedTabsPopup(this);" />
+    </menu>
+    <menuitem label="&closeTabCmd2.label;"
+                  accesskey="&closeTabCmd2.accesskey;"
+                  anonid="closeTab"
+                  oncommand="document.getElementById('tabmail').closeTab(document.popupNode);"/>
+  </menupopup>
+
+  <tooltip id="tabmail-tabs-tooltip" onpopupshowing="document.getElementById('tabmail').createTooltip(event);"/>
+  <tooltip is="folder-tooltip" id="folderpopup"/>
+
+  <tooltip id="aHTMLTooltip" page="true"/>
+
+  <panel id="notification-popup"
+         type="arrow"
+         position="after_start"
+         orient="vertical"
+         noautofocus="true"
+         role="alert"/>
+
+  <popupnotification id="addon-progress-notification" hidden="true">
+    <popupnotificationcontent orient="vertical">
+      <html:progress id="addon-progress-notification-progressmeter" max="100"/>
+      <label id="addon-progress-notification-progresstext" crop="end"/>
+    </popupnotificationcontent>
+  </popupnotification>
+
+  <popupnotification id="addon-install-confirmation-notification" hidden="true">
+    <popupnotificationcontent id="addon-install-confirmation-content" orient="vertical"/>
+  </popupnotification>
+
+  <popupnotification id="addon-webext-permissions-notification" hidden="true">
+    <popupnotificationcontent class="addon-webext-perm-notification-content" orient="vertical">
+      <description id="addon-webext-perm-text" class="addon-webext-perm-text"/>
+      <label id="addon-webext-perm-intro" class="addon-webext-perm-text"/>
+      <html:ul id="addon-webext-perm-list" class="addon-webext-perm-list"/>
+    </popupnotificationcontent>
+  </popupnotification>
+
+  <popupnotification id="addon-installed-notification" hidden="true">
+    <popupnotificationcontent class="addon-installed-notification-content" orient="vertical">
+      <html:ul id="addon-installed-list" class="addon-installed-list"/>
+      <description id="addon-installed-restart-text" class="addon-installed-restart-text"/>
+    </popupnotificationcontent>
+  </popupnotification>
+
+#ifdef MOZ_UPDATER
+  <popupnotification id="app-update-notification" hidden="true">
+    <popupnotificationcontent class="app-update-notification-content" orient="vertical">
+      <description id="app-update-text" class="app-update-text"/>
+    </popupnotificationcontent>
+  </popupnotification>
+#endif
+
+#include editContactPanel.inc.xul
+#include ../../components/im/content/chat-menu.inc.xul
+</popupset>
+#ifdef XP_MACOSX
+<popupset>
+  <menupopup id="menu_mac_dockmenu">
+    <menuitem label="&writeNewMessageDock.label;" id="tasksWriteNewMessage"
+              oncommand="writeNewMessageDock();"/>
+    <menuitem label="&openAddressBookDock.label;" id="tasksOpenAddressBook"
+              oncommand="openAddressBookDock();"/>
+    <menuitem label="&dockOptions.label;" id="tasksMenuDockOptions"
+              oncommand="openDockOptions();"/>
+  </menupopup>
+</popupset>
+#endif
+
+<vbox id="titlebar">
+  <hbox id="titlebar-content">
+    <spacer id="titlebar-spacer" flex="1"/>
+    <hbox id="titlebar-buttonbox-container" align="start">
+      <hbox id="titlebar-buttonbox">
+        <toolbarbutton class="titlebar-button" id="titlebar-min" oncommand="window.minimize();"/>
+        <toolbarbutton class="titlebar-button" id="titlebar-max" oncommand="onTitlebarMaxClick();"/>
+        <toolbarbutton class="titlebar-button" id="titlebar-close" oncommand="window.close()"/>
+      </hbox>
+    </hbox>
+#ifdef XP_MACOSX
+    <hbox id="titlebar-fullscreen-button"/>
+#endif
+  </hbox>
+</vbox>
+
+  <!-- navigation-toolbox with main menubar and tabs toolbar -->
+#include mainNavigationToolbox.inc.xul
+
+    <toolbar id="tabs-toolbar" class="chromeclass-toolbar">
+      <!-- class tabmail-tabs is unused and only maintained for add-ons. -->
+      <tabs flex="1"
+            id="tabmail-tabs"
+            align="end"
+            setfocus="false"
+            onclick="document.getElementById('tabmail').onTabClick(event);"
+            class="tabmail-tabs"
+            tooltip="tabmail-tabs-tooltip"
+            alltabsbutton="alltabs-button"
+            collapsetoolbar="tabs-toolbar"
+            tabtoolbar="tabbar-toolbar">
+            <tab selected="true" validate="never" type="folder"
+                 maxwidth="250" width="0" minwidth="100" flex="100"
+                 class="tabmail-tab" crop="end" linkedpanel="mailContent"/>
+      </tabs>
+
+      <!-- Use of this element for extensions is deprecated! Current
+           extensions should add to #mail-toolbox and add a toolbar item to
+           #tabbar-toolbar below. -->
+      <hbox id="tabmail-buttons"/>
+
+      <box id="notification-popup-box"
+           align="center"
+           hidden="true">
+        <image id="addons-notification-icon"
+               class="notification-anchor-icon addons-icon"
+               role="button"/>
+#ifdef MOZ_UPDATER
+        <image id="app-update-notification-icon"
+               class="notification-anchor-icon app-update-icon"
+               role="button"/>
+#endif
+      </box>
+
+      <toolbar id="tabbar-toolbar" toolboxid="mail-toolbox"
+               context="toolbar-context-menu"
+               customizable="true"
+               mode="icons" defaultmode="icons" lockmode="true"
+               iconsize="small" defaulticonsize="small" lockiconsize="true"
+               defaultset=""/>
+
+      <toolbarbutton class="toolbarbutton-1 tabs-alltabs-button"
+                     id="alltabs-button"
+                     type="menu"
+                     hidden="true"
+                     tooltiptext="&listAllTabs.label;">
+        <menupopup class="tabs-alltabs-popup"
+                   id="alltabs-popup" position="after_end"
+                   tabcontainer="tabmail-tabs"/>
+      </toolbarbutton>
+
+      <hbox class="titlebar-placeholder" type="caption-buttons"/>
+#ifdef XP_MACOSX
+      <hbox class="titlebar-placeholder" type="fullscreen-button"/>
+#endif
+    </toolbar>
+
+  </toolbox>
+
+  <!-- XXX This extension point (tabmail-container) is only temporary!
+       Horizontal space shouldn't be wasted if it isn't absolutely critical.
+       A mechanism for adding sidebar panes will be added in bug 476154. -->
+  <hbox id="tabmail-container" flex="1">
+    <!-- Beware!  Do NOT use overlays to append nodes directly to tabmail (children
+         of tabmail is OK though).  This will break Ctrl-tab switching because
+         the XBL binding will choke when it finds a child of tabmail that is
+         not a tabpanels node. -->
+    <tabmail id="tabmail" flex="1" panelcontainer="tabpanelcontainer" tabcontainer="tabmail-tabs">
+     <tabbox id="tabmail-tabbox" flex="1" eventnode="document" tabcontainer="tabmail-tabs">
+      <tabpanels id="tabpanelcontainer" flex="1" class="plain" selectedIndex="0">
+
+        <!-- mailContent is the container used for the "wide" layout. Normally,
+             all it contains is the "messengerBox" box.  However, in "wide" mode
+             the message pane and its splitter transplant themselves into the box
+             (respectively, messagepanebox and threadpane-splitter).  This gives us
+             the folder pane next to the thread view, with the message pane/reader
+             beneath both of them. -->
+        <box id="mailContent" orient="vertical" flex="1">
+          <!-- mail-toolbox with the main toolbarbuttons -->
+#include mainMailToolbox.inc.xul
+
+          <box id="messengerBox" orient="horizontal" flex="1" minheight="100" height="100" persist="height">
+            <vbox id="folderPaneBox" minwidth="125" width="200" persist="width">
+              <sidebarheader id="folderPaneHeader" hidden="true" align="center"/>
+              <vbox id="folderPane-toolbox">
+                <hbox id="folderPane-toolbar"
+                      class="inline-toolbar toolbar"
+                      toolboxid="mail-toolbox"
+                      toolbarname="&folderPaneBar.label;"
+                      accesskey="&folderPaneBar.accesskey;"
+                      context="toolbar-context-menu"
+                      collapsed="true">
+                  <toolbaritem id="folderpane-mode-selector"
+                               flex="1">
+                    <menulist id="folderpane-mode-selector-menulist"
+                              sizetopopup="none"
+                              crop="center"
+                              flex="1"
+                              oncommand="gFolderTreeView.mode = this.value;">
+                      <menupopup id="folderpane-mode-selector-popup"
+                                 onpopupshowing="gFolderTreeView._initFolderModeSelector();"/>
+                    </menulist>
+                  </toolbaritem>
+                </hbox>
+              </vbox>
+              <tree id="folderTree" class="plain" flex="1"
+                    hidecolumnpicker="true" persist="mode" mode="all"
+                    keepcurrentinview="true"
+                    context="folderPaneContext"
+                    disableKeyNavigation="true"
+                    ondragstart="gFolderTreeView._onDragStart(event);"
+                    ondragover="gFolderTreeView._onDragOver(event);"
+                    ondrop="gFolderTreeView._onDragDrop(event);"
+                    ondblclick="gFolderTreeView.onDoubleClick(event);"
+                    onselect="FolderPaneSelectionChange();">
+                <treecols id="folderPaneCols">
+                  <treecol id="folderNameCol"
+                           label2="&folderNameColumn.label;"
+                           flex="5"
+                           crop="center"
+                           persist="width"
+                           hideheader="true"
+                           ignoreincolumnpicker="true"
+                           primary="true"/>
+                  <splitter class="tree-splitter"/>
+                  <treecol id="folderUnreadCol"
+                           label2="&folderUnreadColumn.label;"
+                           tooltiptext="&folderUnreadColumn.label;"
+                           hideheader="true"
+                           hidden="true"
+                           persist="width hidden hiddeninactive"
+                           width="50"
+                           selectable="false"/>
+                  <splitter class="tree-splitter"/>
+                  <treecol id="folderTotalCol"
+                           label2="&folderTotalColumn.label;"
+                           tooltiptext="&folderTotalColumn.label;"
+                           hideheader="true"
+                           hidden="true"
+                           persist="width hidden hiddeninactive"
+                           width="50"
+                           selectable="false"/>
+                  <splitter class="tree-splitter"/>
+                  <treecol id="folderSizeCol"
+                           label2="&folderSizeColumn.label;"
+                           tooltiptext="&folderSizeColumn.label;"
+                           hideheader="true"
+                           hidden="true"
+                           persist="width hidden hiddeninactive"
+                           width="50"
+                           selectable="false"/>
+                </treecols>
+                <treechildren tooltip="folderpopup"
+                              onoverflow="document.getElementById('folderPaneHeader').setAttribute('overflowing', 'true');"
+                              onunderflow="document.getElementById('folderPaneHeader').setAttribute('overflowing', 'false');"/>
+              </tree>
+            </vbox>
+
+            <splitter id="folderpane_splitter" collapse="before"/>
+
+            <vbox flex="1">
+              <box orient="vertical" id="messagesBox" flex="1">
+#include quickFilterBar.inc.xul
+                <deck id="displayDeck" flex="1" selectedIndex="0"
+                      minheight="100" height="100" persist="height"
+                      >
+                  <!-- first panel in displayDeck is Account Central -->
+                  <vbox id="accountCentralBox" flex="1">
+                    <iframe name="accountCentralPane"
+                            contextmenu="pageContextMenu"
+                            tooltip="aHTMLTooltip"
+                            width="150" flex="1" src="about:blank"/>
+                  </vbox>
+                  <!-- The threadPaneBox is the basis for the vertical view and you
+                       should not put anything in it, because the messagepane will
+                       get transplanted in there. (In the vertical view, the elements
+                       end up being: threadPaneBox, threadpane-splitter, messagepanebox)
+                    -->
+                  <!-- second panel is the threadPane -->
+                  <hbox id="threadPaneBox">
+                   <!-- The threadContentArea was specially created to be a place for
+                        things that want to be above/below the thread pane, regardless
+                        of where the message reader ("messagepane") gets off to. -->
+                   <vbox id="threadContentArea" flex="1" persist="width">
+                    <!-- Gloda search facets UI for use when dealing with a gloda-backed
+                         search view, implemented by glodaFacets XBL in search.xml. -->
+                    <box id="glodaSearchFacets"/>
+                    <tree id="threadTree"
+                          persist="lastfoldersent width"
+                          treelines="true"
+                          flex="2"
+                          enableColumnDrag="true"
+                          _selectDelay="250"
+                          class="plain"
+                          lastfoldersent="false"
+                          keepcurrentinview="true"
+                          disableKeyNavigation="true"
+                          context="mailContext"
+                          onkeydown="ThreadPaneKeyDown(event);"
+                          onselect="ThreadPaneSelectionChanged();"
+                          >
+                      <treecols id="threadCols" is="thread-pane-treecols" pickertooltiptext="&columnChooser2.tooltip;">
+                        <treecol is="treecol-image" id="threadCol" fixed="true" cycler="true"
+                                 class="treecol-image threadColumnHeader" currentView="unthreaded"
+                                 label="&threadColumn.label;" tooltiptext="&threadColumn2.tooltip;"/>
+                        <splitter class="tree-splitter"/>
+                        <treecol is="treecol-image" id="flaggedCol" fixed="true" cycler="true"
+                                 class="treecol-image flagColumnHeader"
+                                 label="&starredColumn.label;" tooltiptext="&starredColumn2.tooltip;"/>
+                        <splitter class="tree-splitter"/>
+                        <treecol is="treecol-image" id="attachmentCol" fixed="true"
+                                 class="treecol-image attachmentColumnHeader"
+                                 label="&attachmentColumn.label;" tooltiptext="&attachmentColumn2.tooltip;"/>
+                        <splitter class="tree-splitter"/>
+                        <treecol id="subjectCol" persist="width" flex="7" ignoreincolumnpicker="true"
+                                 label="&subjectColumn.label;" tooltiptext="&subjectColumn2.tooltip;"/>
+                        <splitter class="tree-splitter"/>
+                        <treecol is="treecol-image" id="unreadButtonColHeader" fixed="true" cycler="true"
+                                 class="treecol-image readColumnHeader"
+                                 label="&readColumn.label;" tooltiptext="&readColumn2.tooltip;"/>
+                        <splitter class="tree-splitter"/>
+                        <treecol id="senderCol" persist="width" flex="4"
+                                 hidden="false" swappedhidden="true"
+                                 label="&fromColumn.label;" tooltiptext="&fromColumn2.tooltip;"/>
+                        <splitter class="tree-splitter"/>
+                        <treecol id="recipientCol" persist="width" flex="4"
+                                 hidden="true" swappedhidden="false"
+                                 label="&recipientColumn.label;" tooltiptext="&recipientColumn2.tooltip;"/>
+                        <splitter class="tree-splitter"/>
+                        <treecol id="correspondentCol" persist="width" flex="4" hidden="true"
+                                 label="&correspondentColumn.label;" tooltiptext="&correspondentColumn2.tooltip;"/>
+                        <splitter class="tree-splitter"/>
+                        <treecol is="treecol-image" id="junkStatusCol" persist="width" fixed="true"
+                                 cycler="true" class="treecol-image junkStatusHeader"
+                                 label="&junkStatusColumn.label;" tooltiptext="&junkStatusColumn2.tooltip;"/>
+                        <splitter class="tree-splitter"/>
+                        <treecol id="receivedCol" persist="width temphidden" flex="2" hidden="true"
+                                 label="&receivedColumn.label;" tooltiptext="&receivedColumn2.tooltip;"/>
+                        <splitter class="tree-splitter"/>
+                        <treecol id="dateCol" persist="width" flex="2"
+                                 label="&dateColumn.label;" tooltiptext="&dateColumn2.tooltip;"/>
+                        <splitter class="tree-splitter"/>
+                        <treecol id="statusCol" persist="width" flex="1" hidden="true"
+                                 label="&statusColumn.label;" tooltiptext="&statusColumn2.tooltip;"/>
+                        <splitter class="tree-splitter"/>
+                        <treecol id="sizeCol" persist="width" flex="1" hidden="true"
+                                 label="&sizeColumn.label;" tooltiptext="&sizeColumn2.tooltip;"/>
+                        <splitter class="tree-splitter"/>
+                        <treecol id="tagsCol" persist="width" flex="1" hidden="true"
+                                 label="&tagsColumn.label;" tooltiptext="&tagsColumn2.tooltip;"/>
+                        <splitter class="tree-splitter"/>
+                        <treecol id="accountCol" persist="width" flex="1" hidden="true"
+                                 label="&accountColumn.label;" tooltiptext="&accountColumn2.tooltip;"/>
+                        <splitter class="tree-splitter"/>
+                        <treecol id="priorityCol" persist="width" flex="1" hidden="true"
+                                 label="&priorityColumn.label;" tooltiptext="&priorityColumn2.tooltip;"/>
+                        <splitter class="tree-splitter"/>
+                        <treecol id="unreadCol" persist="width" flex="1" hidden="true"
+                                 label="&unreadColumn.label;" tooltiptext="&unreadColumn2.tooltip;"/>
+                        <splitter class="tree-splitter"/>
+                        <treecol id="totalCol" persist="width" flex="1" hidden="true"
+                                 label="&totalColumn.label;" tooltiptext="&totalColumn2.tooltip;"/>
+                        <splitter class="tree-splitter"/>
+                        <treecol id="locationCol" persist="width" flex="1" hidden="true"
+                                 label="&locationColumn.label;" tooltiptext="&locationColumn2.tooltip;"/>
+                        <splitter class="tree-splitter"/>
+                        <treecol id="idCol" persist="width" flex="1" hidden="true"
+                                 label="&idColumn.label;" tooltiptext="&idColumn2.tooltip;"/>
+                      </treecols>
+                    <treechildren ondragstart="ThreadPaneOnDragStart(event);"
+                                  ondragover="ThreadPaneOnDragOver(event);"
+                                  ondrop="ThreadPaneOnDrop(event);"/>
+                  </tree>
+                 </vbox>
+                </hbox>
+                <!-- extensions may overlay in additional panels; don't assume that there are only 2! -->
+                </deck> <!-- displayDeck -->
+
+                <!-- if you change this id, please change GetThreadAndMessagePaneSplitter() and MsgToggleMessagePane() -->
+                <splitter id="threadpane-splitter"
+                          collapse="after"
+                          collapsed="true"
+                          onmouseup="OnMouseUpThreadAndMessagePaneSplitter()"/>
+
+                <!-- a convenience box for ease of extension overlaying -->
+                <hbox id="messagepaneboxwrapper"
+                      flex="1"
+                      minheight="100" height="200"
+                      minwidth="100" width="200" persist="collapsed height width">
+                  <vbox id="messagepanebox" flex="2">
+                    <!-- This next iframe is used to display summaries of -->
+                    <!-- multiple selected messages or collapsed threads -->
+                    <browser id="multimessage"
+                             contextmenu="pageContextMenu"
+                             style="height: 0px; min-height: 1px"
+                             flex="1" name="multimessage"
+                             hidden="true"
+                             disablesecurity="true" disablehistory="true"
+                             tooltip="aHTMLTooltip"
+                             src="chrome://messenger/content/multimessageview.xhtml"
+                             autofind="false"/>
+                    <vbox id="singlemessage" flex="1">
+                      <hbox id="msgHeaderView" collapsed="true" class="main-header-area">
+#include msgHdrView.inc.xul
+                      </hbox>
+                      <!-- The msgNotificationBar appears on top of the message
+                           and displays information like: junk, contains remote
+                           images, or is a suspected phishing URL. -->
+                      <hbox id="mail-notification-top">
+                        <!-- notificationbox will be added here lazily. -->
+                      </hbox>
+                      <!-- The messagepanewrapper hbox exists to allow
+                           extensions to add sidebars to the message. -->
+                      <hbox id="messagepanewrapper" flex="1">
+                        <browser id="messagepane" context="mailContext"
+                                 autofind="false" minheight="1" flex="1"
+                                 name="messagepane" tooltip="aHTMLTooltip"
+                                 disablehistory="true" type="content"
+                                 primary="true" src="about:blank"
+                                 onresize="return messagePaneOnResize(event);"
+                                 disablesecurity="true"
+                                 onclick="return contentAreaClick(event);"/>
+                      </hbox>
+                      <splitter id="attachment-splitter" collapse="after"
+                                resizebefore="closest" resizeafter="closest"
+                                collapsed="true"/>
+                      <vbox id="attachmentView" collapsed="true">
+#include msgAttachmentView.inc.xul
+                      </vbox>
+                      <findbar id="FindToolbar" browserid="messagepane"/>
+                    </vbox>
+                  </vbox>
+                </hbox>
+                <hbox id="messenger-notification-footer">
+                  <!-- notificationbox will be added here lazily. -->
+                </hbox>
+              </box>
+            </vbox>
+          </box>
+        </box> <!-- end of mailContent -->
+#include ../../components/im/content/chat-messenger.inc.xul
+      </tabpanels>
+     </tabbox>
+    </tabmail>
+    <vbox id="contentTab" collapsed="true">
+      <vbox flex="1" class="contentTabInstance">
+        <vbox id="dummycontenttoolbox" class="contentTabToolbox">
+          <hbox id="dummycontenttoolbar" class="contentTabToolbar">
+            <toolbaritem class="contentTabAddress" align="center" flex="1">
+              <hbox align="center" flex="1">
+                <image class="contentTabSecurity"/>
+                <label class="contentTabUrlbar" flex="1"/>
+              </hbox>
+            </toolbaritem>
+          </hbox>
+        </vbox>
+        <browser id="dummycontentbrowser" type="content" flex="1"
+                 disablehistory="true" autocompletepopup="PopupAutoComplete"
+                 context="mailContext"/>
+      </vbox>
+    </vbox>
+
+    <vbox id="chromeTab" collapsed="true">
+      <vbox flex="1" class="chromeTabInstance">
+        <vbox id="dummychrometoolbox" class="contentTabToolbox">
+          <hbox id="dummychrometoolbar" class="contentTabToolbar"></hbox>
+        </vbox>
+        <browser id="dummychromebrowser" flex="1"
+                 disablesecurity="true" disablehistory="true"
+                 autocompletepopup="PopupAutoComplete"/>
+      </vbox>
+    </vbox>
+
+    <vbox id="glodaTab" collapsed="true">
+      <vbox flex="1" class="chromeTabInstance">
+        <vbox class="contentTabToolbox">
+          <hbox class="glodaTabToolbar inline-toolbar chromeclass-toolbar" flex="1">
+            <spacer flex="1" />
+            <spacer flex="1" />
+            <hbox flex="1" class="remote-gloda-search-container">
+              <textbox class="remote-gloda-search searchBox"
+                       flex="1"
+                       type="glodacomplete"
+                       searchbutton="true"
+                       autocompletesearch="gloda"
+                       autocompletepopup="PopupGlodaAutocomplete"
+                       autocompletesearchparam="global"
+                       timeout="200"
+                       maxlength="192"
+                       placeholder=""
+                       emptytextbase="&search.label.base1;"
+                       keyLabelNonMac="&search.keyLabel.nonmac;"
+                       keyLabelMac="&search.keyLabel.mac;">
+                <hbox>
+                  <image class="gloda-search-icon" />
+                </hbox>
+              </textbox>
+            </hbox>
+          </hbox>
+        </vbox>
+        <iframe flex="1"/>
+      </vbox>
+    </vbox>
+    <vbox id="preferencesTab" collapsed="true">
+      <vbox flex="1">
+        <hbox flex="1">
+          <browser id="preferencesbrowser"
+                   type="content"
+                   flex="1"
+                   disablehistory="true"
+                   onclick="specialTabs.defaultClickHandler(event);"/>
+        </hbox>
+        <findbar browserid="preferencesbrowser"/>
+      </vbox>
+    </vbox>
+  </hbox>
+  <panel id="customizeToolbarSheetPopup" noautohide="true">
+    <iframe id="customizeToolbarSheetIFrame"
+            style="&dialog.dimensions;"
+            hidden="true"/>
+  </panel>
+
+  <hbox id="messenger-notification-bottom">
+      <!-- notificationbox will be added here lazily. -->
+  </hbox>
+  <statuspanel id="statusbar-display"/>
+  <hbox id="status-bar" class="statusbar chromeclass-status">
+#include mainStatusbar.inc.xul
+    <statusbarpanel id="unreadMessageCount"/>
+    <statusbarpanel id="totalMessageCount"/>
+  </hbox>
+</window>
+

@@ -1,0 +1,219 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "object",
+  "properties": {
+    "AppUpdateURL": {
+      "type": "URL"
+    },
+
+    "BlockAboutAddons": {
+      "type": "boolean"
+    },
+
+    "BlockAboutConfig": {
+      "type": "boolean"
+    },
+
+    "BlockAboutProfiles": {
+      "type": "boolean"
+    },
+
+    "BlockAboutSupport": {
+      "type": "boolean"
+    },
+
+    "Certificates": {
+      "type": "object",
+      "properties": {
+        "ImportEnterpriseRoots": {
+          "type": "boolean"
+        },
+        "Install": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+
+    "DisableAppUpdate": {
+      "type": "boolean"
+    },
+
+    "DisableDeveloperTools": {
+      "type": "boolean"
+    },
+
+    "DisableMasterPasswordCreation": {
+      "type": "boolean"
+    },
+
+    "DisableSecurityBypass": {
+      "type": "object",
+      "properties": {
+        "InvalidCertificate": {
+          "type": "boolean"
+        },
+
+        "SafeBrowsing": {
+          "type": "boolean"
+        }
+      }
+    },
+
+    "Extensions": {
+      "type": "object",
+      "properties": {
+        "Install" : {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "Uninstall" : {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "Locked" : {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+
+    "ExtensionSettings": {
+      "type": "object",
+      "patternProperties": {
+        "^.*$": {
+          "type": "object",
+          "properties": {
+            "blocked_install_message": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+
+    "ExtensionUpdate": {
+      "type": "boolean"
+    },
+
+    "InstallAddonsPermission": {
+      "type": "object",
+      "properties": {
+        "Allow": {
+          "type": "array",
+          "strict": false,
+          "items": {
+            "type": "origin"
+          }
+        },
+        "Default": {
+          "type": "boolean"
+        }
+      }
+    },
+
+    "Preferences": {
+      "type": "object",
+      "properties": {
+        "network.IDN_show_punycode": {
+          "type": "boolean"
+        },
+        "browser.fixup.dns_first_for_single_words": {
+          "type": "boolean"
+        },
+        "browser.cache.disk.parent_directory": {
+          "type": "string"
+        },
+        "browser.urlbar.suggest.openpage": {
+          "type": "boolean"
+        },
+        "browser.urlbar.suggest.history": {
+          "type": "boolean"
+        },
+        "browser.urlbar.suggest.bookmark": {
+          "type": "boolean"
+        }
+      }
+    },
+
+    "Proxy": {
+      "type": "object",
+      "properties": {
+        "Mode": {
+          "type": "string",
+          "enum": ["none", "system", "manual", "autoDetect", "autoConfig"]
+        },
+
+        "Locked": {
+          "type": "boolean"
+        },
+
+        "AutoConfigURL": {
+          "type": "URLorEmpty"
+        },
+
+        "FTPProxy": {
+          "type": "string"
+        },
+
+        "HTTPProxy": {
+          "type": "string"
+        },
+
+        "SSLProxy": {
+          "type": "string"
+        },
+
+        "SOCKSProxy": {
+          "type": "string"
+        },
+
+        "SOCKSVersion": {
+          "type": "number",
+          "enum": [4, 5]
+        },
+
+        "UseHTTPProxyForAllProtocols": {
+          "type": "boolean"
+        },
+
+        "Passthrough": {
+          "type": "string"
+        },
+
+        "UseProxyForDNS": {
+          "type": "boolean"
+        },
+
+        "AutoLogin": {
+          "type": "boolean"
+        }
+      }
+    },
+
+    "RequestedLocales": {
+      "type": ["string", "array"],
+      "items": {
+        "type": "string"
+      }
+    },
+
+    "SSLVersionMax": {
+      "type": "string",
+      "enum": ["tls1", "tls1.1", "tls1.2", "tls1.3"]
+    },
+
+    "SSLVersionMin": {
+      "type": "string",
+      "enum": ["tls1", "tls1.1", "tls1.2", "tls1.3"]
+    }
+  }
+}

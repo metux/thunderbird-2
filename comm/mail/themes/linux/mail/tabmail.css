@@ -1,0 +1,122 @@
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+@import url("chrome://messenger/skin/shared/tabmail.css");
+
+/**
+ * Tabmail Tabs
+ */
+
+:root:not([tabsintitlebar]) > #navigation-toolbox:not(:-moz-lwtheme) {
+  -moz-appearance: menubar;
+}
+
+#tabs-toolbar {
+  -moz-appearance: none;
+  padding: 0;
+}
+
+#tabs-toolbar {
+  -moz-window-dragging: drag;
+}
+
+#tabs-toolbar:not(:-moz-lwtheme) {
+  -moz-appearance: menubar;
+  color: -moz-menubartext;
+}
+
+:root[tabsintitlebar][sizemode=normal] #mail-toolbar-menubar2[autohide=true] ~
+  #tabs-toolbar > #tabbar-toolbar {
+  margin-inline-start: 40px;
+}
+
+#tabpanelcontainer:-moz-lwtheme {
+  color: inherit;
+}
+
+tabpanels {
+  -moz-appearance: none;
+  background-color: transparent;
+}
+
+/**
+ * Tab
+ */
+
+.tabmail-tab > .tab-stack > .tab-content > .tab-label-container {
+  /* tabmail-tab focus ring */
+  border: 1px dotted transparent;
+  margin: -1px !important; /* let the border not consume any space, like outline */
+}
+
+.tabmail-tab[selected]:focus > .tab-stack > .tab-content > .tab-label-container {
+  border-color: -moz-DialogText;
+}
+
+/* Tab drag and drop */
+.tab-drop-indicator {
+  list-style-image: url(icons/dragIndicator.png);
+  margin-bottom: -11px;
+}
+
+/* Tabstrip close button */
+.tabs-closebutton {
+  margin-top: 1px;
+}
+
+/**
+ * Tab Scrollbox Arrow Buttons
+ */
+
+.tabmail-arrowscrollbox > .scrollbutton-up,
+.tabmail-arrowscrollbox > stack > .scrollbutton-down {
+  -moz-appearance: none;
+  padding: 3px !important;
+  border-style: none !important;
+}
+
+.tabmail-arrowscrollbox > .scrollbutton-up > .toolbarbutton-icon,
+.tabmail-arrowscrollbox > stack > .scrollbutton-down > .toolbarbutton-icon {
+  -moz-appearance: none;
+}
+
+.tabmail-arrowscrollbox > .scrollbutton-up:not([disabled]):hover,
+.tabmail-arrowscrollbox > stack > .scrollbutton-down:not([disabled]):hover {
+  background: var(--toolbarbutton-active-background);
+}
+
+.tabmail-arrowscrollbox > .scrollbutton-up[disabled],
+.tabmail-arrowscrollbox > stack > .scrollbutton-down[disabled] {
+  --toolbarbutton-icon-fill-opacity: .4;
+}
+
+.tabs-alltabs-box-animate {
+  background-color: Highlight;
+  opacity: 0;
+}
+
+/**
+ * All Tabs Menupopup
+ */
+
+.tabs-alltabs-button {
+  min-width: 24px;
+  padding-right: 1px;
+  padding-left: 1px;
+}
+
+.tabs-alltabs-button > .toolbarbutton-icon {
+  margin-inline-end: 0;
+}
+
+.alltabs-item > .menu-iconic-left {
+  visibility: visible !important;
+}
+
+/* Content Tabs */
+.contentTabAddress {
+  height: 32px;
+  padding-left: 10px;
+  padding-right: 10px;
+}

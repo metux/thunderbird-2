@@ -1,0 +1,10 @@
+cal-recurrence
+eventDialog
+invitations
+recurrenceRotated
+testAlarmDefaultValue.js
+testBasicFunctionality.js
+testLocalICS.js
+testTimezones.js
+testTodayPane.js
+views

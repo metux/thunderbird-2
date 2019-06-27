@@ -1,0 +1,242 @@
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+@import url("chrome://messenger/content/bindings.css");
+
+/* Global Styles */
+
+.windowDialog {
+  padding: 12px;
+  font: -moz-dialog;
+}
+
+#permissionsText {
+  font: small-caption;
+  font-weight: normal;
+  line-height: 1.3em;
+  margin-bottom: 4px !important;
+}
+
+menulist > menupopup > menuitem {
+  font: -moz-pull-down-menu;
+}
+
+/* Attachments Pane */
+#handlersView {
+  -moz-box-flex: 1;
+}
+
+#browserStartupHomepage {
+  padding-top: 2px;
+  padding-bottom: 3px;
+  padding-inline-start: 4px;
+  padding-inline-end: 2px;
+}
+
+caption {
+  border-bottom: 1px solid #ECECEC;
+  padding-top: 4px !important;
+  padding-bottom: 0px !important;
+  padding-inline-start: 0px !important;
+  padding-inline-end: 4px !important;
+}
+
+#paneContent {
+  padding-top: 8px;
+}
+
+#paneContent row {
+  padding: 0 4px;
+}
+
+#advancedPrefs {
+  margin: 0 8px;
+}
+
+#securityPrefs {
+  padding: 0 4px;
+}
+
+tabpanels {
+  padding: 18px 10px 10px;
+  margin: 0 6px 6px;
+}
+
+.bold {
+  font-weight: bold;
+}
+
+/* override the color style for tag items when they
+   have selection */
+#tagList listitem[selected="true"] {
+  color: -moz-DialogText !important;
+}
+
+#tagList:focus > listitem[selected="true"] {
+  color: HighlightText !important;
+}
+
+/* Quota meter in Folder Properties */
+
+#quotaPercentageBar {
+  -moz-appearance: none;
+  border: 1px solid #8B8B8B;
+}
+
+#quotaPercentageBar > .progress-bar {
+  -moz-appearance: none;
+  background-color: #88AAFF;
+  opacity: .5;
+}
+
+/* Attachments */
+
+a {
+  color: -moz-nativehyperlinktext;
+  text-decoration: underline;
+}
+
+#provider-header {
+  border-bottom: 1px solid #b1b1b1;
+  margin-bottom: 20px;
+  height: 50px;
+}
+
+#provider-name {
+  padding: 0;
+  margin: 0;
+  margin-right: 120px;
+}
+
+#provider-name h2 {
+  font-size: 1.2em;
+}
+
+#provider-terms {
+  float: right;
+}
+
+#provider-terms a {
+  display: block;
+  margin-bottom: 5px;
+  text-align: right;
+}
+#upgrade a,
+#provider-terms a,
+#provider-account-settings a {
+  color: #0a8dff;
+  text-decoration: none;
+}
+
+#upgrade a:hover,
+#provider-terms a:hover,
+#provider-account-settings a:hover {
+  color: #0060df;
+  text-decoration: underline;
+}
+
+#provider-space {
+  text-align: right;
+  margin-right: 180px;
+  margin-top: 50px;
+  height: 100px;
+}
+
+#cloudFileView {
+  width: 150px;
+  overflow: hidden;
+}
+
+#upgrade {
+  margin-top: 1em;
+}
+
+#version {
+  margin-inline-start: 0;
+}
+
+.update-throbber {
+  width: 16px;
+  min-height: 16px;
+  margin-inline-start: 6px;
+  list-style-image: url("chrome://global/skin/icons/loading.png");
+}
+
+@media (min-resolution: 1.1dppx) {
+  .update-throbber {
+    list-style-image: url("chrome://global/skin/icons/loading@2x.png");
+  }
+}
+
+#provider-space-visuals {
+  width: 150px;
+  height: 150px;
+  float: right;
+}
+
+#provider-account-settings {
+  text-align: right;
+  position: absolute;
+  bottom: 8px;
+  right: 10px;
+}
+
+.space-swatch {
+  display: inline-block;
+  width: 1em;
+  height: 1em;
+  border: 1px solid rgba(0,0,0,0.5);
+  border-radius: 2px;
+  margin-inline-start: 0.5ch;
+  box-sizing: border-box;
+}
+
+/* Main pane padding */
+
+#provider-management {
+  margin: 0 10px;
+  font-size: 1em;
+}
+
+#provider-name h1 {
+  margin: 0;
+  font-size: 1.5em;
+  font-weight: 600;
+}
+
+#cloudFileDefaultPanel {
+  text-align: center;
+  padding-top: 150px;
+}
+
+#provider-settings .indented {
+  margin-left: 75px;
+}
+
+/* Flexing */
+#provider-management {
+  display: block;
+  -moz-box-orient: vertical;
+}
+
+#provider-space label {
+  margin-inline-end: 0.5ch;
+  vertical-align: middle;
+}
+
+#provider-space span {
+  vertical-align: middle;
+}
+
+#provider-header {
+  -moz-box-flex: 0;
+}
+
+#provider-spacebox {
+  -moz-box-flex: 1;
+}
+
+#provider-account-settings {
+  -moz-box-flex: 0;
+}

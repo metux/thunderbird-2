@@ -1,0 +1,61 @@
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+@import url("chrome://messenger/skin/shared/accountCreation.css");
+@namespace html url("http://www.w3.org/1999/xhtml");
+
+.errordescription {
+  padding-inline-start: 3px;
+  margin-top: 2px;
+}
+
+.initialDesc, .columnHeader {
+  margin-top: 2px;
+  color: GrayText;
+}
+
+@media (min-resolution: 2dppx) {
+  .secureLarry {
+    background: url("chrome://messenger/skin/icons/identity@2x.png") no-repeat;
+  }
+}
+
+.mastervbox {
+  padding: 10px 8px;
+}
+
+#warningbox {
+  width: 650px;
+  height: 400px;
+}
+
+#result-username {
+  margin-inline-start: 6px;
+}
+
+textbox[disabled="true"],
+input[disabled="true"],
+menulist[disabled="true"] {
+  -moz-appearance: none;
+  border: 0;
+  background-color: #ececec;
+  color: #000000 !important;
+}
+
+menulist {
+  margin-right: 4px;
+  margin-left: 4px;
+}
+
+#status_area[status=error] #status_img_before {
+  margin-right: 1em;
+}
+
+textbox.port[disabled="true"] {
+  padding-top: 4px;
+}
+
+#incoming_protocol[disabled="true"] {
+  padding-left: 5px;
+}

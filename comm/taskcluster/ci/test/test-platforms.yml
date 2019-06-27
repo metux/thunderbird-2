@@ -1,0 +1,97 @@
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this
+# file, You can obtain one at http://mozilla.org/MPL/2.0/.
+---
+# This file maps build platforms to test platforms.  In some cases, a
+# single build may be tested on multiple test platforms, but a single test
+# platform can only link to one build platform.  Both build and test platforms
+# are represented as <platform>/<type>, where <type> is what Treeherder calls a
+# collection.
+#
+# Each test platform further specifies the set of tests that will be scheduled
+# for the platform, referring to tests defined in test-sets.yml.
+#
+# Note that set does not depend on the tree; tree-dependent job selection
+# should be performed in the target task selection phase of task-graph
+# generation.
+
+# Linux platforms (matching /linux.*/)
+
+linux64/opt:
+    build-platform: linux64/opt
+    test-sets:
+        - common-tests
+        - optimized-tests
+
+linux64-shippable/opt:
+    build-platform: linux64-shippable/opt
+    test-sets:
+        - common-tests
+        - optimized-tests
+
+linux64/debug:
+    build-platform: linux64/debug
+    test-sets:
+        - common-tests
+
+linux32-shippable/opt:
+    build-platform: linux-shippable/opt
+    test-sets:
+        - common-tests
+        - optimized-tests
+
+linux32/debug:
+    build-platform: linux/debug
+    test-sets:
+        - common-tests
+
+# Windows platforms (matching /windows.*/)
+
+# win32
+windows7-32/opt:
+    build-platform: win32/opt
+    test-sets:
+        - common-tests
+        - optimized-tests
+
+windows7-32-shippable/opt:
+    build-platform: win32-shippable/opt
+    test-sets:
+        - common-tests
+        - optimized-tests
+
+windows7-32/debug:
+    build-platform: win32/debug
+    test-sets:
+        - common-tests
+
+# win64
+windows10-64/opt:
+    build-platform: win64/opt
+    test-sets:
+        - common-tests
+        - optimized-tests
+
+windows10-64-shippable/opt:
+    build-platform: win64-shippable/opt
+    test-sets:
+        - common-tests
+        - optimized-tests
+
+windows10-64/debug:
+    build-platform: win64/debug
+    test-sets:
+        - common-tests
+
+# MacOS X platforms (matching /macosx.*/)
+
+macosx1010-64/debug:
+    build-platform: macosx64/debug
+    test-sets:
+        - common-tests
+
+macosx1010-64-shippable/opt:
+    build-platform: macosx64-shippable/opt
+    test-sets:
+        - common-tests
+        - optimized-tests

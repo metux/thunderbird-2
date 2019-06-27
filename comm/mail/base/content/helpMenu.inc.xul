@@ -1,0 +1,54 @@
+      <menu id="helpMenu"
+#ifdef XP_WIN
+            label="&helpMenuWin.label;" accesskey="&helpMenuWin.accesskey;">
+#else
+            label="&helpMenu.label;" accesskey="&helpMenu.accesskey;">
+#endif
+        <menupopup id="menu_HelpPopup">
+          <menuitem id="menu_openHelp"
+                    label="&productHelp.label;"
+#ifndef XP_MACOSX
+                    accesskey="&productHelp.accesskey;"
+#endif
+                    key="key_openHelp"
+                    oncommand="openSupportURL();"
+                    class="menuitem-iconic"/>
+          <menuitem id="menu_openTour"
+                    label="&helpShowTour2.label;"
+                    accesskey="&helpShowTour2.accesskey;"
+                    oncommand="openLinkText(event, 'tourURL');"/>
+          <menuitem id="menu_keyboardShortcuts"
+                    label="&helpKeyboardShortcuts.label;"
+                    accesskey="&helpKeyboardShortcuts.accesskey;"
+                    oncommand="openLinkText(event, 'keyboardShortcutsURL');"/>
+          <menuitem id="getInvolved"
+                    label="&helpGetInvolvedPage.label;"
+                    accesskey="&helpGetInvolvedPage.accesskey;"
+                    oncommand="openLinkText(event, 'getInvolvedURL');"/>
+          <menuitem id="donationsPage"
+                    label="&helpDonationsPage.label;"
+                    accesskey="&helpDonationsPage.accesskey;"
+                    oncommand="openLinkText(event, 'donateURL');"/>
+          <menuitem id="feedbackPage" hidden="true"
+                    label="&helpFeedbackPage.label;"
+                    accesskey="&helpFeedbackPage.accesskey;"
+                    oncommand="openFormattedURL('app.feedback.baseURL');"/>
+          <menuseparator id="functionsSeparator"/>
+          <menuitem id="aboutsupport_open"
+                    label="&helpTroubleshootingInfo.label;"
+                    accesskey="&helpTroubleshootingInfo.accesskey;"
+                    oncommand="openAboutSupport();"/>
+          <menuitem id="helpSafeMode"
+                    label="&helpSafeMode.label;"
+                    accesskey="&helpSafeMode.accesskey;"
+                    oncommand="safeModeRestart();"/>
+#ifndef XP_MACOSX
+          <menuseparator id="aboutSeparator"/>
+#endif
+          <menuitem id="aboutName"
+                    label="&aboutProduct2.label;"
+                    accesskey="&aboutProduct2.accesskey;"
+                    oncommand="openAboutDialog();"
+                    class="menuitem-iconic"/>
+        </menupopup>
+      </menu>

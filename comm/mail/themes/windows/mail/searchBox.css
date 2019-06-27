@@ -1,0 +1,102 @@
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+@import url("chrome://messenger/skin/shared/searchBox.css");
+
+/*
+ * The emptytext style would appear to use italics.  This is causing
+ * problems for the search box because it has no minwidth and is flexy, so
+ * removing the emptytext causes the size of the box to change and this is silly
+ * and undesirable.  This change is being made to maintain the generally
+ * accepted status quo while reducing breakage.  This will cause visual
+ * inconsistency with the quick filter bar unless it gets a change like this
+ * too.
+ */
+#searchInput {
+  font-style: normal !important;
+}
+
+.quick-search-textbox {
+  padding-top: 1px;
+}
+
+.searchBox > hbox,
+.themeableSearchBox > hbox {
+  -moz-box-ordinal-group: 1;
+}
+
+.searchBox > .textbox-input-box,
+.themeableSearchBox > .textbox-input-box {
+  -moz-box-ordinal-group: 2;
+}
+
+.gloda-search-icon {
+  margin-inline-end: 5px;
+}
+
+.gloda-search-icon,
+textbox:not([searchbutton]) > .textbox-input-box > .textbox-search-sign {
+  margin-inline-start: 2px;
+}
+
+.gloda-search-icon,
+.textbox-search-icon[searchbutton],
+textbox:not([searchbutton]) > .textbox-input-box > .textbox-search-sign {
+  list-style-image: url(chrome://messenger/skin/icons/search-glass.svg);
+  -moz-context-properties: fill;
+  fill: currentColor;
+  opacity: 0.54;
+}
+
+.remote-gloda-search-container {
+  padding-top: 1px;
+  padding-bottom: 1px;
+}
+
+.searchBox,
+.themeableSearchBox {
+  -moz-appearance: none;
+  background-clip: padding-box;
+  border: 1px solid hsla(240,5%,5%,.25);
+  border-radius: 2px;
+  box-shadow: 0 1px 4px rgba(0,0,0,.05);
+  padding-inline-end: 2px;
+  padding-inline-start: 2px;
+  min-height: 24px;
+  margin-top: 1px;
+  margin-bottom: 1px;
+  width: 25em;
+}
+
+@media (-moz-windows-default-theme: 0) {
+  .searchBox:not(:-moz-lwtheme):not([focused="true"]),
+  .themeableSearchBox:not(:-moz-lwtheme):not([focused="true"]) {
+    border-color: ThreeDShadow;
+  }
+}
+
+/* Add margins to show the hover box-shadow */
+#searchInput,
+#IMSearchInput,
+#peopleSearchInput {
+  margin-top: 3px;
+  margin-bottom: 3px;
+}
+
+.searchBox[focused="true"],
+.themeableSearchBox[focused="true"] {
+  border-color: Highlight;
+}
+
+/* special treatment because these boxes are on themable toolbars */
+#searchInput,
+#IMSearchInput,
+#peopleSearchInput,
+.remote-gloda-search {
+  min-height: 26px;
+}
+
+.autocomplete-richlistitem[type^="gloda-"] {
+  padding-inline-start: 12px;
+}

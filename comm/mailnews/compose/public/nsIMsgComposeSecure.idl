@@ -1,0 +1,93 @@
+/* -*- Mode: C++; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 2 -*-
+ *
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+#include "nsIMsgSendReport.idl"
+#include "nsISupports.idl"
+
+interface nsIMsgCompFields;
+interface nsIMsgIdentity;
+interface nsIOutputStream;
+interface nsIX509Cert;
+
+/* Security interface */
+[scriptable, uuid(245f2adc-410e-4bdb-91e2-a7bb42d61787)]
+interface nsIMsgComposeSecure : nsISupports
+{
+    /**
+     * Set to true if the outgoing message shall be signed.
+     */
+    attribute boolean signMessage;
+
+    /**
+     * Set to true if the outgoing message shall be encrypted.
+     */
+    attribute boolean requireEncryptMessage;
+
+    /***************************************************************************
+     * The following functions are called during message creation by nsMsgSend,
+     * after the message source is completely prepared.
+     ***************************************************************************/
+
+    /**
+     * Determine if encryption and/or signing is required.
+     *
+     * @param aIdentity   - The sender's identity
+     * @param compFields  - Attributes of the composed message
+     *
+     * @return - Returns true if the creation of the message requires us to go through
+     *           some encryption work, and false otherwise.
+    */
+    boolean requiresCryptoEncapsulation(in nsIMsgIdentity aIdentity, in nsIMsgCompFields aCompFields);
+
+    /**
+     * Start encryption work. Called before the encrypted data is processed.
+     *
+     * @param aStream     - Output stream that takes the resulting data
+     * @param aRecipients - RFC 2047-encoded list of all recipients (To:, Cc:, Bcc:, ... fields), separated by "," or ", "
+     *                      Recipients contain name and email addresses, just like they will be put into the message headers
+     * @param compFields  - Attributes of the composed message
+     * @param aIdentity   - The sender's identity
+     * @param sendReport  - Report feedback to the user
+     * @param aIsDraft    - True if send operation saves draft/template/etc., false if message is really sent (or sent later)
+     */
+    void beginCryptoEncapsulation(in nsIOutputStream aStream, in string aRecipients, in nsIMsgCompFields aCompFields, in nsIMsgIdentity aIdentity, in nsIMsgSendReport sendReport, in boolean aIsDraft);
+
+    /**
+     * Process a part of the message data. Called multiple times, usually for every
+     * line of the data to be encrypted
+     *
+     * @param aBuf  - Buffer holding the data to be processed
+     * @param aLen  - Length of the buffer (number of characters)
+     */
+    void mimeCryptoWriteBlock(in string aBuf, in long aLen);
+
+    /**
+     * End encryption work. Called after the encrypted data is processed.
+     *
+     * @param aAbort      - True if the send operation was aborted
+     * @param sendReport  - Report feedback to the user
+     */
+    void finishCryptoEncapsulation(in boolean aAbort, in nsIMsgSendReport sendReport);
+
+    /**
+     *  Find a certificate by email address.
+     *
+     *  (Note: This function is used primarily for testing purposes. It runs
+     *   on the main thread, which may cause nested event loop spinning.)
+     *  (TODO: A better place for this might be nsISMimeJSHelper.idl,
+     *   but it would require to move the C++ implementation.)
+     *
+     *  @param aEmailAddress     - The email address to be used as the key
+     *                           - to find the certificate.
+     *  @param aRequireValidCert - Set to False, to search for any certificate with a matching email address.
+     *                             Set to True, if the returned certificate must be currently valid
+     *                                          and usable for email security.
+     *
+     *  @return The matching certificate if found.
+     */
+    [must_use]
+    nsIX509Cert findCertByEmailAddress(in ACString aEmailAddress, in boolean aRequireValidCert);
+};

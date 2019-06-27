@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+<!-- This Source Code Form is subject to the terms of the Mozilla Public
+   - License, v. 2.0. If a copy of the MPL was not distributed with this
+   - file, You can obtain one at http://mozilla.org/MPL/2.0/. -->
+
+<?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
+<?xml-stylesheet href="chrome://messenger/skin/imMenulist.css" type="text/css"?>
+
+<!DOCTYPE window SYSTEM "chrome://messenger/locale/addbuddy.dtd">
+
+<dialog xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" xmlns:html="http://www.w3.org/1999/xhtml"
+  id="addBuddyDialog"
+  windowtype="Messenger:AddBuddy"
+  title="&addBuddyWindow.title;"
+  buttons="accept,cancel"
+  onload="addBuddy.onload()"
+  buttondisabledaccept="true">
+  <script src="chrome://messenger/content/chat/addbuddy.js"/>
+
+  <stringbundle id="chatBundle" src="chrome://messenger/locale/chat.properties"/>
+  <hbox>
+    <vbox id="nameBox">
+      <hbox align="center" flex="1">
+        <label value="&name.label;" control="name"/>
+      </hbox>
+      <hbox align="center" flex="1">
+        <label value="&account.label;" control="accountlist"/>
+      </hbox>
+    </vbox>
+    <vbox id="accountBox">
+      <textbox id="name" oninput="addBuddy.oninput()"/>
+      <menulist id="accountlist"/>
+    </vbox>
+  </hbox>
+</dialog>

@@ -1,0 +1,67 @@
+<?xml version="1.0"?>
+<!-- This Source Code Form is subject to the terms of the Mozilla Public
+   - License, v. 2.0. If a copy of the MPL was not distributed with this
+   - file, You can obtain one at http://mozilla.org/MPL/2.0/. -->
+
+<?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
+<?xml-stylesheet href="chrome://messenger/skin/smime/msgCompSecurityInfo.css" type="text/css"?>
+
+<!DOCTYPE dialog SYSTEM "chrome://messenger-smime/locale/msgCompSecurityInfo.dtd">
+
+<dialog id="msgCompSecurityInfo" title="&title.label;"
+  xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" xmlns:html="http://www.w3.org/1999/xhtml"
+  style="width: 50em;"
+  persist="width height"
+  buttons="accept"
+  onload="onLoad();">
+
+  <script src="chrome://messenger-smime/content/msgCompSecurityInfo.js"/>
+  <script><![CDATA[
+      function resizeColumns() {
+        let list = document.getElementById("infolist");
+        let cols = list.getElementsByTagName("treecol");
+        list.style.setProperty("--recipientWidth", cols[0].getBoundingClientRect().width + "px");
+        list.style.setProperty("--statusWidth", cols[1].getBoundingClientRect().width + "px");
+        list.style.setProperty("--issuedWidth", cols[2].getBoundingClientRect().width + "px");
+        list.style.setProperty("--expireWidth", cols[3].getBoundingClientRect().width - 5 + "px");
+      }
+      addEventListener("load", resizeColumns, { once: true });
+      addEventListener("resize", resizeColumns);
+  ]]></script>
+
+  <stringbundle id="bundle_smime_comp_info" src="chrome://messenger-smime/locale/msgCompSecurityInfo.properties"/>
+
+  <description>&subject.plaintextWarning;</description>
+  <separator class="thin"/>
+  <description>&status.heading;</description>
+  <hbox>
+    <vbox>
+      <label value="&status.signed;"/>
+      <label value="&status.encrypted;"/>
+    </vbox>
+    <vbox>
+      <label id="signed"/>
+      <label id="encrypted"/>
+    </vbox>
+  </hbox>
+
+  <separator class="thin"/>
+  <label value="&status.certificates;" control="infolist"/>
+
+  <richlistbox id="infolist"
+               class="theme-listbox"
+               flex="1"
+               onselect="onSelectionChange(event);">
+    <treecols>
+      <treecol flex="3" label="&tree.recipient;"/>
+      <treecol flex="1" label="&tree.status;"/>
+      <treecol flex="2" label="&tree.issuedDate;"/>
+      <treecol flex="2" label="&tree.expiresDate;"/>
+    </treecols>
+  </richlistbox>
+  <hbox pack="start">
+    <button id="viewCertButton" disabled="true"
+            label="&view.label;" accesskey="&view.accesskey;"
+            oncommand="viewSelectedCert();"/>
+  </hbox>
+</dialog>

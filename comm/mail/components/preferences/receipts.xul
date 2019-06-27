@@ -1,0 +1,101 @@
+<?xml version="1.0"?>
+<!-- -*- Mode: Java; tab-width: 2; indent-tabs-mode: nil; c-basic-offset: 2 -*-
+   - This Source Code Form is subject to the terms of the Mozilla Public
+   - License, v. 2.0. If a copy of the MPL was not distributed with this
+   - file, You can obtain one at http://mozilla.org/MPL/2.0/. -->
+
+<?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
+<?xml-stylesheet href="chrome://messenger/skin/preferences/preferences.css"?>
+
+<!DOCTYPE dialog [
+<!ENTITY % receiptsDTD SYSTEM "chrome://messenger/locale/preferences/receipts.dtd">
+%receiptsDTD;
+]>
+
+<dialog id="ReturnReceiptsDialog" type="child"
+        xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" xmlns:html="http://www.w3.org/1999/xhtml"
+        dlgbuttons="accept,cancel"
+        title="&dialog.title;"
+        onload="enableDisableAllowedReceipts();">
+
+  <prefpane id="ReturnReceiptsDialogPane">
+    <script src="chrome://global/content/preferencesBindings.js"/>
+    <script src="chrome://messenger/content/preferences/receipts.js"/>
+
+    <vbox id="returnReceiptSettings" align="start">
+      <checkbox id="alwaysRequest" label="&requestReceipt.label;"
+                preference="mail.receipt.request_return_receipt_on"
+                accesskey="&requestReceipt.accesskey;"/>
+    </vbox>
+
+    <separator class="thin"/>
+    <separator class="groove"/>
+    <separator class="thin"/>
+
+    <label control="receiptFolder">&receiptArrive.label;</label>
+    <radiogroup id="receiptFolder" class="indent" preference="mail.incorporate.return_receipt">
+      <radio value="0" label="&leaveIt.label;" accesskey="&leaveIt.accesskey;"/>
+      <radio value="1" label="&moveToSent.label;" accesskey="&moveToSent.accesskey;"/>
+    </radiogroup>
+
+    <separator class="thin"/>
+    <separator class="groove"/>
+    <separator class="thin"/>
+
+    <label control="receiptSend">&requestMDN.label;</label>
+    <radiogroup id="receiptSend" class="indent" preference="mail.mdn.report.enabled"
+                oncommand="enableDisableAllowedReceipts();">
+      <radio value="false" label="&never.label;" accesskey="&never.accesskey;"/>
+      <radio value="true" label="&returnSome.label;" accesskey="&returnSome.accesskey;"/>
+
+      <vbox class="indent">
+        <hbox align="center">
+          <hbox flex="1">
+            <label id="notInToCcLabel"
+                   accesskey="&notInToCc.accesskey;"
+                   control="notInToCcPref"
+                   value="&notInToCc.label;"/>
+          </hbox>
+          <menulist id="notInToCcPref" preference="mail.mdn.report.not_in_to_cc">
+            <menupopup>
+              <menuitem value="0" label="&neverSend.label;"/>
+              <menuitem value="1" label="&alwaysSend.label;"/>
+              <menuitem value="2" label="&askMe.label;"/>
+            </menupopup>
+          </menulist>
+        </hbox>
+        <hbox align="center">
+          <hbox flex="1">
+            <label id="outsideDomainLabel"
+                   accesskey="&outsideDomain.accesskey;"
+                   control="outsideDomainPref"
+                   value="&outsideDomain.label;"/>
+          </hbox>
+          <menulist id="outsideDomainPref" preference="mail.mdn.report.outside_domain">
+            <menupopup>
+              <menuitem value="0" label="&neverSend.label;"/>
+              <menuitem value="1" label="&alwaysSend.label;"/>
+              <menuitem value="2" label="&askMe.label;"/>
+            </menupopup>
+          </menulist>
+        </hbox>
+        <hbox align="center">
+          <hbox flex="1">
+            <label id="otherCasesLabel"
+                   accesskey="&otherCases.accesskey;"
+                   control="otherCasesPref"
+                   value="&otherCases.label;"/>
+          </hbox>
+          <menulist id="otherCasesPref" preference="mail.mdn.report.other">
+            <menupopup>
+              <menuitem value="0" label="&neverSend.label;"/>
+              <menuitem value="1" label="&alwaysSend.label;"/>
+              <menuitem value="2" label="&askMe.label;"/>
+            </menupopup>
+          </menulist>
+        </hbox>
+      </vbox>
+    </radiogroup>
+    <separator/>
+  </prefpane>
+</dialog>

@@ -1,0 +1,107 @@
+<?xml version="1.0"?>
+# -*- Mode: Java; tab-width: 2; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this
+# file, You can obtain one at http://mozilla.org/MPL/2.0/.
+
+<?xml-stylesheet href="chrome://global/skin/global.css"?>
+<?xml-stylesheet href="chrome://messenger/content/messenger.css"?>
+<?xml-stylesheet href="chrome://messenger/content/preferences/handlers.css"?>
+<?xml-stylesheet href="chrome://messenger/skin/filefield.css"?>
+<?xml-stylesheet href="chrome://messenger/skin/preferences/applications.css"?>
+<?xml-stylesheet href="chrome://messenger/skin/preferences/preferences.css"?>
+<?xml-stylesheet href="chrome://global/skin/in-content/common.css"?>
+<?xml-stylesheet href="chrome://messenger/skin/preferences/aboutPreferences.css"?>
+
+#include doctype.inc.xul
+
+<preftab id="MailPreferences" flex="1"
+         windowtype="Mail:Preferences"
+         xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+         xmlns:xhtml="http://www.w3.org/1999/xhtml"
+         xmlns:html="http://www.w3.org/1999/xhtml"
+         onload="gSubDialog.init();"
+#ifdef XP_WIN
+         title="&prefWindow.titleWin;">
+#endif
+#ifdef XP_UNIX
+#ifndef XP_MACOSX
+         title="&prefWindow.titleGNOME;">
+#else
+         title="&prefWindow.titleMAC;">
+#endif
+#endif
+  <script src="chrome://global/content/preferencesBindings.js"/>
+
+  <stringbundle id="bundleBrand" src="chrome://branding/locale/brand.properties"/>
+  <stringbundle id="bundlePreferences"
+                src="chrome://messenger/locale/preferences/preferences.properties"/>
+  <linkset>
+    <html:link rel="localization" href="branding/brand.ftl"/>
+    <html:link rel="localization" href="messenger/preferences/preferences.ftl"/>
+    <html:link rel="localization" href="messenger/preferences/fonts.ftl"/>
+    <html:link rel="localization" href="messenger/preferences/languages.ftl"/>
+  </linkset>
+
+  <stack flex="1">
+    <hbox id="prefBox" flex="1">
+      <vbox id="pref-category-box">
+        <radiogroup id="selector" orient="vertical" class="paneSelector chromeclass-toolbar"
+                        role="listbox" flex="1"/> <!-- Expose to accessibility APIs as a listbox -->
+        <spacer flex="1"/>
+        <hbox class="sidebar-footer-button"
+              pack="center"
+              onclick="window.docShell.rootTreeItem.domWindow.openAddonsMgr();">
+          <label is="text-link" id="addonsButton">
+            <hbox align="center">
+              <image class="sidebar-footer-icon addons-icon"/>
+              <label class="sidebar-footer-label" flex="1">&addonsButton.label;</label>
+            </hbox>
+          </label>
+        </hbox>
+      </vbox>
+      <hbox id="preferencesContainer" flex="1">
+        <hbox class="paneDeckContainer" flex="1">
+          <hbox id="paneDeck" flex="1">
+#include general.inc.xul
+#include display.inc.xul
+#include compose.inc.xul
+#include chat.inc.xul
+#include privacy.inc.xul
+#include security.inc.xul
+#include applications.inc.xul
+            <prefpane id="paneLightning" label="&paneLightning.title;"/>
+#include advanced.inc.xul
+          </hbox>
+        </hbox>
+      </hbox>
+    </hbox>
+    <stack id="dialogStack" hidden="true"/>
+    <vbox id="dialogTemplate"
+          class="dialogOverlay"
+          align="center"
+          pack="center"
+          topmost="true"
+          hidden="true">
+      <vbox class="dialogBox"
+            pack="end"
+            role="dialog"
+            aria-labelledby="dialogTitle">
+        <hbox class="dialogTitleBar" align="center">
+          <label class="dialogTitle" flex="1"/>
+          <button class="dialogClose close-icon"
+                  aria-label="&preferencesCloseButton.label;"/>
+        </hbox>
+        <browser class="dialogFrame"
+                 autoscroll="false"
+                 disablehistory="true"/>
+      </vbox>
+    </vbox>
+  </stack>
+
+  <script src="chrome://messenger/content/customElements.js"/>
+  <script src="chrome://global/content/globalOverlay.js"/>
+  <script src="chrome://communicator/content/contentAreaClick.js"/>
+  <script src="chrome://messenger/content/preferences/preferences.js"/>
+  <script src="chrome://messenger/content/preferences/subdialogs.js"/>
+</preftab>

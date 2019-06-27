@@ -1,0 +1,36 @@
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+@import url("chrome://messenger/content/multimessageview.css");
+
+/* linux-specific overrides for multimessageview.css*/
+
+#header-view-toolbox {
+  font: message-box;
+}
+
+.star {
+  width: 12px;
+  height: 12px;
+  margin-right: 0.5em;
+}
+
+.starred .star {
+  background-image: url("chrome://messenger/skin/icons/flag-col.png");
+}
+
+@media not all and (prefers-color-scheme: dark) {
+  .toolbarbutton-1.msgHeaderView-button {
+    background: -moz-Dialog;
+    color: -moz-DialogText !important;
+  }
+
+  .toolbarbutton-1.msgHeaderView-button:not([disabled=true]):not([checked=true]):not([open]):not(:active):hover {
+    background: -moz-dialog linear-gradient(rgba(255, 255, 255, .5), transparent);
+  }
+
+  .toolbarbutton-1.msgHeaderView-button:not([disabled=true]):not([checked=true]):not([open]):not(:active):hover {
+    background: rgb(154, 154, 154) linear-gradient(rgba(255, 255, 255, .7), rgba(255, 255, 255, .4));
+  }
+}

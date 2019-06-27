@@ -1,0 +1,10 @@
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this
+# file, You can obtain one at http://mozilla.org/MPL/2.0/.
+
+messenger.jar:
+    content/messenger/about-support/hide-private.css           (content/hide-private.css)
+    content/messenger/about-support/accounts.js                (content/accounts.js)
+    content/messenger/about-support/export.js                  (content/export.js)
+*   content/messenger/about-support/aboutSupport.xhtml         (content/aboutSupport.xhtml)
+    content/messenger/about-support/aboutSupport.js            (content/aboutSupport.js)

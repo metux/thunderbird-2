@@ -1,0 +1,553 @@
+; This Source Code Form is subject to the terms of the Mozilla Public
+; License, v. 2.0. If a copy of the MPL was not distributed with this
+; file, You can obtain one at http://mozilla.org/MPL/2.0/.
+
+; Package file for the Thunderbird build.
+;
+; Packaging manifest is used to copy files from dist/bin
+; to the staging directory.
+; Some other files are built in the staging directory directly,
+; so they will be implicitly packaged too.
+;
+; File format:
+;
+; [] designates a toplevel component. Example: [xpcom]
+; * wildcard support to recursively copy the entire directory
+; ; file comment
+;
+
+; Due to Apple Mac OS X packaging requirements, files that are in the same
+; directory on other platforms must be located in different directories on
+; Mac OS X. The following defines allow specifying the Mac OS X bundle
+; location which also work on other platforms.
+;
+; @BINPATH@
+; Equals Contents/MacOS/ on Mac OS X and is the path to the main binary on other
+; platforms.
+;
+; @RESPATH@
+; Equals Contents/Resources/ on Mac OS X and is equivalent to @BINPATH@ on other
+; platforms.
+
+#filter substitution
+
+#ifdef XP_UNIX
+#ifndef XP_MACOSX
+#define UNIX_BUT_NOT_MAC
+#endif
+#endif
+
+#ifdef XP_MACOSX
+; Mac bundle stuff
+@APPNAME@/Contents/Info.plist
+@APPNAME@/Contents/Library/LaunchServices
+@APPNAME@/Contents/PkgInfo
+@APPNAME@/Contents/Library/Spotlight/thunderbird.mdimporter/
+@RESPATH@/thunderbird.icns
+@RESPATH@/@LPROJ_ROOT@.lproj/*
+#endif
+
+[@AB_CD@]
+@RESPATH@/@PREF_DIR@/all-l10n.js
+@RESPATH@/dictionaries/*
+@RESPATH@/localization/*
+#ifdef MOZ_BUNDLED_FONTS
+@RESPATH@/fonts/*
+#endif
+@RESPATH@/hyphenation/*
+#ifdef HAVE_MAKENSISU
+@BINPATH@/uninstall/helper.exe
+#endif
+#ifdef MOZ_UPDATER
+@RESPATH@/update.locale
+@RESPATH@/updater.ini
+#endif
+
+#ifdef PKG_LOCALE_MANIFEST
+#include @PKG_LOCALE_MANIFEST@
+#endif
+
+[xpcom]
+@RESPATH@/dependentlibs.list
+#ifdef MOZ_SHARED_MOZGLUE
+@BINPATH@/@DLL_PREFIX@mozglue@DLL_SUFFIX@
+#endif
+#ifndef MOZ_STATIC_JS
+@BINPATH@/@DLL_PREFIX@mozjs@DLL_SUFFIX@
+#endif
+#ifndef MOZ_SYSTEM_NSPR
+#ifndef MOZ_FOLD_LIBS
+@BINPATH@/@DLL_PREFIX@nspr4@DLL_SUFFIX@
+@BINPATH@/@DLL_PREFIX@plc4@DLL_SUFFIX@
+@BINPATH@/@DLL_PREFIX@plds4@DLL_SUFFIX@
+#endif
+#endif
+#ifdef XP_MACOSX
+@BINPATH@/XUL
+#else
+@BINPATH@/@DLL_PREFIX@xul@DLL_SUFFIX@
+#endif
+#ifdef XP_MACOSX
+@BINPATH@/@MOZ_CHILD_PROCESS_NAME@.app/
+@BINPATH@/@DLL_PREFIX@plugin_child_interpose@DLL_SUFFIX@
+#else
+@BINPATH@/@MOZ_CHILD_PROCESS_NAME@
+#endif
+#ifdef XP_WIN
+@BINPATH@/plugin-hang-ui@BIN_SUFFIX@
+#if MOZ_PACKAGE_MSVC_DLLS
+@BINPATH@/@MSVC_C_RUNTIME_DLL@
+@BINPATH@/@MSVC_CXX_RUNTIME_DLL@
+#endif
+#if MOZ_PACKAGE_WIN_UCRT_DLLS
+@BINPATH@/api-ms-win-*.dll
+@BINPATH@/ucrtbase.dll
+#endif
+#endif
+#ifdef MOZ_GTK
+@BINPATH@/@DLL_PREFIX@mozgtk@DLL_SUFFIX@
+@BINPATH@/gtk2/@DLL_PREFIX@mozgtk@DLL_SUFFIX@
+#ifdef MOZ_WAYLAND
+@BINPATH@/@DLL_PREFIX@mozwayland@DLL_SUFFIX@
+#endif
+#endif
+
+; Optional RSS extension
+[newsblog]
+@RESPATH@/chrome/newsblog@JAREXT@
+@RESPATH@/chrome/newsblog.manifest
+@RESPATH@/components/newsblog.js
+@RESPATH@/components/newsblog.manifest
+
+[mail]
+#ifndef XP_UNIX
+@BINPATH@/@MOZ_APP_NAME@.exe
+@BINPATH@/thunderbird.VisualElementsManifest.xml
+@BINPATH@/VisualElements/VisualElements_150.png
+@BINPATH@/VisualElements/VisualElements_70.png
+#else
+@BINPATH@/@MOZ_APP_NAME@-bin
+@BINPATH@/@MOZ_APP_NAME@
+#endif
+@RESPATH@/application.ini
+#ifdef MOZ_UPDATER
+@RESPATH@/update-settings.ini
+#endif
+@BINPATH@/@DLL_PREFIX@lgpllibs@DLL_SUFFIX@
+@RESPATH@/blocklist.xml
+@RESPATH@/platform.ini
+#ifndef MOZ_SYSTEM_SQLITE
+#ifndef MOZ_FOLD_LIBS
+@RESPATH@/@DLL_PREFIX@mozsqlite3@DLL_SUFFIX@
+#endif
+#endif
+#ifdef UNIX_BUT_NOT_MAC
+#ifdef MOZ_UPDATER
+@RESPATH@/icons/*.png
+#endif
+#endif
+#ifdef XP_WIN
+#ifdef _AMD64_
+@BINPATH@/@DLL_PREFIX@qipcap64@DLL_SUFFIX@
+#else
+@BINPATH@/@DLL_PREFIX@qipcap@DLL_SUFFIX@
+#endif
+#endif
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+; Mail Specific Files
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+@RESPATH@/defaults/messenger/mailViews.dat
+@RESPATH@/defaults/profile/prefs.js
+
+@RESPATH@/isp/*
+
+@RESPATH@/components/aboutRedirector.js
+@RESPATH@/components/activityComponents.manifest
+@RESPATH@/components/EnterprisePolicies.js
+@RESPATH@/components/EnterprisePolicies.manifest
+@RESPATH@/components/EnterprisePoliciesContent.js
+@RESPATH@/components/folderLookupService.js
+; interfaces.manifest doesn't get packaged because it is dynamically
+; re-created at packaging time when linking the xpts that will actually
+; go into the package, so the test related interfaces aren't included.
+@RESPATH@/components/mimeJSComponents.js
+@RESPATH@/components/msgMime.manifest
+@RESPATH@/components/msgAsyncPrompter.js
+@RESPATH@/components/msgBase.manifest
+@RESPATH@/components/nsActivity.js
+@RESPATH@/components/nsActivityManager.js
+@RESPATH@/components/nsActivityManagerUI.js
+@RESPATH@/components/nsAddrbook.manifest
+@RESPATH@/components/nsMailNewsCommandLineHandler.js
+@RESPATH@/components/nsNewsAutoCompleteSearch.js
+@RESPATH@/components/nsNewsAutoCompleteSearch.manifest
+@RESPATH@/chrome/toolkit@JAREXT@
+@RESPATH@/chrome/toolkit.manifest
+@RESPATH@/chrome/comm@JAREXT@
+@RESPATH@/chrome/comm.manifest
+; Browser: Hack to get built_in_addons.json packaged
+@RESPATH@/chrome/browser@JAREXT@
+@RESPATH@/chrome/browser.manifest
+@RESPATH@/chrome/messenger@JAREXT@
+@RESPATH@/chrome/messenger.manifest
+#ifndef XP_UNIX
+@RESPATH@/chrome/icons/default/abcardWindow.ico
+@RESPATH@/chrome/icons/default/addressbookWindow.ico
+@RESPATH@/chrome/icons/default/messengerWindow.ico
+@RESPATH@/chrome/icons/default/msgcomposeWindow.ico
+@RESPATH@/chrome/icons/default/calendar-alarm-dialog.ico
+@RESPATH@/chrome/icons/default/calendar-event-dialog.ico
+@RESPATH@/chrome/icons/default/calendar-event-summary-dialog.ico
+@RESPATH@/chrome/icons/default/calendar-task-dialog.ico
+@RESPATH@/chrome/icons/default/calendar-task-summary-dialog.ico
+#elifdef UNIX_BUT_NOT_MAC
+@RESPATH@/chrome/icons/default/*.png
+#endif
+
+; Gloda
+@RESPATH@/chrome/gloda@JAREXT@
+@RESPATH@/chrome/gloda.manifest
+@RESPATH@/components/glautocomp.js
+@RESPATH@/components/gloda.manifest
+@RESPATH@/components/jsmimeemitter.js
+
+; OAuth2 for mail
+@RESPATH@/components/msgOAuth2Module.js
+
+; New message notification
+@RESPATH@/components/newMailNotificationService.js
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+; Mail Extensions (smime, etc.)
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+#ifdef MOZ_MAPI_SUPPORT
+@BINPATH@/MapiProxy.dll
+@BINPATH@/mozMapi32.dll
+#endif
+@RESPATH@/components/mailComponents.manifest
+@RESPATH@/components/mailContentHandler.js
+@RESPATH@/components/mailGlue.js
+@RESPATH@/components/nsMailDefaultHandler.js
+@RESPATH@/components/nsSetDefaultMail.js
+@RESPATH@/components/shell.manifest
+@RESPATH@/components/offlineStartup.js
+@RESPATH@/components/offlineStartup.manifest
+
+
+@RESPATH@/components/mdn-service.js
+@RESPATH@/components/mdn-service.manifest
+@RESPATH@/components/smime-service.js
+@RESPATH@/components/smime-service.manifest
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+; instant messaging
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+; shared with Instantbird
+@RESPATH@/@PREF_DIR@/chat-prefs.js
+@RESPATH@/chrome/chat@JAREXT@
+@RESPATH@/chrome/chat.manifest
+@RESPATH@/components/imAccounts.js
+@RESPATH@/components/imAccounts.manifest
+@RESPATH@/components/imCommands.js
+@RESPATH@/components/imCommands.manifest
+@RESPATH@/components/imContacts.js
+@RESPATH@/components/imContacts.manifest
+@RESPATH@/components/imConversations.js
+@RESPATH@/components/imConversations.manifest
+@RESPATH@/components/imCore.js
+@RESPATH@/components/imCore.manifest
+@RESPATH@/components/facebook.js
+@RESPATH@/components/facebook.manifest
+@RESPATH@/components/gtalk.js
+@RESPATH@/components/gtalk.manifest
+@RESPATH@/components/irc.js
+@RESPATH@/components/irc.manifest
+@RESPATH@/components/matrix.js
+@RESPATH@/components/matrix.manifest
+@RESPATH@/components/skype.js
+@RESPATH@/components/skype.manifest
+@RESPATH@/components/twitter.js
+@RESPATH@/components/twitter.manifest
+@RESPATH@/components/xmpp.js
+@RESPATH@/components/xmpp.manifest
+@RESPATH@/components/yahoo.js
+@RESPATH@/components/yahoo.manifest
+@RESPATH@/components/smileProtocolHandler.js
+@RESPATH@/components/smileProtocolHandler.manifest
+@RESPATH@/components/logger.js
+@RESPATH@/components/logger.manifest
+
+; Thunderbird specific
+@RESPATH@/@PREF_DIR@/all-im.js
+@RESPATH@/components/im.manifest
+@RESPATH@/components/imIncomingServer.js
+@RESPATH@/components/imProtocolInfo.js
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+; Chrome Files
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+@RESPATH@/chrome/classic@JAREXT@
+@RESPATH@/chrome/classic.manifest
+
+; [DevTools Startup Files]
+@RESPATH@/chrome/devtools-startup@JAREXT@
+@RESPATH@/chrome/devtools-startup.manifest
+@RESPATH@/@PREF_DIR@/devtools-startup.js
+
+; DevTools
+@RESPATH@/chrome/devtools@JAREXT@
+@RESPATH@/chrome/devtools.manifest
+@RESPATH@/@PREF_DIR@/devtools-client.js
+@RESPATH@/@PREF_DIR@/debugger.js
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+; Default Profile Settings
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+; default pref files
+@RESPATH@/defaults/pref/all-thunderbird.js
+@RESPATH@/defaults/pref/channel-prefs.js
+@RESPATH@/defaults/pref/composer.js
+@RESPATH@/defaults/pref/mailnews.js
+@RESPATH@/defaults/pref/mdn.js
+@RESPATH@/defaults/pref/smime.js
+@RESPATH@/defaults/pref/thunderbird-branding.js
+@RESPATH@/defaults/permissions
+@RESPATH@/defaults/settings/blocklists
+@RESPATH@/defaults/settings/pinning
+@RESPATH@/defaults/settings/main
+@RESPATH@/greprefs.js
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+; App extensions to Mail
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+; LDAP components
+@RESPATH@/components/nsAbLDAPAttributeMap.js
+#ifdef MOZ_LDAP_XPCOM
+@RESPATH@/components/nsAbLDAPAutoCompleteSearch.js
+@RESPATH@/components/nsLDAPProtocolHandler.js
+@RESPATH@/components/ldapComponents.manifest
+@BINPATH@/@DLL_PREFIX@ldap60@DLL_SUFFIX@
+@BINPATH@/@DLL_PREFIX@ldif60@DLL_SUFFIX@
+@BINPATH@/@DLL_PREFIX@prldap60@DLL_SUFFIX@
+#endif
+
+; Protocol/Content handling
+@RESPATH@/components/nsSMTPProtocolHandler.js
+@RESPATH@/components/nsSMTPProtocolHandler.manifest
+
+; misson control, autoconfig
+#ifdef MOZ_PREF_EXTENSIONS
+@RESPATH@/defaults/autoconfig/prefcalls.js
+#endif
+
+; Address Book autocomplete
+@RESPATH@/components/nsAbAutoCompleteMyDomain.js
+@RESPATH@/components/nsAbAutoCompleteSearch.js
+
+; Windows Search integration
+; the module is included as part of the "Modules" rule
+#ifdef XP_WIN
+@BINPATH@/WSEnable.exe
+#endif
+
+; Bayesian trait analysis
+@RESPATH@/components/nsMsgTraitService.js
+@RESPATH@/components/nsMsgTraitService.manifest
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+; Base Package Files
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+; accessibility (out of process API support)
+#ifdef ACCESSIBILITY
+#ifdef XP_WIN
+@BINPATH@/Accessible.tlb
+@BINPATH@/AccessibleHandler.dll
+@BINPATH@/AccessibleMarshal.dll
+@BINPATH@/IA2Marshal.dll
+#endif
+#endif
+
+; toolkit
+@RESPATH@/components/toolkitsearch.manifest
+@RESPATH@/components/extensions.manifest
+#ifdef MOZ_UPDATER
+@RESPATH@/components/nsUpdateService.manifest
+#endif
+@RESPATH@/components/ProcessSingleton.manifest
+@RESPATH@/components/HandlerService.manifest
+@RESPATH@/components/HandlerService.js
+
+#ifdef MOZ_CALENDAR
+[calendar]
+#ifdef NIGHTLY_BUILD
+@RESPATH@/extensions/{e2fda1a4-762b-4020-b5ad-a41df1933103}/
+#else
+@RESPATH@/distribution/extensions/{e2fda1a4-762b-4020-b5ad-a41df1933103}/
+#endif
+#endif
+@RESPATH@/features/wetransfer@extensions.thunderbird.net/
+
+@RESPATH@/components/servicesComponents.manifest
+@RESPATH@/components/servicesSettings.manifest
+@RESPATH@/components/cryptoComponents.manifest
+@RESPATH@/components/Push.manifest
+
+; Remote control protocol
+#ifdef ENABLE_MARIONETTE
+@RESPATH@/chrome/marionette@JAREXT@
+@RESPATH@/chrome/marionette.manifest
+@RESPATH@/components/marionette.manifest
+@RESPATH@/components/marionette.js
+@RESPATH@/defaults/pref/marionette.js
+#endif
+
+
+; Phishing Protection
+
+; Modules
+@RESPATH@/modules/*
+@RESPATH@/actors/*
+
+; ANGLE GLES-on-D3D rendering library
+#ifdef MOZ_ANGLE_RENDERER
+@BINPATH@/libEGL.dll
+@BINPATH@/libGLESv2.dll
+
+#ifdef MOZ_D3DCOMPILER_VISTA_DLL
+@BINPATH@/@MOZ_D3DCOMPILER_VISTA_DLL@
+#endif
+#endif # MOZ_ANGLE_RENDERER
+
+#if defined(XP_WIN) && defined(MOZ_ENABLE_SKIA_PDF)
+@BINPATH@/pdfium.dll
+#endif
+
+; editor resource files
+@RESPATH@/res/EditorOverride.css
+@RESPATH@/res/contenteditable.css
+@RESPATH@/res/designmode.css
+@RESPATH@/res/table-add-column-after-active.gif
+@RESPATH@/res/table-add-column-after-hover.gif
+@RESPATH@/res/table-add-column-after.gif
+@RESPATH@/res/table-add-column-before-active.gif
+@RESPATH@/res/table-add-column-before-hover.gif
+@RESPATH@/res/table-add-column-before.gif
+@RESPATH@/res/table-add-row-after-active.gif
+@RESPATH@/res/table-add-row-after-hover.gif
+@RESPATH@/res/table-add-row-after.gif
+@RESPATH@/res/table-add-row-before-active.gif
+@RESPATH@/res/table-add-row-before-hover.gif
+@RESPATH@/res/table-add-row-before.gif
+@RESPATH@/res/table-remove-column-active.gif
+@RESPATH@/res/table-remove-column-hover.gif
+@RESPATH@/res/table-remove-column.gif
+@RESPATH@/res/table-remove-row-active.gif
+@RESPATH@/res/table-remove-row-hover.gif
+@RESPATH@/res/table-remove-row.gif
+@RESPATH@/res/grabber.gif
+#ifdef XP_MACOSX
+@RESPATH@/res/cursors/*
+#endif
+@RESPATH@/res/fonts/*
+@RESPATH@/res/dtd/*
+@RESPATH@/res/language.properties
+#ifdef XP_MACOSX
+@RESPATH@/res/MainMenu.nib/
+#endif
+
+; Content-accessible resources.
+@RESPATH@/contentaccessible/*
+
+; svg
+@RESPATH@/res/svg.css
+
+; [Extensions]
+@RESPATH@/components/extensions-toolkit.manifest
+@RESPATH@/components/extensions-mail.manifest
+
+; [Personal Security Manager]
+;
+; NSS libraries are signed in the staging directory,
+; meaning their .chk files are created there directly.
+;
+#ifndef MOZ_SYSTEM_NSS
+#if defined(XP_LINUX) && !defined(ANDROID)
+@BINPATH@/@DLL_PREFIX@freeblpriv3@DLL_SUFFIX@
+#else
+@BINPATH@/@DLL_PREFIX@freebl3@DLL_SUFFIX@
+#endif
+@BINPATH@/@DLL_PREFIX@nss3@DLL_SUFFIX@
+@BINPATH@/@DLL_PREFIX@nssckbi@DLL_SUFFIX@
+#ifndef NSS_DISABLE_DBM
+@BINPATH@/@DLL_PREFIX@nssdbm3@DLL_SUFFIX@
+#endif
+#ifndef MOZ_FOLD_LIBS
+@BINPATH@/@DLL_PREFIX@nssutil3@DLL_SUFFIX@
+@BINPATH@/@DLL_PREFIX@smime3@DLL_SUFFIX@
+@BINPATH@/@DLL_PREFIX@ssl3@DLL_SUFFIX@
+#endif
+@BINPATH@/@DLL_PREFIX@softokn3@DLL_SUFFIX@
+#endif
+@RESPATH@/chrome/pippki@JAREXT@
+@RESPATH@/chrome/pippki.manifest
+
+; For process sandboxing
+#if defined(MOZ_SANDBOX)
+#if defined(XP_LINUX)
+@BINPATH@/@DLL_PREFIX@mozsandbox@DLL_SUFFIX@
+#endif
+#endif
+
+; for Solaris SPARC
+#ifdef SOLARIS
+@BINPATH@/@DLL_PREFIX@freebl_32fpu_3@DLL_SUFFIX@
+@BINPATH@/@DLL_PREFIX@freebl_32int_3@DLL_SUFFIX@
+@BINPATH@/@DLL_PREFIX@freebl_32int64_3@DLL_SUFFIX@
+#endif
+
+; [Updater]
+;
+#ifdef MOZ_UPDATER
+#ifdef XP_MACOSX
+@BINPATH@/updater.app/
+#else
+@BINPATH@/updater@BIN_SUFFIX@
+#endif
+#endif
+
+; [MaintenanceService]
+;
+#ifdef MOZ_MAINTENANCE_SERVICE
+@BINPATH@/maintenanceservice.exe
+@BINPATH@/maintenanceservice_installer.exe
+#endif
+
+; [Crash Reporter]
+;
+#ifdef MOZ_CRASHREPORTER
+#ifdef XP_MACOSX
+@BINPATH@/crashreporter.app/
+#else
+@BINPATH@/crashreporter@BIN_SUFFIX@
+@BINPATH@/minidump-analyzer@BIN_SUFFIX@
+@RESPATH@/crashreporter.ini
+#ifdef XP_UNIX
+@RESPATH@/Throbber-small.gif
+#endif
+#endif
+#ifdef MOZ_CRASHREPORTER_INJECTOR
+@BINPATH@/breakpadinjector.dll
+#endif
+#endif
+
+; [ Ping Sender ]
+;
+@BINPATH@/pingsender@BIN_SUFFIX@
+
+; Shutdown Terminator
+@RESPATH@/components/terminator.manifest

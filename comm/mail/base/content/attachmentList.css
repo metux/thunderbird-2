@@ -1,0 +1,75 @@
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+.attachmentList {
+  -moz-appearance: listbox;
+  -moz-user-focus: normal;
+  margin: 0;
+  padding: 3px;
+}
+
+.attachmentList[orient="horizontal"] {
+  display: block;
+}
+
+.attachmentList[collapsed] {
+  height: 0;
+}
+
+.attachmentcell-content {
+  -moz-box-orient: horizontal;
+}
+
+.attachmentcell-text {
+  -moz-box-orient: horizontal;
+}
+
+.attachmentList[view="large"] .attachmentcell-content {
+  -moz-box-orient: horizontal;
+}
+
+.attachmentList[view="large"] .attachmentcell-text {
+  -moz-box-align: start;
+  -moz-box-orient: vertical;
+}
+
+.attachmentList[view="tile"] .attachmentcell-content {
+  -moz-box-align: center;
+  -moz-box-orient: vertical;
+}
+
+.attachmentList[view="tile"] .attachmentcell-text {
+  -moz-box-align: center;
+  -moz-box-orient: vertical;
+}
+
+.attachmentList[orient="horizontal"] .attachmentItem {
+  min-width: 10em;
+  padding: 1px 3px;
+  border-radius: 2px;
+}
+
+.attachmentList[orient="horizontal"][view="tile"] .attachmentItem {
+  min-width: 5em;
+  max-width: 10em;
+}
+
+#attachmentMenuList > menu:hover > .text-link {
+  text-decoration-line: underline;
+}
+
+#attachmentName.notfound,
+.attachmentItem.notfound,
+#attachmentMenuList > menu.notfound,
+#appmenu_attachmentMenuList > menu.notfound {
+  text-decoration-line: line-through;
+}
+
+.attachmentItem > * {
+  pointer-events: none;
+}
+
+.attachmentcell-size {
+  opacity: 0.6;
+}

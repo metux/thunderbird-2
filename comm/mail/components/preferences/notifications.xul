@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+
+<!-- -*- Mode: Java; tab-width: 2; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+   - This Source Code Form is subject to the terms of the Mozilla Public
+   - License, v. 2.0. If a copy of the MPL was not distributed with this
+   - file, You can obtain one at http://mozilla.org/MPL/2.0/. -->
+
+<?xml-stylesheet href="chrome://global/skin/"?>
+<?xml-stylesheet href="chrome://messenger/skin/preferences/preferences.css"?>
+
+<!DOCTYPE dialog [
+  <!ENTITY % notificationsDTD SYSTEM "chrome://messenger/locale/preferences/notifications.dtd">
+  %notificationsDTD;
+]>
+
+<dialog id="NotificationsDialog" type="child"
+        xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" xmlns:html="http://www.w3.org/1999/xhtml"
+        dlgbuttons="accept,cancel"
+        title="&notificationsDialog2.title;">
+  <prefpane id="NotificationsDialogPane">
+    <description>&alertCustomization.intro;</description>
+    <checkbox id="previewText" class="indent" label="&previewText.label;" accesskey="&previewText.accesskey;" preference="mail.biff.alert.show_preview"/>
+    <checkbox id="subject" class="indent" label="&subject.label;" accesskey="&subject.accesskey;" preference="mail.biff.alert.show_subject"/>
+    <checkbox id="sender"  class="indent" label="&sender.label;" accesskey="&sender.accesskey;" preference="mail.biff.alert.show_sender"/>
+
+    <separator/>
+    <hbox align="center">
+      <label id="totalOpenTimeBefore"
+             control="totalOpenTime"
+             value="&totalOpenTimeBefore.label;"
+             accesskey="&totalOpenTimeBefore.accesskey;"/>
+      <textbox id="totalOpenTime" type="number" size="3" min="1" max="3600" increment="1"
+               preference="alerts.totalOpenTime"
+               onsyncfrompreference="return Preferences.get(this.getAttribute('preference')).value / 1000;"
+               onsynctopreference="return this.value * 1000;"/>
+      <label id="totalOpenTimeEnd" value="&totalOpenTimeEnd.label;"/>
+    </hbox>
+    <separator/>
+  </prefpane>
+
+  <script src="chrome://global/content/preferencesBindings.js"/>
+  <script src="chrome://messenger/content/preferences/notifications.js"/>
+</dialog>

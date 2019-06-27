@@ -1,0 +1,77 @@
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+@import url("chrome://messenger/skin/shared/compacttheme.css");
+
+/* Get rid of 1px bright strip at the top of window */
+#messengerWindow[tabsintitlebar] #titlebar-content {
+  background: var(--lwt-accent-color);
+}
+
+#tabs-toolbar:-moz-lwtheme-brighttext {
+  -moz-appearance: -moz-mac-vibrant-titlebar-dark;
+  -moz-font-smoothing-background-color: -moz-mac-vibrant-titlebar-dark;
+  background-color: #232323;
+  color: hsl(240, 9%, 98%);
+  text-shadow: none;
+}
+
+#tabs-toolbar:-moz-lwtheme-darktext {
+  -moz-appearance: -moz-mac-vibrant-titlebar-light;
+  -moz-font-smoothing-background-color: -moz-mac-vibrant-titlebar-light;
+}
+
+/* Quick-Filter-Bar */
+#quick-filter-bar-main-bar:-moz-lwtheme {
+  background: transparent;
+}
+
+#quick-filter-bar-expando:-moz-lwtheme {
+  border-bottom-color: var(--chrome-content-separator-color);
+  background: transparent;
+}
+
+#headers-box {
+  -moz-appearance: none;
+}
+
+#FormatToolbar {
+  background-image: none;
+  background-color: transparent !important;
+}
+
+#compose-toolbar-sizer {
+  background-image: none;
+  background-color: var(--lwt-accent-color);
+}
+
+.tabmail-tab[selected="true"] {
+  -moz-font-smoothing-background-color: var(--toolbar-bgcolor);
+}
+
+#FormatToolbar:not(:-moz-window-inactive):-moz-lwtheme-brighttext >
+toolbarbutton.formatting-button[checked="true"]:after {
+  content: "";
+  display: -moz-box;
+  width: 29px;
+  height: 20px;
+  margin-top: -1px;
+  margin-inline-start: -24px;
+  margin-inline-end: -5px;
+  background-color: #888;
+}
+
+#underlineButton:-moz-locale-dir(rtl):after,
+#boldButton:-moz-locale-dir(ltr):after,
+#ulButton:-moz-locale-dir(ltr):after {
+  border-top-left-radius: 3px;
+  border-bottom-left-radius: 3px;
+}
+
+#underlineButton:-moz-locale-dir(ltr):after,
+#boldButton:-moz-locale-dir(rtl):after,
+#ulButton:-moz-locale-dir(rtl):after {
+  border-top-right-radius: 3px;
+  border-bottom-right-radius: 3px;
+}

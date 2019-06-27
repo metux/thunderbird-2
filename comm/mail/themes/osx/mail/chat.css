@@ -1,0 +1,122 @@
+%if 0
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+%endif
+
+%include ../../../components/im/themes/chat.css
+
+/* Adaptation of #folderPaneBox/#folderPaneTree from osx/mail/mailWindow1.css */
+:root:not([lwt-tree]) #chatPanel {
+  -moz-appearance: -moz-mac-source-list;
+  -moz-font-smoothing-background-color: -moz-mac-source-list;
+}
+
+#chatTabPanel {
+  --imbox-selected-text-color: -moz-FieldText;
+  --imbox-selected-background-color: -moz-Field;
+  --imbox-selected-border-color: var(--splitter-color);
+  --imgroup-selected-background-color: ThreeDLightShadow;
+}
+
+#contactlistbox {
+  background: transparent;
+  -moz-appearance: none;
+}
+
+:root:not([lwt-tree]) imgroup[selected] {
+  -moz-appearance: -moz-mac-source-list-selection;
+  -moz-font-smoothing-background-color: -moz-mac-source-list-selection;
+}
+
+.convUnreadCount,
+.contactDisplayName,
+.convDisplayName,
+.contactStatusText,
+.convStatusText {
+  margin-top: 3px;
+}
+
+#statusTypeIcon:-moz-locale-dir(ltr) {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+#statusTypeIcon:-moz-locale-dir(rtl) {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}
+
+#statusTypeIcon > .toolbarbutton-text {
+  display: none;
+}
+
+.statusMessageToolbarItem {
+  height: 22px;
+  margin-inline-start: -3px;
+  margin-bottom: 2px;
+  padding-bottom: 3px;
+}
+
+#chat-status-selector:not(:-moz-lwtheme):hover > .statusMessageToolbarItem,
+#chat-status-selector:not(:-moz-lwtheme) > .statusMessageToolbarItem[editing],
+.statusMessageToolbarItem:not(:-moz-lwtheme):focus {
+  border-color: #aaa;
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.5),
+              0 1px 0 rgba(255, 255, 255, 0.5) inset;
+}
+
+#chat-status-selector:not(:-moz-lwtheme) > .statusMessageToolbarItem[editing] {
+  border-color: #888;
+}
+
+#chat-status-selector:-moz-lwtheme:hover > .statusMessageToolbarItem,
+.statusMessageToolbarItem:-moz-lwtheme:focus,
+#chat-status-selector:-moz-lwtheme > .statusMessageToolbarItem[editing] {
+  text-shadow: none;
+}
+
+#chat-status-selector:-moz-lwtheme > .statusMessageToolbarItem[editing] {
+  box-shadow: 0 0 0 1px var(--toolbar-field-focus-border-color) inset,
+              0 0 0 1px var(--toolbar-field-focus-border-color);
+}
+
+/* Adaptation of #folderpane_splitter */
+#listSplitter,
+#contextSplitter {
+  min-width: 5px;
+}
+
+.conv-status-container {
+  border-bottom-color: #8B8B8B;
+}
+
+.startChatBubble > .button-box > .button-icon,
+.closeConversationButton > .button-box > .button-icon {
+  margin-inline-start: 0;
+}
+
+/* Set a background color to avoid lightweight theme backgrounds */
+#contextPane {
+  background-color: #fff;
+}
+
+.statusMessageInput[editing] {
+  color: -moz-dialogtext;
+  margin: 29px 0 -1px -4px;
+}
+
+#displayNameAndstatusMessageStack #statusMessage {
+  margin: 32px 0 0;
+  min-height: 16px;
+}
+
+#displayNameAndstatusMessageStack #statusMessage[editing] {
+  margin: 29px 2px 0 -4px;
+}
+
+#displayNameAndstatusMessageStack #displayName[editing] {
+  margin-left: -4px;
+  margin-right: -2px;
+  margin-bottom: 18px;
+}

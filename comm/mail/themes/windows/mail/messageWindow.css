@@ -1,0 +1,70 @@
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+/* ===== messageWindow.css ==============================================
+  == Styles for the message window.
+  ======================================================================= */
+
+@import url("chrome://messenger/skin/");
+@import url("chrome://messenger/skin/primaryToolbar.css");
+
+@namespace url("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul");
+
+#messengerWindow {
+  -moz-appearance: window;
+  background-color: -moz-Dialog;
+}
+
+#messengerWindow[lwt-tree] > #navigation-toolbox {
+  background-color: var(--toolbar-bgcolor);
+  background-image: var(--toolbar-bgimage);
+  color: var(--toolbar-color, inherit);
+}
+
+#messagepanebox {
+  text-shadow: none;
+  background-color: -moz-Dialog;
+}
+
+#mail-toolbox:-moz-lwtheme {
+  text-shadow: none;
+}
+
+/* Set position: relative to let the LW-background-box be behind them. */
+#navigation-toolbox:-moz-lwtheme,
+#mail-toolbox:-moz-lwtheme,
+#messagepaneboxwrapper:-moz-lwtheme {
+  position: relative;
+}
+
+/* ..... splitter adjustments ..... */
+#attachment-splitter {
+  border: none;
+  border-bottom: 1px solid #A9B7C9;
+  min-height: 0;
+  height: 5px;
+  background-color: transparent;
+  margin-top: -5px;
+  position: relative;
+  z-index: 10;
+  transition: border-width .3s ease-in;
+}
+
+#attachment-splitter:not([state="collapsed"]) {
+  border-bottom: 1px solid transparent;
+}
+
+#attachment-splitter {
+  transition: border-color .3s;
+}
+
+#attachment-splitter[state="collapsed"]:hover {
+  border-bottom: 4px solid highlight;
+}
+
+@media (-moz-os-version: windows-win10) and (-moz-windows-default-theme) {
+  #menubar-items > #mail-menubar > menu {
+    -moz-appearance: menuitem;
+  }
+}

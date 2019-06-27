@@ -1,0 +1,223 @@
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+/* large parts copied from the addon manager */
+
+#accountManager {
+  background-color: ThreeDFace;
+  padding: 0 0;
+  margin: 0 0;
+}
+
+%ifndef XP_MACOSX
+xbl-notification > hbox {
+  border: none !important;
+  border-bottom: 1px solid ThreeDShadow !important;
+}
+%endif
+
+#accountsNotificationBox {
+  margin: 0 0;
+  -moz-appearance: none;
+}
+
+#noAccountScreen {
+  color: -moz-FieldText;
+  background-color: -moz-Field;
+  overflow: auto;
+}
+
+#noAccountBox {
+  max-width: 30em;
+  background: url("chrome://global/skin/icons/info.svg") left 5px no-repeat;
+  background-size: 2.5em;
+  padding-right: 3.5em;
+  padding-left: 3.5em;
+  margin-left: 1.5em;
+  margin-right: 1.5em;
+}
+
+#noAccountInnerBox {
+  opacity: .9;
+}
+
+#noAccountTitle {
+  font-size: 2em;
+  font-weight: lighter;
+  line-height: 1.2;
+  margin: 0;
+  margin-bottom: .3em;
+  padding-bottom: .2em;
+  border-bottom: 1px solid -moz-FieldText;
+}
+
+#noAccountDesc {
+  font-size: 110%;
+  margin-right: 0;
+  margin-left: 0;
+}
+
+#accountlist {
+  margin: 0;
+  -moz-appearance: none;
+%ifndef XP_MACOSX
+  border-bottom: 1px solid ThreeDLightShadow;
+%endif
+}
+
+#bottombuttons {
+%ifdef XP_MACOSX
+  -moz-box-pack: end;
+  padding-inline-start: 2px;
+  padding-inline-end: 11px;
+  -moz-appearance: statusbar;
+  min-height: 28px;
+%else
+  margin: 0;
+%endif
+}
+
+%ifndef XP_WIN
+%ifndef XP_MACOSX
+#newaccount,
+#close {
+  margin-top: 3px;
+}
+%endif
+%endif
+
+/* List Items */
+richlistitem[state="disconnected"] .accountIcon {
+  opacity: 0.3;
+}
+richlistitem[state="connecting"] .accountIcon,
+richlistitem[state="disconnected"][selected="true"] .accountIcon {
+  opacity: 0.7;
+}
+richlistitem[state="disconnected"]:not([selected="true"]) {
+  color: GrayText;
+}
+
+richlistitem[error="true"] .accountName {
+  color: rgb(150, 0, 0);
+}
+
+%ifndef XP_MACOSX
+/* When the error message was too long, the buttons were too small */
+richlistitem .account-buttons button {
+  min-height: 2em;
+}
+%endif
+
+richlistitem .account-buttons {
+  margin-top: 2px;
+%ifdef XP_MACOSX
+  margin-left: 35px;
+%else
+  margin-left: 32px;
+%endif
+}
+
+richlistitem[dragover="down"] {
+  border-bottom: 3px solid HighLight;
+}
+richlistitem[dragover="up"] {
+  border-top: 3px solid HighLight;
+}
+
+.error {
+  color: rgb(200, 0, 0);
+  margin-left: 6px;
+}
+.accountName {
+  font-weight: bold;
+}
+
+.accountIcon {
+  width: 32px;
+  max-width: 32px;
+  height: 32px;
+  max-height: 32px;
+}
+
+.accountStateIcon {
+  margin-inline-start: 16px;
+  margin-top: 16px;
+  width: 16px;
+  height: 16px;
+}
+
+richlistitem[state="connecting"] .accountStateIcon {
+  list-style-image: url("chrome://global/skin/icons/loading.png");
+}
+richlistitem[error="true"] .accountStateIcon {
+  list-style-image: url("chrome://global/skin/icons/warning.svg");
+}
+
+#statusArea {
+  margin: 0 0;
+  padding: 0 0;
+}
+
+#displayName {
+  font-size: 16px;
+  border-bottom: 1px solid rgba(0,0,0,0.25);
+  margin: 0 0 16px;
+}
+
+#displayName[usingDefault]:not([editing]) {
+  color: GrayText;
+}
+
+#userIcon {
+  border: 2px solid rgba(0,0,0,0.15);
+  border-radius: 5px;
+  max-width: 48px;
+  max-height: 48px;
+  width: 48px;
+  height: 48px;
+}
+
+#userIcon[src=""] {
+  background-image: url("chrome://messenger/skin/icons/userIcon.svg");
+  background-size: contain;
+  background-repeat: no-repeat;
+  -moz-context-properties: fill, fill-opacity;
+  fill: #000;
+  fill-opacity: 0.25;
+}
+
+#userIcon:hover {
+  border-color: rgba(0,0,0,0.35);
+  background-color: rgba(0,0,0,0.35);
+  opacity: .4;
+}
+
+#statusImageStack #statusTypeIcon {
+  margin: 32px 0 0 32px;
+  width: 16px;
+  height: 16px;
+  min-height: 16px;
+  min-width: 16px;
+  -moz-appearance: none;
+  background: transparent;
+  box-shadow: none;
+  border: none;
+}
+
+#statusImageStack,
+#displayNameAndstatusMessageStack {
+  margin: 3px 2px;
+}
+
+#statusTypeIcon dropmarker {
+  display: none;
+}
+
+%ifdef XP_WIN
+#statusTypeIcon .button-box {
+  padding: 0 0;
+  border: none;
+}
+%endif

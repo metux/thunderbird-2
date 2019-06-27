@@ -1,0 +1,158 @@
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this
+# file, You can obtain one at http://mozilla.org/MPL/2.0/.
+  <prefpane id="paneApplications" label="&paneAttachments.title;">
+
+    <script>
+    <![CDATA[
+#ifdef MOZ_WIDGET_GTK
+      var ICON_URL_APP      = "moz-icon://dummy.exe?size=16";
+#else
+      var ICON_URL_APP      = "chrome://messenger/skin/preferences/application.png";
+#endif
+    ]]>
+    </script>
+    <script src="chrome://messenger/content/preferences/applications.js"/>
+
+    <commandset id="appPaneCommandSet">
+      <command id="cmd_delete"
+               oncommand="gApplicationsPane.onDelete();"/>
+    </commandset>
+
+    <keyset id="appPaneKeyset">
+      <key keycode="VK_BACK" modifiers="any" command="cmd_delete"/>
+      <key keycode="VK_DELETE" modifiers="any" command="cmd_delete"/>
+    </keyset>
+
+    <keyset>
+      <key key="&focusSearch1.key;" modifiers="accel"
+           oncommand="gApplicationsPane.focusFilterBox();"/>
+      <key key="&focusSearch2.key;" modifiers="accel"
+           oncommand="gApplicationsPane.focusFilterBox();"/>
+    </keyset>
+
+
+    <tabbox id="attachmentPrefs" flex="1" onselect="gApplicationsTabController.tabSelectionChanged();">
+      <tabs id="attachmentPrefsTabs">
+        <tab id="attachmentsInTab" label="&attachments.incoming.label;"/>
+        <tab id="attachmentsOutTab" label="&attachments.outgoing.label;"/>
+      </tabs>
+
+      <tabpanels id="attachmentPrefsPanels" flex="1">
+        <tabpanel orient="vertical">
+          <hbox>
+            <textbox is="search-textbox" id="filter"
+                     flex="1"
+                     placeholder="&filter.placeholder;"
+                     aria-controls="handlersView"
+                     oncommand="gApplicationsPane.rebuildView();"/>
+          </hbox>
+
+          <separator class="thin"/>
+
+          <listheader equalsize="always">
+            <treecol id="typeColumn" label="&typeColumn.label;" value="type"
+                      accesskey="&typeColumn.accesskey;" persist="sortDirection"
+                      flex="1" onclick="gApplicationsPane.sort(event);"
+                      sortDirection="ascending" sort="typeDescription"/>
+            <treecol id="actionColumn" label="&actionColumn2.label;" value="action"
+                      accesskey="&actionColumn2.accesskey;" persist="sortDirection"
+                      flex="1" onclick="gApplicationsPane.sort(event);"/>
+          </listheader>
+          <richlistbox id="handlersView"
+                       preference="pref.downloads.disable_button.edit_actions"/>
+
+          <separator class="thin"/>
+
+          <script src="chrome://messenger/content/preferences/downloads.js"/>
+
+          <vbox align="start">
+            <radiogroup id="saveWhere" flex="1"
+                        preference="browser.download.useDownloadDir"
+                        onsyncfrompreference="return gDownloadDirSection.onReadUseDownloadDir();">
+            <hbox id="saveToRow" align="center">
+              <radio id="saveTo" value="true"
+                     label="&saveTo.label;"
+                     accesskey="&saveTo.accesskey;"
+                     aria-labelledby="saveTo downloadFolder"/>
+              <textbox id="downloadFolder" flex="1"
+                       type="filefield"
+                       readonly="true"
+                       aria-labelledby="saveTo"/>
+              <button id="chooseFolder" oncommand="gDownloadDirSection.chooseFolder();"
+#ifdef XP_MACOSX
+                      accesskey="&chooseFolderMac.accesskey;"
+                      label="&chooseFolderMac.label;"/>
+#else
+                      accesskey="&chooseFolderWin.accesskey;"
+                      label="&chooseFolderWin.label;"/>
+#endif
+            </hbox>
+            <hbox>
+              <radio id="alwaysAsk"
+                     value="false"
+                     label="&alwaysAsk.label;"
+                     accesskey="&alwaysAsk.accesskey;"/>
+              <spacer flex="1"/>
+            </hbox>
+            </radiogroup>
+          </vbox>
+        </tabpanel>
+
+        <tabpanel orient="vertical">
+          <vbox flex="1">
+            <hbox id="cloudFileToggleAndThreshold" align="center">
+              <checkbox id="enableThreshold"
+                        label="&enableCloudFileAccountOffer.label;"
+                        preference="mail.compose.big_attachments.notify"/>
+              <textbox id="cloudFileThreshold" type="number" increment="1"
+                       maxlength="4" size="2"
+                       preference="mail.compose.big_attachments.threshold_kb"
+                       onsyncfrompreference="return gCloudFileTab.readThreshold();"
+                       onsynctopreference="return gCloudFileTab.writeThreshold();"/>
+              <label control="cloudFileThreshold"
+                     value="&enableCloudFileAccountOffer.mb;"/>
+            </hbox>
+            <hbox flex="1">
+              <vbox id="provider-listing">
+                <richlistbox id="cloudFileView" orient="vertical" flex="1"
+                             seltype="single"
+                             onoverflow="gCloudFileTab.onListOverflow();"
+                             onselect="gCloudFileTab.onSelectionChanged(event);">
+                </richlistbox>
+                <vbox id="addCloudFileAccountButtons">
+                </vbox>
+                <menulist id="addCloudFileAccount"
+                          hidden="true"
+                          label="&addCloudFileAccount1.label;"
+                          accesskey="&addCloudFileAccount1.accesskey;"
+                          defaultlabel="&addCloudFileAccount1.label;"
+                          oncommand="gCloudFileTab.addCloudFileAccount(this.value);">
+                  <menupopup id="addCloudFileAccountListItems"/>
+                </menulist>
+                <button id="removeCloudFileAccount"
+                        disabled="true"
+                        label="&removeCloudFileAccount.label;"
+                        accesskey="&removeCloudFileAccount.accesskey;"
+                        oncommand="gCloudFileTab.removeCloudFileAccount();"/>
+                <label is="text-link"
+                       id="moreProvidersLink"
+                       href="https://addons.thunderbird.net/thunderbird/tag/filelink"
+                       value="&findCloudFileProviders.label;"/>
+              </vbox>
+              <separator class="thin" orient="vertical"/>
+              <vbox flex="1">
+                <deck id="cloudFileSettingsDeck" flex="1">
+                  <vbox id="cloudFileDefaultPanel" flex="1">
+                    <description>&addCloudFileAccount.description;</description>
+                  </vbox>
+                  <vbox id="cloudFileSettingsWrapper" flex="1">
+                  </vbox>
+                </deck>
+              </vbox>
+            </hbox>
+          </vbox>
+        </tabpanel>
+      </tabpanels>
+    </tabbox>
+  </prefpane>

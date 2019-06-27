@@ -1,0 +1,58 @@
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+@import url("chrome://messenger/skin/shared/searchBox.css");
+
+.quick-search-textbox {
+  padding-top: 1px;
+}
+
+.searchBox > hbox,
+.themeableSearchBox > hbox {
+  -moz-box-ordinal-group: 1;
+}
+
+.searchBox > .textbox-input-box,
+.themeableSearchBox > .textbox-input-box {
+  -moz-box-ordinal-group: 2;
+}
+
+.gloda-search-icon {
+  margin-inline-end: 5px;
+}
+
+.gloda-search-icon,
+.textbox-search-icon[searchbutton],
+textbox:not([searchbutton]) > .textbox-input-box > .textbox-search-sign {
+  list-style-image: url(chrome://messenger/skin/icons/search-glass.svg);
+  -moz-context-properties: fill;
+  fill: currentColor;
+  opacity: 0.54;
+}
+
+.remote-gloda-search-container {
+  padding-top: 3px;
+  padding-bottom: 2px;
+}
+
+.searchBox,
+.themeableSearchBox {
+  -moz-appearance: none;
+  background-clip: padding-box;
+  background-color: -moz-field;
+  border: 1px solid ThreeDShadow;
+  border-radius: 2px;
+  box-shadow: 0 1px 4px rgba(0,0,0,.05);
+  padding: 3px;
+  margin: 0 3px;
+}
+
+.searchBox[focused="true"],
+.themeableSearchBox[focused="true"] {
+  border-color: Highlight;
+}
+
+.autocomplete-richlistitem[type^="gloda-"] {
+  padding-inline-start: 10px;
+}

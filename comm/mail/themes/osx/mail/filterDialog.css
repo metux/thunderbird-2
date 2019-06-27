@@ -1,0 +1,97 @@
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+/* ===== filterDialog.css ===============================================
+  == Styles for the Mail Filters dialog.
+  ======================================================================= */
+
+@import url("chrome://messenger/skin/");
+
+@namespace url("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul");
+
+#filterListDialog {
+  padding: 0px;
+}
+
+#filterHeader {
+  margin: 8px;
+  font: menu;
+}
+
+#filterListGrid {
+  margin: 8px;
+}
+
+/* ::::: columns :::::: */
+
+treecolpicker {
+  display: none;
+}
+
+richlistitem {
+  padding-top: 1px;
+  padding-bottom: 1px;
+}
+
+richlistitem > checkbox {
+  width: 100px;
+  margin: 0;
+  -moz-user-focus: none;
+}
+
+checkbox:not([label]) .checkbox-label-box {
+  display: none;
+}
+
+.small-button {
+  min-width: 22px;
+  height: 20px;
+  padding: 0 1px 1px 0;
+  margin: 4px 0;
+}
+
+.small-button:first-child {
+  margin-inline-start: 2px;
+}
+
+listcell > hbox {
+  -moz-box-pack: end;
+}
+
+/* No '.filler' here, so add margin to make more room. */
+hbox > .small-button + .small-button {
+  margin-inline-end: 2px;
+}
+
+.search-menulist, .search-value-menulist {
+  width: 12em;
+}
+
+.search-menulist[unavailable="true"] {
+  color: GrayText;
+}
+
+#searchTermList > listitem[selected="true"] {
+  background-color: inherit;
+}
+
+.ruleactionitem {
+  min-width: 20em;
+}
+
+.ruleaction-type {
+  min-width: 15em;
+}
+
+#countBox[filterActive="matches"] {
+  color: #4e9a06;
+}
+
+#countBox[filterActive="nomatches"] {
+  color: #cc0000;
+}
+
+treecolpicker {
+  display: none;
+}

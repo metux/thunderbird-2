@@ -1,0 +1,36 @@
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this
+# file, You can obtain one at http://mozilla.org/MPL/2.0/.
+---
+loader: comm_taskgraph:reference_loader
+base-path: taskcluster/ci
+
+kind-dependencies:
+    - fetch
+
+jobs:
+    - linux64-binutils
+    - linux64-cbindgen
+    - linux64-cctools-port
+    - linux64-clang
+    - linux64-clang-3.9
+    - linux64-clang-mingw-x64
+    - linux64-gcc
+    - linux64-gcc-4.9
+    - linux64-hfsplus
+    - linux64-libdmg
+    - linux64-llvm-dsymutil
+    - linux64-nasm
+    - linux64-node
+    - linux64-rust
+    - linux64-rust-1.28
+    - linux64-rust-1.32
+    - linux64-rust-macos
+    - linux64-sccache
+    - win64-cbindgen
+    - win64-clang-cl
+    - win64-nasm
+    - win64-node
+    - win64-rust
+    - win64-rust-1.28
+    - win64-sccache
